@@ -1,0 +1,89 @@
+<div>
+    <!-- Hero Section -->
+    <section class="hero-section" style="min-height: 420px;">
+        <div class="hero-overlay"></div>
+        <div class="container position-relative" style="z-index: 2;">
+            <div class="text-center text-white py-5">
+                <div class="hero-badge d-inline-flex align-items-center gap-2 mb-4">
+                    <i class="bi bi-play-circle"></i>
+                    <span>주요 기능 데모 체험</span>
+                </div>
+                <h1 class="hero-title fw-bold mb-3">
+                    크리에이터의 애로사항 해결을 위한<br>최적의 플랫폼
+                </h1>
+                <p class="hero-subtitle mb-0">
+                    실제 플랫폼에서 사용할 수 있는 주요 기능들을 직접 체험해보세요.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="py-5" style="background: var(--gray-50);">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-3">어떤 기능이 궁금하신가요?</h2>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
+                <button v-for="cat in categories" :key="cat"
+                        class="demo-category-btn"
+                        :class="{ active: activeCategory === cat }"
+                        @click="activeCategory = cat">
+                    {{ cat }}
+                </button>
+            </div>
+
+            <!-- Demo Cards Grid -->
+            <div class="row g-4">
+                <div v-for="item in filteredDemos" :key="item.id" class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100 p-0 overflow-hidden">
+                        <div class="demo-thumbnail">
+                            <div class="demo-thumbnail-bg" :style="{ background: item.gradient }"></div>
+                            <span v-if="item.badge" class="demo-badge">{{ item.badge }}</span>
+                            <div class="demo-play-overlay">
+                                <div class="demo-play-button">
+                                    <i class="bi bi-play-fill"></i>
+                                </div>
+                            </div>
+                            <div class="demo-thumbnail-icon">
+                                <i :class="'bi bi-' + item.icon"></i>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <span class="demo-category-label">{{ item.category }}</span>
+                            <h5 class="fw-bold mt-2 mb-2" style="font-size: 1.1rem;">{{ item.title }}</h5>
+                            <p class="text-secondary small mb-3" style="line-height: 1.6;">{{ item.description }}</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span v-for="(feat, idx) in item.features" :key="idx" class="demo-feature-tag">{{ feat }}</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-sm rounded-pill px-3 demo-btn-primary" @click.prevent>
+                                    <i class="bi bi-play-circle me-1"></i>데모 보기
+                                </a>
+                                <a href="#" class="btn btn-sm rounded-pill px-3 demo-btn-outline" @click.prevent>
+                                    <i class="bi bi-image me-1"></i>실제 화면
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section py-5">
+        <div class="container text-center py-5">
+            <h2 class="fw-bold text-white mb-3">지금 바로 시작하세요</h2>
+            <p class="text-white-50 fs-5 mb-4">14일 무료 체험으로 모든 기능을 제한 없이 사용해보세요.<br class="d-none d-md-block">신용카드 등록 없이 바로 시작할 수 있습니다.</p>
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="#/signup/signup" class="btn btn-light btn-lg rounded-pill px-5 fw-semibold">
+                    무료로 시작하기 <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+                <a href="#/inquiry/inquiry" class="btn btn-outline-light btn-lg rounded-pill px-5 fw-semibold">
+                    상담 문의하기
+                </a>
+            </div>
+        </div>
+    </section>
+</div>

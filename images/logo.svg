@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 46">
+  <g fill="none" stroke="#7c3aed" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- S -->
+    <path d="M 19,9 C 19,4.5 5,4.5 5,9 C 5,14 19,19 19,24 C 19,28.5 5,28.5 5,24"/>
+    <!-- O -->
+    <circle cx="40" cy="16.5" r="11"/>
+    <!-- L -->
+    <path d="M 59,4.5 V 28.5 H 72"/>
+    <!-- S -->
+    <path d="M 97,9 C 97,4.5 83,4.5 83,9 C 83,14 97,19 97,24 C 97,28.5 83,28.5 83,24"/>
+    <!-- O -->
+    <circle cx="118" cy="16.5" r="11"/>
+    <!-- L -->
+    <path d="M 137,4.5 V 28.5 H 150"/>
+  </g>
+  <text x="2" y="43" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="600" fill="#9ca3af" letter-spacing="2.5">CREATOR PLATFORM</text>
+</svg>

@@ -1,0 +1,9 @@
+<div class="container legal-page py-5">
+    <h2 class="fw-bold mb-2">{{ termsData.title }}</h2>
+    <p v-if="termsData.effectiveDate" class="text-secondary small mb-4">시행일: {{ termsData.effectiveDate }}</p>
+    <hr class="mb-4">
+    <div v-for="(section, idx) in termsData.sections" :key="idx" class="legal-section">
+        <h6 class="fw-bold">{{ section.heading }}</h6>
+        <p class="legal-content">{{ section.content }}</p>
+    </div>
+</div>

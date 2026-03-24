@@ -1,0 +1,239 @@
+<div>
+    <!-- Hero Section -->
+    <section class="py-4" style="background: white;">
+        <div class="container">
+            <div class="hero-banner">
+                <div class="row g-0">
+                    <!-- Left: Text Content -->
+                    <div class="col-12 col-lg-5 hero-content-col d-flex align-items-center">
+                        <div class="hero-content-inner">
+                            <div class="hero-badge mb-4">
+                                <span>YouTube 크리에이터 전용 학습관리 플랫폼</span>
+                            </div>
+                            <h1 class="hero-title fw-bold mb-3">
+                                크리에이터를 위한<br><span class="text-highlight-hero">핵심 서비스</span>만 모았습니다
+                            </h1>
+                            <p class="hero-subtitle mb-4">
+                                AI튜터로 학습자의 만족도 Up,<br>
+                                AI 학습 피드백으로 이탈률 Down,<br>
+                                콘텐츠 AI 자동자막/다국어 자동 번역으로<br>
+                                콘텐츠 제작 부담 Down
+                            </p>
+                            <div class="d-flex gap-3">
+                                <a href="javascript:void(0)" @click="handleStartClick" class="btn btn-outline-light rounded-pill px-4 py-2 hero-cta">
+                                    무료로 시작하기 <i class="bi bi-chevron-right ms-1"></i>
+                                </a>
+                                <a href="#/service/demo" class="btn btn-light rounded-pill px-4 py-2 fw-semibold" style="color: var(--gray-700);">
+                                    데모 보기 <i class="bi bi-play-fill ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right: Image -->
+                    <div class="col-12 col-lg-7 hero-image-col">
+                        <div class="hero-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80" alt="AI 플랫폼" class="hero-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="py-5" style="background: var(--gray-50);">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold display-6">크리에이터의 <span class="text-highlight-underline">문제, AI가 해결</span>합니다</h2>
+            </div>
+            <div class="row g-4">
+                <div v-for="solution in solutions" :key="solution.id" class="col-12 col-md-6 col-lg-4">
+                    <div class="solution-card text-center h-100">
+                        <div class="solution-icon-wrap mx-auto mb-3">
+                            <div class="solution-icon-circle" :style="{ background: solution.iconBg }">
+                                <i :class="solution.icon" class="text-white"></i>
+                            </div>
+                        </div>
+                        <p class="fw-semibold mb-2" style="font-size: 0.9rem; color: var(--gray-600);">{{ solution.problem }}</p>
+                        <div class="mb-2">
+                            <i class="bi bi-chevron-down" style="font-size: 0.7rem; color: var(--gray-300);"></i>
+                        </div>
+                        <h4 class="solution-answer fw-bold mb-0">{{ solution.answer }}</h4>
+                        <div class="solution-divider mx-auto my-3"></div>
+                        <div class="solution-desc">
+                            <p class="mb-1">{{ solution.before }}</p>
+                            <p class="mb-0 fw-semibold" style="color: var(--gray-700);">{{ solution.after }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insight Section -->
+    <section class="insight-section py-5">
+        <div class="insight-deco-circle insight-deco-1"></div>
+        <div class="insight-deco-circle insight-deco-2"></div>
+        <div class="container py-5 position-relative" style="z-index: 1;">
+            <div class="text-center">
+                <h2 class="fw-bold fs-2 mb-3">이미 알고 있는 것보다 <span class="text-highlight">더 많은 걸</span> 알게 됩니다</h2>
+                <p class="text-secondary fs-6 mb-4">
+                    매주 실제 전문가들이 경험을 지속 가능한 수익으로 전환하는 방법과<br class="d-none d-md-block">
+                    실제로 사용할 수 있는 전략 및 도구를 소개합니다.
+                </p>
+                <a href="#" class="btn btn-outline-dark btn-lg rounded-pill px-5 fw-semibold">
+                    주간 인사이트 받기 <i class="bi bi-envelope ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competitive Section -->
+    <section class="py-5" style="background: var(--gray-50);">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold fs-2">다른 플랫폼과 <span class="text-highlight">무엇이 다른가요?</span></h2>
+            </div>
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th class="comparison-feature-col"></th>
+                            <th class="comparison-header-solsol">쏠쏠</th>
+                            <th class="comparison-header-comp">경쟁사 A</th>
+                            <th class="comparison-header-comp">경쟁사 B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in comparisons" :key="item.feature">
+                            <td class="comparison-feature-col">{{ item.feature }}</td>
+                            <td class="text-center">
+                                <i v-if="item.us" class="bi bi-check-lg" style="color: var(--primary-color); font-size: 1.25rem; font-weight: 700;"></i>
+                                <span v-else class="text-secondary">—</span>
+                            </td>
+                            <td class="text-center">
+                                <i v-if="item.compA" class="bi bi-check-lg text-secondary" style="font-size: 1.25rem;"></i>
+                                <span v-else class="text-secondary">—</span>
+                            </td>
+                            <td class="text-center">
+                                <i v-if="item.compB" class="bi bi-check-lg text-secondary" style="font-size: 1.25rem;"></i>
+                                <span v-else class="text-secondary">—</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="comparison-feature-col">월 이용료</td>
+                            <td class="text-center fw-bold" style="color: var(--primary-color); font-size: 1.1rem;">₩49,000~</td>
+                            <td class="text-center text-secondary">₩89,000~</td>
+                            <td class="text-center text-secondary">$99~</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section class="py-5">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-12 col-lg-3 mb-4 mb-lg-0 d-flex align-items-start">
+                    <h2 class="fw-bold fs-2 lh-base">AI 기술이 만드는<br><span class="text-highlight">차별화된 학습 경험</span></h2>
+                </div>
+                <div class="col-12 col-lg-9">
+                    <div class="row g-4">
+                        <div v-for="feature in features" :key="feature.id" class="col-12 col-md-6">
+                            <div class="feature-image-card">
+                                <div class="feature-image-box" :style="{ background: feature.bgColor }">
+                                    <img :src="feature.image" :alt="feature.title" class="feature-image-img">
+                                </div>
+                                <h5 class="fw-bold mt-3 mb-2">{{ feature.title }}</h5>
+                                <p class="text-secondary small mb-0">{{ feature.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prototype Showcase Section -->
+    <section class="py-5" style="background: var(--gray-50);">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold display-6">실제 구현된 <span class="text-highlight-underline">프로토타입</span>을 직접 체험해보세요</h2>
+            </div>
+
+            <!-- 학습자 모드 -->
+            <div class="proto-mode-header mb-4">
+                <div class="proto-mode-badge proto-mode-student">
+                    <i class="bi bi-mortarboard-fill me-2"></i>학습자 모드
+                </div>
+            </div>
+            <div class="row g-4 mb-5">
+                <div v-for="(item, idx) in protoStudent" :key="item.title" class="col-6 col-lg-3">
+                    <div class="proto-card h-100">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="proto-icon-circle" :style="{ background: item.color + '12', color: item.color }">
+                                <i :class="item.icon" style="font-size: 1.25rem;"></i>
+                            </div>
+                            <span class="proto-number">{{ String(idx + 1).padStart(2, '0') }}</span>
+                        </div>
+                        <h6 class="fw-bold mb-2">{{ item.title }}</h6>
+                        <p class="proto-desc mb-0">{{ item.desc }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 관리자 모드 -->
+            <div class="proto-mode-header mb-4">
+                <div class="proto-mode-badge proto-mode-admin">
+                    <i class="bi bi-gear-fill me-2"></i>관리자 모드
+                </div>
+            </div>
+            <div class="row g-4">
+                <div v-for="(item, idx) in protoAdmin" :key="item.title" class="col-6 col-lg-3">
+                    <div class="proto-card h-100">
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="proto-icon-circle" :style="{ background: item.color + '12', color: item.color }">
+                                <i :class="item.icon" style="font-size: 1.25rem;"></i>
+                            </div>
+                            <span class="proto-number">{{ String(idx + 1).padStart(2, '0') }}</span>
+                        </div>
+                        <h6 class="fw-bold mb-2">{{ item.title }}</h6>
+                        <p class="proto-desc mb-0">{{ item.desc }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta-section py-5">
+        <div class="cta-bg-image"></div>
+        <div class="cta-overlay"></div>
+        <div class="container text-center py-5 position-relative" style="z-index: 2;">
+            <h2 class="fw-bold text-white mb-3 fs-1">지금 바로 시작하세요</h2>
+            <p class="text-white-50 fs-6 mb-5">14일 무료 체험으로 모든 기능을 경험해보세요.<br class="d-none d-md-block">신용카드 등록 없이 바로 시작할 수 있습니다.</p>
+            <div class="row g-4 justify-content-center">
+                <div class="col-12 col-md-5">
+                    <a href="#/signup/signup" class="cta-card-btn d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-play-circle fs-4" style="color: var(--primary-color);"></i>
+                            <span class="fw-bold fs-5">무료로 시작하기</span>
+                        </div>
+                        <i class="bi bi-arrow-right fs-5 text-secondary"></i>
+                    </a>
+                </div>
+                <div class="col-12 col-md-5">
+                    <a href="#/contact" class="cta-card-btn d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-emoji-smile fs-4" style="color: var(--primary-color);"></i>
+                            <span class="fw-bold fs-5">상담 문의하기</span>
+                        </div>
+                        <i class="bi bi-arrow-right fs-5 text-secondary"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

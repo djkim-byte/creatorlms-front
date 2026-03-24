@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서비스 전면 중단 안내 - 쏠쏠</title>
+</head>
+<body style="margin: 0; padding: 0; background: #f5f5f5; font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; color: #333;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: #f5f5f5;">
+        <tr>
+            <td align="center" style="padding: 40px 16px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; width: 100%;">
+
+                    <!-- Logo -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 32px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="background: #f0f0f0; border-radius: 8px;">
+                                <tr>
+                                    <td style="padding: 16px 40px;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="padding-right: 8px; vertical-align: middle;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="36" height="36">
+                                                        <defs>
+                                                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                                <stop offset="0%" stop-color="#6366f1"/>
+                                                                <stop offset="100%" stop-color="#8b5cf6"/>
+                                                            </linearGradient>
+                                                        </defs>
+                                                        <path d="M6 18 C10 10, 14 26, 18 18 C22 10, 26 26, 30 18" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                                                        <path d="M6 13 C10 5, 14 21, 18 13 C22 5, 26 21, 30 13" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                                                        <path d="M6 23 C10 15, 14 31, 18 23 C22 15, 26 31, 30 23" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                                                    </svg>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <span style="font-size: 20px; font-weight: 700; color: #111;">쏠쏠</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Error Icon -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 24px;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                    <td style="width: 80px; height: 80px; background: #dc2626; border-radius: 50%; text-align: center; vertical-align: middle;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M15 9l-6 6"/>
+                                            <path d="M9 9l6 6"/>
+                                        </svg>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Title -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 12px;">
+                            <h1 style="margin: 0; font-size: 28px; font-weight: 800; color: #111; line-height: 1.4;">서비스가 전면 중단되었습니다.</h1>
+                        </td>
+                    </tr>
+
+                    <!-- Subtitle -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 32px;">
+                            <p style="margin: 0; font-size: 15px; color: #666; line-height: 1.6;">
+                                {{USER_NAME}}님의 구독 만료 후 1개월이 경과하여<br>
+                                모든 서비스 이용이 중단되었습니다.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Divider -->
+                    <tr>
+                        <td style="padding: 0 40px 32px;">
+                            <hr style="border: none; border-top: 1px solid #ddd; margin: 0;">
+                        </td>
+                    </tr>
+
+                    <!-- Info Card -->
+                    <tr>
+                        <td style="padding: 0 40px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: #f9f9f9; border-radius: 12px;">
+                                <tr>
+                                    <td style="padding: 28px 32px;">
+                                        <p style="margin: 0 0 16px; font-size: 16px; font-weight: 700; color: #111;">구독 정보</p>
+                                        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 0 0 20px;">
+
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 12px;">
+                                            <tr>
+                                                <td style="font-size: 14px; color: #666; line-height: 1.8; width: 40%;">사이트명</td>
+                                                <td style="font-size: 14px; color: #111; line-height: 1.8; text-align: right; font-weight: 500;">{{SITE_NAME}}</td>
+                                            </tr>
+                                        </table>
+
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 12px;">
+                                            <tr>
+                                                <td style="font-size: 14px; color: #666; line-height: 1.8; width: 40%;">구독 유형</td>
+                                                <td style="font-size: 14px; color: #111; line-height: 1.8; text-align: right; font-weight: 500;">{{PLAN_TYPE}}</td>
+                                            </tr>
+                                        </table>
+
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 12px;">
+                                            <tr>
+                                                <td style="font-size: 14px; color: #666; line-height: 1.8; width: 40%;">구독 만료일</td>
+                                                <td style="font-size: 14px; color: #111; line-height: 1.8; text-align: right; font-weight: 500;">{{EXPIRED_DATE}}</td>
+                                            </tr>
+                                        </table>
+
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 20px;">
+                                            <tr>
+                                                <td style="font-size: 14px; color: #666; line-height: 1.8; width: 40%;">서비스 중단일</td>
+                                                <td style="font-size: 14px; color: #dc2626; line-height: 1.8; text-align: right; font-weight: 600;">{{SUSPENDED_DATE}}</td>
+                                            </tr>
+                                        </table>
+
+                                        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 0 0 16px;">
+
+                                        <p style="margin: 0 0 8px; font-size: 13px; font-weight: 700; color: #111;">서비스 이용 상태</p>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom: 8px;">
+                                            <tr>
+                                                <td style="font-size: 14px; color: #666; line-height: 1.8; width: 50%;">사이트 관리 (Admin)</td>
+                                                <td style="font-size: 14px; line-height: 1.8; text-align: right; font-weight: 600; color: #dc2626;">사용중지</td>
+                                            </tr>
+                                        </table>
+                                        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                                <td style="font-size: 14px; color: #666; line-height: 1.8; width: 50%;">사이트 (Front)</td>
+                                                <td style="font-size: 14px; line-height: 1.8; text-align: right; font-weight: 600; color: #dc2626;">사용중지</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Notice -->
+                    <tr>
+                        <td style="padding: 0 40px 24px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: #fef2f2; border-radius: 8px;">
+                                <tr>
+                                    <td style="padding: 16px 20px;">
+                                        <p style="margin: 0 0 8px; font-size: 13px; font-weight: 700; color: #991b1b;">안내사항</p>
+                                        <p style="margin: 0 0 4px; font-size: 13px; color: #991b1b; line-height: 1.6;">• 사이트 관리(Admin)와 사이트(Front) 모두 이용이 중단되었습니다.</p>
+                                        <p style="margin: 0 0 4px; font-size: 13px; color: #991b1b; line-height: 1.6;">• 일정 기간 경과 후 데이터가 영구 삭제되며, 복구가 불가능합니다.</p>
+                                        <p style="margin: 0; font-size: 13px; color: #991b1b; line-height: 1.6;">• 데이터 보존이 필요하시다면 빠른 시일 내에 구독을 갱신해 주세요.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Guide Text -->
+                    <tr>
+                        <td align="center" style="padding-bottom: 32px;">
+                            <p style="margin: 0; font-size: 15px; font-weight: 600; color: #111; line-height: 1.6;">
+                                새로운 구독을 시작하여 데이터를 보존하세요
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- CTA Banner -->
+                    <tr>
+                        <td style="padding: 0 16px 32px;">
+                            <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background: #f9f9f9; border: 1px solid #e5e7eb; border-radius: 12px;">
+                                <tr>
+                                    <td style="padding: 20px 24px; text-align: center;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="display: inline-table;">
+                                            <tr>
+                                                <td style="vertical-align: middle; padding-right: 16px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                        <tr>
+                                                            <td style="width: 28px; height: 28px; background: #e5e7eb; border-radius: 50%; text-align: center; vertical-align: middle; font-size: 14px; color: #6366f1; font-weight: 700;">i</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td style="vertical-align: middle;">
+                                                    <a href="{{PRICING_URL}}" style="font-size: 15px; font-weight: 600; color: #6366f1; text-decoration: none;">구독 플랜 보기</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td align="center" style="padding: 16px;">
+                            <p style="margin: 0; font-size: 14px; font-weight: 600; color: #666;">
+                                &copy; Solsol. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

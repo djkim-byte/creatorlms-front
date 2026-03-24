@@ -1,0 +1,263 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-5" style="max-width: 1140px;">
+
+            <!-- Page Header -->
+            <div class="text-center mb-4 mb-lg-5">
+                <h3 class="fw-bold mb-2">계정 관리</h3>
+                <p class="text-secondary mb-0">내 계정 정보를 관리할 수 있어요</p>
+            </div>
+
+            <!-- Account Info Section -->
+            <div class="account-section mb-4">
+                <!-- Email (Read-only) -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">아이디(이메일)</label>
+                    <div class="account-email-display" style="background: var(--gray-50); color: var(--gray-900); border: 1px solid var(--gray-200);">{{ userEmail }}</div>
+                    <small class="text-secondary">아이디로 사용된 이메일은 변경할 수 없습니다.</small>
+                </div>
+
+                <!-- Name -->
+                <div class="row g-3 mb-4">
+                    <div class="col-auto">
+                        <label class="form-label fw-semibold">성</label>
+                        <input type="text" class="form-control account-name-input" v-model="form.lastName">
+                    </div>
+                    <div class="col-auto">
+                        <label class="form-label fw-semibold">이름</label>
+                        <input type="text" class="form-control account-name-input" v-model="form.firstName">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Current Password -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">비밀번호</label>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="flex-grow-1" style="max-width: 400px;">
+                            <input type="password" class="form-control" :class="{ 'is-invalid': errors.currentPassword }"
+                                   v-model="form.currentPassword" placeholder="현재 비밀번호를 입력해 주세요">
+                            <small v-if="errors.currentPassword" class="text-danger">{{ errors.currentPassword }}</small>
+                        </div>
+                        <div class="text-nowrap pt-2">
+                            <span class="text-secondary small">비밀번호가 생각나지 않으시다면</span>
+                            <a href="#" class="small fw-semibold text-decoration-none ms-2" @click.prevent="resetPassword">비밀번호 재설정</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">새 비밀번호</label>
+                    <input type="password" class="form-control" :class="{ 'is-invalid': errors.newPassword }"
+                           style="max-width: 400px;"
+                           v-model="form.newPassword" placeholder="최소 8자 이상 특수문자 기호를 포함해 주세요.">
+                    <small v-if="errors.newPassword" class="text-danger">{{ errors.newPassword }}</small>
+                </div>
+
+                <!-- New Password Confirm -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">새 비밀번호 확인</label>
+                    <input type="password" class="form-control" :class="{ 'is-invalid': errors.newPasswordConfirm }"
+                           style="max-width: 400px;"
+                           v-model="form.newPasswordConfirm" placeholder="새로운 비밀번호를 다시 입력해 주세요.">
+                    <small v-if="errors.newPasswordConfirm" class="text-danger">{{ errors.newPasswordConfirm }}</small>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Marketing Consent -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">* 마케팅 정보 수신</label>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="account-toggle-group">
+                            <button type="button" class="account-toggle-btn" :class="{ active: !form.marketingConsent }"
+                                    @click="form.marketingConsent = false">수신거부</button>
+                            <button type="button" class="account-toggle-btn" :class="{ active: form.marketingConsent }"
+                                    @click="form.marketingConsent = true">수신동의</button>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-2">
+                            <li class="text-secondary small">• 중요 공지 및 서비스와 관련한 필수 안내 등은 수신 설정과 관계없이 발송될 수 있습니다.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2FA -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">* 2단계 인증</label>
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="account-toggle-group">
+                            <button type="button" class="account-toggle-btn" :class="{ active: !form.twoFactorEnabled }"
+                                    @click="form.twoFactorEnabled = false">사용안함</button>
+                            <button type="button" class="account-toggle-btn" :class="{ active: form.twoFactorEnabled }"
+                                    @click="form.twoFactorEnabled = true">사용</button>
+                        </div>
+                        <ul class="list-unstyled mb-0 ms-2">
+                            <li class="text-secondary small">• 서비스 로그인할 때 이메일로 추가 인증이 요구됩니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods Section -->
+            <div class="account-section-gray mb-4">
+                <!-- Cards with data -->
+                <template v-if="cards.length > 0">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0">[결제 수단]</h6>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" @click="registerCard">
+                            카드 등록하기 <i class="bi bi-plus-circle ms-1"></i>
+                        </button>
+                    </div>
+                    <div v-for="(card, idx) in cards" :key="card.id" class="account-card-item mb-3">
+                        <div class="d-flex align-items-center gap-3 gap-md-4">
+                            <!-- Card Visual -->
+                            <div class="account-card-visual" :class="'account-card-' + card.brand.toLowerCase()">
+                                <div class="account-card-brand-icon">
+                                    <template v-if="card.brand === 'MASTER'">
+                                        <div class="d-flex">
+                                            <div class="account-mc-circle account-mc-red"></div>
+                                            <div class="account-mc-circle account-mc-orange"></div>
+                                        </div>
+                                    </template>
+                                    <template v-else-if="card.brand === 'VISA'">
+                                        <span class="account-visa-text">VISA</span>
+                                    </template>
+                                </div>
+                                <div class="account-card-number">{{ card.displayNumber }}</div>
+                            </div>
+                            <!-- Card Info -->
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">{{ card.brand }}</div>
+                                <div class="text-secondary small">{{ card.maskedNumber }}</div>
+                                <div class="text-secondary small">등록일 {{ card.registeredDate }}</div>
+                            </div>
+                            <!-- Actions -->
+                            <div class="d-flex align-items-center gap-2 gap-md-3">
+                                <template v-if="card.isDefault">
+                                    <div class="text-center">
+                                        <i class="bi bi-flag-fill text-dark d-block" style="font-size: 1.1rem;"></i>
+                                        <small class="text-dark" style="font-size: 0.7rem;">대표 카드</small>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <button type="button" class="btn btn-primary btn-sm px-3" @click="confirmSetDefault(card)">대표 카드 설정</button>
+                                </template>
+                                <button type="button" class="btn btn-outline-secondary btn-sm px-3" @click="confirmDeleteCard(card)">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- No cards -->
+                <template v-else>
+                    <div class="d-flex justify-content-between align-items-center py-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-credit-card-2-front text-secondary" style="font-size: 1.5rem;"></i>
+                            <span class="text-secondary">등록된 카드가 없습니다</span>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" @click="registerCard">
+                            카드 등록하기 <i class="bi bi-plus-circle ms-1"></i>
+                        </button>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Payment Email Section -->
+            <div class="account-section-gray mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0">[결제 이메일]</h6>
+                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" @click="changeBillingEmail">이메일 변경</button>
+                </div>
+                <div class="ps-2">
+                    <span class="fw-semibold fs-5">{{ billingEmail }}</span>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="text-center mb-4">
+                <button type="button" class="btn btn-dark btn-lg px-5 py-3 rounded-pill w-100" style="max-width: 500px;" :disabled="isSaving" @click="handleSave">
+                    {{ isSaving ? '저장 중...' : '저장하기' }}
+                </button>
+            </div>
+
+            <!-- Delete Account -->
+            <div class="text-center mb-5">
+                <a href="#" class="text-secondary text-decoration-underline small" @click.prevent="deleteAccount">계정삭제</a>
+            </div>
+
+    </div>
+</div>
+
+<!-- Confirm Modal (대표카드 설정 / 카드 삭제) -->
+<div class="account-modal-overlay" v-if="modal.show" @click.self="closeModal">
+    <div class="account-modal">
+        <div class="text-center">
+            <div class="account-modal-icon mb-3">
+                <i class="bi" :class="modal.icon"></i>
+            </div>
+            <p class="fw-medium mb-4" style="line-height: 1.6;">{{ modal.message }}</p>
+            <div class="d-flex gap-3" v-if="modal.type === 'confirm'">
+                <button type="button" class="btn btn-outline-primary flex-fill py-2" @click="closeModal">취소</button>
+                <button type="button" class="btn btn-dark flex-fill py-2" @click="confirmModal">확인</button>
+            </div>
+            <div v-else>
+                <button type="button" class="btn btn-dark w-100 py-2" @click="confirmModal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Modal (탈퇴하기) -->
+<div class="account-modal-overlay" v-if="deleteModal.show" @click.self="closeDeleteModal">
+    <div class="account-modal" style="max-width: 580px; padding: 2.5rem;">
+        <!-- Close button -->
+        <div class="text-end">
+            <button type="button" class="btn-close" @click="closeDeleteModal"></button>
+        </div>
+
+        <!-- Icon & Title -->
+        <div class="text-center mb-3">
+            <div class="account-delete-modal-icon mb-3">
+                <i class="bi bi-x-lg"></i>
+            </div>
+            <h4 class="fw-bold mb-2">계정 삭제</h4>
+            <p class="text-secondary mb-0" style="font-size: 0.9rem; line-height: 1.6;">
+                계정을 삭제하면 모든 데이터가 영구적으로 삭제되며 복구할 수 없습니다.<br>
+                신중하게 결정해주세요.
+            </p>
+        </div>
+
+        <!-- Warning Box -->
+        <div class="account-delete-warning mb-4">
+            <p class="fw-bold mb-2" style="font-size: 0.95rem;">주의사항</p>
+            <ul class="mb-0 ps-3" style="font-size: 0.85rem; line-height: 1.8;">
+                <li>탈퇴 시 계정 정보, 상품 구매 내역, 계정에 묶여 있는 모든 콘텐츠 내역 등 모든 내역이 삭제됩니다.</li>
+                <li>탈퇴 이후에는 환불, 백업 등의 모든 행동이 불가능합니다.</li>
+            </ul>
+            <a href="#" class="small fw-semibold text-decoration-none" style="color: var(--danger-color);" @click.prevent>탈퇴하시겠습니까?</a>
+        </div>
+
+        <!-- Agree Checkbox -->
+        <div class="mb-1">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="deleteAgreeCheck" v-model="deleteModal.agreed">
+                <label class="form-check-label fw-medium" for="deleteAgreeCheck">위 내용에 동의합니다</label>
+            </div>
+            <small v-if="deleteModal.errors.agreed" class="text-danger" style="font-size: 0.75rem; margin-left: 1.5rem;">{{ deleteModal.errors.agreed }}</small>
+        </div>
+
+        <!-- Password Input -->
+        <div class="mb-4 mt-3">
+            <input type="password" class="form-control" :class="{ 'is-invalid': deleteModal.errors.password }"
+                   v-model="deleteModal.password" placeholder="현재 비밀번호를 입력해 주세요">
+            <small v-if="deleteModal.errors.password" class="text-danger" style="font-size: 0.75rem;">{{ deleteModal.errors.password }}</small>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex gap-3">
+            <button type="button" class="btn btn-outline-dark flex-fill py-2 fw-semibold" @click="closeDeleteModal">취소</button>
+            <button type="button" class="btn btn-dark flex-fill py-2 fw-semibold" @click="confirmDeleteAccount">탈퇴하기</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            <div class="checkout-card text-center">
+                <!-- Check Icon -->
+                <div class="welcome-check-icon mx-auto mb-4">
+                    <i class="bi bi-check-lg"></i>
+                </div>
+
+                <!-- Title -->
+                <h2 class="fw-bold mb-3">결제가 완료되었습니다!</h2>
+                <p class="text-secondary mb-1">크리에이터 LMS {{ planName }} 플랜 구독이 시작되었습니다.</p>
+                <p class="text-secondary mb-4">지금 바로 강력한 AI 기능을 활용하여 학습 플랫폼을 운영해보세요.</p>
+
+                <!-- Payment Info -->
+                <div class="payment-complete-info mx-auto mb-4">
+                    <h6 class="fw-bold text-start mb-3">결제 정보</h6>
+                    <table class="table table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <td class="text-secondary ps-0">주문 번호</td>
+                                <td class="text-end pe-0">{{ orderNumber }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">구독 플랜</td>
+                                <td class="text-end pe-0">{{ planFullName }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">구독 유형</td>
+                                <td class="text-end pe-0">{{ billingCycle === 'annual' ? '연간' : '월간' }} 자동결제</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">결제 금액</td>
+                                <td class="text-end pe-0">{{ formatPrice(totalAmount) }}원 (VAT 포함)</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">결제 수단</td>
+                                <td class="text-end pe-0">{{ cardInfo }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">구독 기간</td>
+                                <td class="text-end pe-0">{{ subscriptionStart }} - {{ subscriptionEnd }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">다음 결제일</td>
+                                <td class="text-end pe-0">{{ nextPaymentDate }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-secondary ps-0">결제 상태</td>
+                                <td class="text-end pe-0"><span class="text-success fw-semibold"><i class="bi bi-check-circle me-1"></i>결제 성공</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-secondary small mb-4">결제 정보 및 영수증은 '계정 > 결제내역'에서 확인하실 수 있습니다.</p>
+
+                <!-- Action Buttons -->
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                    <button class="btn welcome-outline-btn flex-fill" @click="navigateTo('/home')">
+                        <i class="bi bi-info-circle me-2 text-secondary"></i>
+                        홈으로 이동
+                    </button>
+                    <button class="btn welcome-primary-btn flex-fill" v-if="isNewUser" @click="goToWelcome">
+                        <i class="bi bi-info-circle me-2"></i>
+                        다음
+                    </button>
+                    <button class="btn welcome-primary-btn flex-fill" v-else @click="navigateTo('/home')">
+                        <i class="bi bi-info-circle me-2"></i>
+                        홈으로 이동
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

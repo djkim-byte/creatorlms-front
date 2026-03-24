@@ -1,0 +1,126 @@
+<div class="container py-5" style="max-width: 1140px;">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2" style="font-size: 1.75rem;">결제 내역</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.95rem;">내가 결제한 모든 내역을 확인하실 수 있습니다.</p>
+    </div>
+
+    <!-- 결제 요약 -->
+    <div class="payment-summary-card mb-5">
+        <h4 class="fw-bold mb-4" style="font-size: 1.25rem;">결제 요약</h4>
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="payment-summary-item text-center">
+                    <span class="d-block text-secondary mb-2" style="font-size: 0.85rem;">이번달 결제</span>
+                    <span class="fw-bold" style="font-size: 1.5rem; color: var(--primary-color);">{{ formatPrice(summary.monthlyAmount) }}</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="payment-summary-item text-center">
+                    <span class="d-block text-secondary mb-2" style="font-size: 0.85rem;">총 결제 금액</span>
+                    <span class="fw-bold" style="font-size: 1.5rem; color: var(--primary-color);">{{ formatPrice(summary.totalAmount) }}</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="payment-summary-item text-center">
+                    <span class="d-block text-secondary mb-2" style="font-size: 0.85rem;">결제 횟수</span>
+                    <span class="fw-bold" style="font-size: 1.5rem; color: var(--primary-color);">{{ summary.totalCount }}회</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="payment-summary-item text-center">
+                    <span class="d-block text-secondary mb-2" style="font-size: 0.85rem;">다음 결제일</span>
+                    <span class="fw-bold" style="font-size: 1.5rem; color: var(--primary-color);">{{ summary.nextPaymentDate }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 결제 내역 -->
+    <h4 class="fw-bold mb-4" style="font-size: 1.25rem;">결제 내역</h4>
+
+    <!-- 필터 -->
+    <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <select class="form-select payment-filter-select" v-model="filters.period">
+                <option value="">전체</option>
+                <option value="1m">최근 1개월</option>
+                <option value="3m">최근 3개월</option>
+                <option value="6m">최근 6개월</option>
+                <option value="1y">최근 1년</option>
+            </select>
+            <select class="form-select payment-filter-select" v-model="filters.status">
+                <option value="">전체</option>
+                <option value="completed">결제완료</option>
+                <option value="cancelled">결제취소</option>
+            </select>
+            <select class="form-select payment-filter-select" v-model="filters.method">
+                <option value="">전체</option>
+                <option value="credit">신용카드</option>
+                <option value="debit">체크카드</option>
+            </select>
+            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" @click="resetFilters">
+                <i class="bi bi-arrow-clockwise"></i> Reset
+            </button>
+        </div>
+        <div class="ms-md-auto">
+            <div class="input-group payment-search-input">
+                <input type="text" class="form-control" placeholder="상품명 검색" v-model="searchQuery">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 테이블 -->
+    <div class="payment-table-wrap">
+        <table class="table payment-table">
+            <thead>
+                <tr>
+                    <th>결제일</th>
+                    <th>상품명</th>
+                    <th>사이트명</th>
+                    <th>결제방법</th>
+                    <th>결제금액</th>
+                    <th>상태</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in filteredPayments" :key="item.id">
+                    <td>{{ item.date }}</td>
+                    <td>
+                        <span class="d-block fw-medium">{{ item.productName }}</span>
+                        <span class="text-secondary" style="font-size: 0.8rem;">({{ item.billingType }})</span>
+                    </td>
+                    <td>{{ item.siteName }}</td>
+                    <td>{{ item.method }}</td>
+                    <td>
+                        <span class="fw-medium">{{ formatPrice(item.amount) }}</span>
+                        <span class="text-secondary" style="font-size: 0.75rem;">(VAT포함)</span>
+                    </td>
+                    <td>
+                        <span v-if="item.status === 'completed'" class="badge payment-badge-completed">결제완료</span>
+                        <span v-else-if="item.status === 'cancelled'" class="payment-cancelled-info">
+                            <span class="badge payment-badge-cancelled">결제취소</span>
+                            <span class="d-block text-secondary mt-1" style="font-size: 0.7rem;">{{ item.cancelledAt }}</span>
+                        </span>
+                    </td>
+                    <td>
+                        <a v-if="item.status === 'completed'" href="#" class="payment-receipt-link" @click.prevent="viewReceipt(item)">
+                            <i class="bi bi-file-earmark-text me-1"></i>영수증
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 더보기 -->
+    <div v-if="hasMore" class="text-center mt-3">
+        <button class="btn btn-outline-secondary w-100 py-2" @click="loadMore">
+            더보기 <i class="bi bi-chevron-down"></i>
+        </button>
+    </div>
+</div>

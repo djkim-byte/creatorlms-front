@@ -1,0 +1,42 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+    <div class="container py-5" style="max-width: 1140px;">
+                <div class="inquiry-card text-center">
+                    <div class="py-4">
+                        <!-- 체크 아이콘 -->
+                        <div class="inquiry-success-icon mb-4">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                                <circle cx="40" cy="40" r="38" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+                                <path d="M24 40 L35 51 L56 30" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </svg>
+                        </div>
+
+                        <h3 class="fw-bold mb-3">문의가 정상적으로 접수되었습니다</h3>
+                        <p class="text-secondary mb-4">빠르게 문의 내용 확인 후 답변드리겠습니다!</p>
+
+                        <hr class="mx-auto mb-4" style="max-width: 400px;">
+
+                        <!-- 문의 내용 요약 -->
+                        <div class="inquiry-summary mx-auto">
+                            <h6 class="fw-bold text-start mb-3">문의 내용</h6>
+                            <hr>
+                            <div class="d-flex gap-4 mb-2 text-start">
+                                <span class="text-secondary" style="min-width: 80px;">문의유형</span>
+                                <span>{{ typeName }}</span>
+                            </div>
+                            <div class="text-start mt-3">
+                                <p class="fw-semibold mb-2">{{ inquiryTitle }}</p>
+                                <p class="text-secondary small mb-0" style="white-space: pre-wrap;">{{ content }}</p>
+                            </div>
+                        </div>
+
+                        <p class="text-secondary small mt-4 mb-3">답변은 마이페이지(이메일) > <a href="#/inquiryhistory/inquiry-history" class="fw-bold text-danger text-decoration-none">문의내역</a>에서 확인하실 수 있습니다.</p>
+
+                        <button class="btn signup-submit-btn" style="max-width: 480px; width: 100%;"
+                                @click="navigateTo('/home')">
+                            <i class="bi bi-info-circle me-2"></i>
+                            홈으로 바로가기
+                        </button>
+                    </div>
+                </div>
+    </div>
+</div>

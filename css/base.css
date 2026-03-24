@@ -1,0 +1,3105 @@
+/* ==================== CSS 변수 ==================== */
+:root {
+    /* 주요 색상 */
+    --primary-color: #6366f1;
+    --danger-color: #ef4444;
+
+    /* 회색 음영 */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-900: #111827;
+
+    /* 레이아웃 */
+    --header-height: 64px;
+
+    /* 그림자 */
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* ==================== 전역 스타일 ==================== */
+* {
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-200) transparent;
+}
+
+body {
+    margin: 0;
+    font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+}
+
+/* ==================== 유틸리티 ==================== */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* ==================== 랜딩 레이아웃 ==================== */
+.landing-layout {
+    background: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-layout > main {
+    flex: 1;
+}
+
+/* GNB */
+.landing-gnb {
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    background: white;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0.75rem 0;
+    transition: box-shadow 0.3s;
+}
+
+.landing-gnb.gnb-scrolled {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 로고 애니메이션 */
+.logo-animated {
+    position: relative;
+    height: 40px;
+    min-width: 130px;
+}
+
+.logo-animated-sm {
+    height: 34px;
+    min-width: 110px;
+}
+
+.logo-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo-frame-first {
+    animation: logoFadeFirst 6s ease-in-out infinite;
+}
+
+.logo-frame-second {
+    animation: logoFadeSecond 6s ease-in-out infinite;
+}
+
+@keyframes logoFadeFirst {
+    0%, 30% { opacity: 1; }
+    40%, 80% { opacity: 0; }
+    90%, 100% { opacity: 1; }
+}
+
+@keyframes logoFadeSecond {
+    0%, 30% { opacity: 0; }
+    40%, 80% { opacity: 1; }
+    90%, 100% { opacity: 0; }
+}
+
+.logo-kr-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #7c3aed;
+    line-height: 1;
+}
+
+.logo-kr-sub {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    font-size: 0.55rem;
+    color: var(--gray-400);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+}
+
+.logo-animated-sm .logo-kr-title {
+    font-size: 1.25rem;
+}
+
+.logo-animated-sm .logo-kr-sub {
+    font-size: 0.5rem;
+}
+
+.logo-en-img {
+    height: 40px;
+    width: auto;
+}
+
+.logo-animated-sm .logo-en-img {
+    height: 34px;
+}
+
+/* Bootstrap 모달이 GNB(z-index: 1100) 위에 표시되도록 오버라이드 */
+.modal-backdrop {
+    z-index: 1150;
+}
+.modal {
+    z-index: 1200;
+}
+
+.gnb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 0.938rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: color 0.2s, background-color 0.2s;
+    white-space: nowrap;
+}
+
+.landing-gnb .ms-auto .gnb-link,
+.landing-gnb .ms-lg-0 .gnb-link {
+    font-size: 0.8125rem;
+    padding: 0.375rem 0.75rem;
+}
+
+.landing-gnb .ms-auto .gnb-link i.bi,
+.landing-gnb .ms-lg-0 .gnb-link i.bi {
+    font-size: 0.875rem;
+}
+
+.gnb-link:hover {
+    color: var(--gray-900);
+    background: var(--gray-50);
+}
+
+.gnb-link.gnb-link-outlined {
+    border: 1px solid var(--gray-300);
+    border-radius: 50rem;
+    background: #fff;
+    padding: 0.3rem 0.75rem;
+}
+
+.gnb-link.gnb-link-outlined:hover {
+    border-color: var(--gray-500);
+    background: var(--gray-50);
+}
+
+.gnb-link.gnb-link-cta {
+    border: 1px solid var(--primary-color);
+    border-radius: 50rem;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.3rem 0.75rem;
+}
+
+.gnb-link.gnb-link-cta:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #fff;
+}
+
+.gnb-link.dropdown-toggle::after {
+    font-size: 0.7rem;
+}
+
+.gnb-user-avatar {
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+/* GNB Dropdown Panel */
+.gnb-dropdown-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid var(--gray-200);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    z-index: 1099;
+}
+
+@media (min-width: 992px) {
+    .gnb-dropdown-panel {
+        display: block;
+    }
+}
+
+.gnb-dropdown-inner {
+    display: flex;
+    max-width: 600px;
+}
+
+.gnb-dropdown-col {
+    padding: 1.5rem 2rem;
+    min-width: 160px;
+}
+
+.gnb-dropdown-col:first-child {
+    padding-left: 0;
+}
+
+.gnb-dropdown-col + .gnb-dropdown-col {
+    border-left: 1px solid var(--gray-200);
+}
+
+.gnb-dropdown-heading {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.gnb-dropdown-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.gnb-dropdown-links a {
+    color: var(--gray-600);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    transition: color 0.2s;
+    padding: 0.375rem 0;
+    display: block;
+}
+
+.gnb-dropdown-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Mobile nav */
+.landing-mobile-nav {
+    background: white;
+    border-top: 1px solid var(--gray-200);
+}
+
+.gnb-mobile-link {
+    display: block;
+    padding: 0.75rem 0;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.938rem;
+}
+
+.gnb-mobile-link:hover {
+    color: var(--primary-color);
+}
+
+/* ==================== 텍스트 하이라이트 ==================== */
+.text-highlight {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.text-highlight-underline {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
+}
+
+/* ==================== 히어로 섹션 ==================== */
+.hero-banner {
+    background: #3a3a4a;
+    border-radius: 1.25rem;
+    overflow: hidden;
+}
+
+.hero-content-col {
+    padding: 3.5rem 2.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content-inner {
+    max-width: 420px;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 0.4rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-title {
+    font-size: 2rem;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: white;
+}
+
+.text-highlight-hero {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.8;
+}
+
+.hero-cta {
+    border-width: 2px;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.hero-cta:hover {
+    background: white;
+    color: var(--gray-900);
+    border-color: white;
+}
+
+.hero-image-col {
+    position: relative;
+    min-height: 360px;
+}
+
+.hero-image-wrapper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ==================== Solutions 섹션 ==================== */
+.solution-card {
+    background: white;
+    border-radius: 1.25rem;
+    padding: 2.25rem 1.75rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--gray-100);
+}
+
+.solution-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.15);
+}
+
+.solution-icon-wrap {
+    width: 3.75rem;
+    height: 3.75rem;
+}
+
+.solution-icon-circle {
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.solution-answer {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.solution-divider {
+    width: 2rem;
+    height: 2px;
+    background: var(--gray-200);
+    border-radius: 1px;
+}
+
+.solution-desc {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    line-height: 1.7;
+}
+
+/* ==================== Insight 섹션 ==================== */
+.insight-section {
+    background: var(--gray-100);
+    position: relative;
+    overflow: hidden;
+}
+
+.insight-deco-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.insight-deco-1 {
+    width: 300px;
+    height: 300px;
+    top: -80px;
+    left: -60px;
+}
+
+.insight-deco-2 {
+    width: 200px;
+    height: 200px;
+    top: -40px;
+    right: -40px;
+}
+
+/* ==================== 비교 테이블 (홈) ==================== */
+.comparison-table-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.comparison-table thead th {
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    border: none;
+}
+
+.comparison-header-solsol {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.comparison-header-comp {
+    background: var(--gray-400);
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.comparison-feature-col {
+    text-align: left;
+    padding: 0.875rem 1.5rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    font-size: 0.9rem;
+}
+
+.comparison-table tbody td {
+    padding: 0.875rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+}
+
+.comparison-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==================== 기능 이미지 카드 ==================== */
+.feature-image-card {
+    transition: transform 0.3s;
+}
+
+.feature-image-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-image-box {
+    width: 100%;
+    height: 220px;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+
+.feature-image-card:hover .feature-image-img {
+    transform: scale(1.05);
+}
+
+/* ==================== 프로토타입 카드 ==================== */
+.proto-mode-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.proto-mode-student {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+}
+
+.proto-mode-admin {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.proto-card {
+    background: white;
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--gray-100);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.proto-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+}
+
+.proto-icon-circle {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.proto-number {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--gray-200);
+    line-height: 1;
+}
+
+.proto-desc {
+    font-size: 0.8rem;
+    color: var(--gray-500);
+    line-height: 1.6;
+}
+
+/* ==================== CTA 카드 버튼 ==================== */
+.cta-card-btn {
+    display: flex;
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    text-decoration: none;
+    color: var(--gray-900);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cta-card-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    color: var(--gray-900);
+}
+
+/* ==================== 기능 섹션 (레거시) ==================== */
+.feature-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--gray-200);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================== 단계 섹션 ==================== */
+.step-number {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* ==================== CTA 섹션 ==================== */
+.cta-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-bg-image {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    transform: scale(1.05);
+}
+
+.cta-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.85) 0%, rgba(139, 92, 246, 0.88) 100%);
+}
+
+/* ==================== 푸터 ==================== */
+.landing-footer {
+    background: #1a1a2e;
+    color: var(--gray-400);
+}
+
+.footer-brand-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.footer-desc {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    line-height: 1.7;
+}
+
+.footer-heading {
+    color: white;
+    font-weight: 600;
+    font-size: 0.938rem;
+    margin-bottom: 1rem;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.footer-links a {
+    color: var(--gray-400);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-social {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--gray-400);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 1rem;
+}
+
+.footer-social:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* ==================== 랜딩 반응형 ==================== */
+@media (max-width: 992px) {
+    .hero-content-col {
+        padding: 2.5rem 2rem;
+    }
+
+    .hero-image-col {
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-banner {
+        border-radius: 1rem;
+    }
+
+    .hero-content-col {
+        padding: 2rem 1.5rem;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .hero-image-col {
+        min-height: 220px;
+    }
+
+    .feature-image-box {
+        height: 160px;
+    }
+
+    .comparison-table thead th {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .comparison-feature-col {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .comparison-table tbody td {
+        padding: 0.75rem;
+    }
+
+    .proto-card {
+        padding: 1rem;
+    }
+
+    .cta-card-btn {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .creator-card {
+        width: 150px;
+        height: 200px;
+    }
+}
+
+/* ==================== 회원가입 페이지 ==================== */
+.signup-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    height: 100%;
+}
+
+/* Plan Tabs */
+.plan-tab {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 2rem;
+    background: white;
+    color: var(--gray-700);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.plan-tab:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.plan-tab.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.plan-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    line-height: 1;
+}
+
+/* Verification Code Inputs */
+.code-input {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+/* Agreement Box */
+.agreement-box {
+    border: 1px solid var(--gray-300);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+}
+
+.agreement-box .form-check-input {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+}
+
+.agreement-error {
+    border-color: #dc3545;
+}
+
+.agreement-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    flex-shrink: 0;
+}
+
+.agreement-badge.required {
+    background: #e8eaf6;
+    color: #3949ab;
+}
+
+.agreement-badge.optional {
+    background: var(--gray-100);
+    color: var(--gray-500);
+}
+
+/* Submit Button */
+.signup-submit-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 0.875rem;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.signup-submit-btn:hover:not(:disabled) {
+    background: #0f172a;
+    color: white;
+}
+
+.signup-submit-btn:disabled {
+    background: var(--gray-400);
+    color: white;
+}
+
+/* Verification Modal */
+.signup-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.signup-modal {
+    background: white;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.signup-modal-icon {
+    font-size: 3rem;
+    color: var(--gray-500);
+}
+
+/* ==================== Legal Pages & Modals ==================== */
+.legal-page {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.legal-text {
+    font-size: 0.875rem;
+    color: var(--gray-700);
+    line-height: 1.8;
+}
+
+.legal-section {
+    margin-bottom: 1.5rem;
+}
+
+.legal-section h6 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--gray-900);
+}
+
+.legal-content {
+    white-space: pre-line;
+    word-break: keep-all;
+}
+
+.legal-table-wrap .table {
+    font-size: 0.8rem;
+}
+
+.legal-table-wrap .table th {
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+/* ==================== 로그인 페이지 ==================== */
+
+.login-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.login-avatar {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    background: var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--gray-400);
+}
+
+.login-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 1.125rem;
+}
+
+.login-submit-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 0.875rem;
+    border-radius: 0.625rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.login-submit-btn:hover:not(:disabled) {
+    background: #0f172a;
+    color: white;
+}
+
+.login-submit-btn:disabled {
+    background: var(--gray-400);
+    color: white;
+}
+
+.login-signup-btn {
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.625rem;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: border-color 0.2s;
+}
+
+.login-signup-btn:hover {
+    border-color: var(--primary-color);
+}
+
+/* ==================== Auth 반응형 ==================== */
+@media (max-width: 768px) {
+    .login-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .login-avatar {
+        width: 5rem;
+        height: 5rem;
+        font-size: 2rem;
+    }
+
+    .signup-card {
+        padding: 1.5rem;
+    }
+
+    .plan-tab {
+        padding: 0.375rem 0.875rem;
+        font-size: 0.8rem;
+    }
+
+    .code-input {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* ==================== 가격 페이지 ==================== */
+
+/* 히어로 */
+.pricing-hero {
+    background: linear-gradient(135deg, #a78bfa 0%, #818cf8 50%, var(--primary-color) 100%);
+    color: white;
+    padding-top: calc(var(--header-height) + 2rem);
+}
+
+/* 월간/연간 토글 */
+.pricing-toggle-btn {
+    padding: 0.625rem 1.5rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 2rem;
+    background: white;
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pricing-toggle-btn:hover {
+    border-color: var(--gray-500);
+    color: var(--gray-900);
+}
+
+.pricing-toggle-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.pricing-toggle-btn.disabled,
+.pricing-toggle-btn:disabled {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+    color: var(--gray-400);
+    cursor: not-allowed;
+}
+
+.pricing-toggle-btn.disabled:hover,
+.pricing-toggle-btn:disabled:hover {
+    border-color: var(--gray-200);
+    color: var(--gray-400);
+}
+
+.pricing-discount-badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 플랜 카드 */
+.pricing-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-card-recommended {
+    border: 2px solid var(--primary-color);
+}
+
+.pricing-badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 1rem;
+    border-radius: 1rem;
+    white-space: nowrap;
+}
+
+.pricing-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    line-height: 1;
+}
+
+.pricing-feature-list li {
+    padding: 0.375rem 0;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.pricing-feature-list li:last-child {
+    border-bottom: none;
+}
+
+/* CTA 버튼 */
+.pricing-cta-outline {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+    font-weight: 600;
+    padding: 0.625rem 1rem;
+}
+
+.pricing-cta-outline:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.pricing-cta-solid {
+    background: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+    font-weight: 600;
+    padding: 0.625rem 1rem;
+}
+
+.pricing-cta-solid:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: white;
+}
+
+/* 체크/X 아이콘 */
+.pricing-check {
+    color: #10b981;
+    font-size: 1rem;
+}
+
+.pricing-cross {
+    color: var(--gray-300);
+    font-size: 0.875rem;
+}
+
+/* Enterprise 배너 */
+.pricing-enterprise {
+    background: linear-gradient(135deg, #4338ca 0%, var(--primary-color) 50%, #818cf8 100%);
+    border-radius: 1rem;
+    padding: 3rem;
+}
+
+.pricing-enterprise-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+}
+
+/* 비교 테이블 */
+.pricing-comparison-table {
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.pricing-table-header th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+    font-size: 0.95rem;
+}
+
+.pricing-table-header th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.pricing-table-header th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.pricing-category-row td {
+    background: var(--gray-50);
+    font-weight: 600;
+    color: var(--gray-900);
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.pricing-comparison-table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 0.9rem;
+    color: var(--gray-700);
+}
+
+.pricing-comparison-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==================== 가격 반응형 ==================== */
+@media (max-width: 768px) {
+    .pricing-hero {
+        padding-top: calc(var(--header-height) + 1rem);
+    }
+
+    .pricing-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .pricing-price {
+        font-size: 2rem;
+    }
+
+    .pricing-card {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .pricing-enterprise {
+        padding: 2rem 1.5rem;
+    }
+
+    .pricing-toggle-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .pricing-discount-badge {
+        font-size: 0.75rem;
+    }
+
+    /* 비교 테이블 첫 번째 열 고정 */
+    .pricing-comparison-table td:first-child,
+    .pricing-comparison-table th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+    }
+
+    .pricing-comparison-table th:first-child {
+        background: var(--primary-color);
+    }
+
+    .pricing-comparison-table td:first-child {
+        background: white;
+    }
+
+    .pricing-category-row td:first-child {
+        background: var(--gray-50);
+    }
+
+    .pricing-comparison-table th,
+    .pricing-comparison-table td {
+        min-width: 120px;
+    }
+
+    .pricing-comparison-table th:first-child,
+    .pricing-comparison-table td:first-child {
+        min-width: 140px;
+    }
+}
+
+/* ==================== 환영 페이지 ==================== */
+.welcome-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+}
+
+.welcome-check-icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.welcome-info-box {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1.25rem 2rem;
+    max-width: 360px;
+}
+
+.welcome-plan-badge {
+    background: var(--gray-200);
+    color: var(--gray-700);
+    font-size: 0.8rem;
+    padding: 0.35rem 1rem;
+}
+
+.welcome-step-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    padding: 1.5rem 1rem;
+    height: 100%;
+}
+
+.welcome-step-number {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.welcome-primary-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 0.625rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.welcome-primary-btn:hover {
+    background: #0f172a;
+    color: white;
+}
+
+.welcome-outline-btn {
+    background: white;
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+    padding: 0.75rem 2rem;
+    border-radius: 0.625rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+}
+
+.welcome-outline-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* ==================== 업그레이드 결제 결과 ==================== */
+.upgrade-fail-icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.upgrade-fail-reason {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    text-align: center;
+    max-width: 480px;
+}
+
+/* ==================== 즉시 결제 페이지 ==================== */
+.pay-now-section {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 0 -0.5rem;
+}
+
+/* ==================== 사용 연장 페이지 ==================== */
+.extend-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.75rem;
+    background: #16a34a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.extend-info-box {
+    background: var(--gray-100);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* ==================== 구독 취소 페이지 ==================== */
+.cancel-info-box {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    padding: 1.5rem 1.75rem;
+    max-width: 420px;
+    font-size: 0.9rem;
+}
+
+.cancel-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+}
+
+.cancel-modal {
+    background: white;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem 2rem;
+    max-width: 420px;
+    width: 90%;
+    position: relative;
+}
+
+.cancel-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.cancel-modal-close:hover {
+    color: var(--gray-900);
+}
+
+/* ==================== 결제 페이지 ==================== */
+.checkout-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    height: 100%;
+}
+
+.checkout-subscription-info {
+    display: flex;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.checkout-subscription-item {
+    flex: 1;
+    padding: 0.875rem 1rem;
+}
+
+.checkout-subscription-item + .checkout-subscription-item {
+    border-left: 1px solid var(--gray-200);
+}
+
+.checkout-price {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.checkout-price-unit {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-600);
+    margin-left: 0.25rem;
+    vertical-align: baseline;
+}
+
+.checkout-card-box {
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+}
+
+.checkout-notice-box {
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* ==================== 결제 완료 페이지 ==================== */
+.payment-complete-info {
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    max-width: 480px;
+}
+
+.payment-complete-info .table td {
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.payment-complete-info .table tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==================== 환영/결제 반응형 ==================== */
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .welcome-check-icon {
+        width: 4rem;
+        height: 4rem;
+        font-size: 2rem;
+    }
+
+    .checkout-card {
+        padding: 1.5rem;
+    }
+
+    .checkout-subscription-info {
+        flex-direction: column;
+    }
+
+    .checkout-subscription-item + .checkout-subscription-item {
+        border-left: none;
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .checkout-price {
+        font-size: 2.5rem;
+    }
+
+    .checkout-price-unit {
+        font-size: 1.125rem;
+    }
+
+}
+
+/* ==================== 에러/점검 페이지 ==================== */
+.error-page {
+    background: var(--gray-50);
+    padding: 2.5rem 0 3rem;
+}
+
+.error-page-content {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.error-page-illustration {
+    width: 100%;
+    max-width: 300px;
+    background: #ede9fe;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd6fe;
+    padding: 2rem 1.5rem;
+    margin: 0 auto;
+}
+
+.error-page-illustration svg {
+    width: 100%;
+    height: auto;
+}
+
+.error-page-title {
+    font-size: 1.625rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.01em;
+}
+
+.error-page-title-lg {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.error-page-subtitle {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    margin-bottom: 1.5rem;
+}
+
+.error-page-desc {
+    font-size: 0.9375rem;
+    color: var(--gray-500);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+}
+
+.error-page-btn {
+    display: inline-block;
+    background: #312e81;
+    color: white;
+    border: none;
+    border-radius: 50rem;
+    padding: 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    width: 100%;
+    max-width: 260px;
+}
+
+.error-page-btn:hover {
+    background: #272463;
+    color: white;
+}
+
+.error-page-schedule {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .error-page {
+        padding: 2rem 0;
+    }
+
+    .error-page-illustration {
+        max-width: 260px;
+    }
+
+    .error-page-title {
+        font-size: 1.25rem;
+    }
+
+    .error-page-title-lg {
+        font-size: 1.5rem;
+    }
+
+    .error-page-btn {
+        min-width: 180px;
+        padding: 0.75rem 3rem;
+    }
+}
+
+/* ==================== 내 사이트 관리 ==================== */
+
+/* 빈 상태 카드 */
+.mysite-empty-card {
+    background: var(--gray-100);
+    border-radius: 1rem;
+    padding: 3.5rem 2rem 3rem;
+}
+
+/* CTA 배너 (보라색 그라데이션) */
+.mysite-cta-banner {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #818cf8 100%);
+    border-radius: 1rem;
+    padding: 3.5rem 2rem;
+}
+
+.mysite-cta-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    border-radius: 0.625rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.mysite-cta-btn:hover {
+    background: #0f172a;
+    color: white;
+}
+
+.mysite-cta-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 1;
+}
+
+/* 상단 배너 (사이트 만들기) */
+.mysite-top-banner {
+    background: var(--gray-100);
+    border-radius: 1rem;
+    padding: 1.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.mysite-top-banner-badge {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    text-align: center;
+    min-width: 64px;
+    line-height: 1.35;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mysite-top-banner-badge-free {
+    background: #d4a017;
+}
+
+.mysite-top-banner-text {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gray-900);
+    margin: 0;
+    flex-grow: 1;
+}
+
+.mysite-top-banner-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 1rem 2.25rem;
+    border-radius: 0.625rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.mysite-top-banner-btn:hover {
+    background: #0f172a;
+    color: white;
+}
+
+/* ---- 사이트 카드 ---- */
+.mysite-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+}
+
+.mysite-card-empty {
+    background: var(--gray-100);
+}
+
+.mysite-card-empty .mysite-card-inner {
+    min-height: 130px;
+}
+
+.mysite-card-warning {
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    text-align: right;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.mysite-card-body {
+    padding: 1.5rem 1.75rem;
+}
+
+.mysite-card-inner {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+}
+
+/* 플랜 배지 */
+.mysite-card-plan {
+    flex-shrink: 0;
+    display: flex;
+    align-self: stretch;
+}
+
+.mysite-badge {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    text-align: center;
+    width: 115px;
+    line-height: 1.3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mysite-badge-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.mysite-badge-cycle {
+    font-size: 0.65rem;
+    opacity: 0.85;
+    margin-top: 3px;
+}
+
+.mysite-badge-free {
+    background: var(--gray-500);
+}
+
+/* 중앙 콘텐츠 영역 */
+.mysite-card-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mysite-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+    cursor: pointer;
+}
+
+.mysite-card-header:hover .mysite-card-name strong {
+    color: var(--primary-color);
+}
+
+/* 사이트명 영역 */
+.mysite-card-name {
+    min-width: 0;
+}
+
+.mysite-card-name strong {
+    font-size: 1.15rem;
+}
+
+.mysite-card-chevron {
+    font-size: 2rem;
+    color: var(--gray-400);
+    font-weight: 700;
+    line-height: 1;
+    margin-left: 0.75rem;
+}
+
+/* 구분선 */
+.mysite-card-divider {
+    height: 1px;
+    background: var(--gray-200);
+    margin: 0.875rem 0;
+}
+
+/* 상세 정보 영역 */
+.mysite-card-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 2.5rem;
+}
+
+/* 컬럼(요금, 결제일 등) */
+.mysite-card-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.mysite-col-label {
+    font-size: 0.72rem;
+    color: var(--gray-400);
+    white-space: nowrap;
+}
+
+.mysite-col-value {
+    font-size: 0.85rem;
+    color: var(--gray-900);
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+/* 우측 액션 영역 (상태 + 더보기) */
+.mysite-card-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    padding-left: 1rem;
+}
+
+.mysite-text-danger {
+    color: #dc2626 !important;
+    font-weight: 700 !important;
+}
+
+/* 상태 배지 */
+.mysite-status {
+    display: inline-block;
+    padding: 0.3rem 0.875rem;
+    border-radius: 0.375rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.4;
+    min-width: 170px;
+}
+
+.mysite-status-green {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.mysite-status-yellow {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.mysite-status-red {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.mysite-status-teal {
+    background: #ccfbf1;
+    color: #0d9488;
+}
+
+.mysite-status-gray {
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
+
+/* 더보기 버튼 */
+.mysite-card-more {
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* 드롭다운 메뉴 레이어 */
+.mysite-menu-layer {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 0.375rem;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+    min-width: 160px;
+    padding: 0.375rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.mysite-menu-item {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.825rem;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.mysite-menu-item-outline {
+    background: white;
+    color: var(--gray-900);
+}
+
+.mysite-menu-item-outline:hover {
+    background: var(--gray-100);
+}
+
+.mysite-menu-item-danger {
+    background: white;
+    color: #dc2626;
+}
+
+.mysite-menu-item-danger:hover {
+    background: #fef2f2;
+}
+
+.mysite-menu-item-dark {
+    background: white;
+    color: var(--primary-color);
+}
+
+.mysite-menu-item-dark:hover {
+    background: #eef2ff;
+}
+
+/* ==================== 사이트 만들기 페이지 ==================== */
+.mysite-create-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    max-width: 600px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.mysite-domain-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.mysite-domain-check-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.mysite-domain-check-btn:hover:not(:disabled) {
+    background: #0f172a;
+    color: white;
+}
+
+.mysite-domain-check-btn:disabled {
+    background: var(--gray-400);
+    color: white;
+}
+
+.mysite-submit-btn {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 0.875rem 3rem;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.mysite-submit-btn:hover:not(:disabled) {
+    background: #0f172a;
+    color: white;
+}
+
+.mysite-submit-btn:disabled {
+    background: var(--gray-400);
+    color: white;
+}
+
+
+/* ==================== 내 사이트 관리 반응형 ==================== */
+@media (max-width: 1024px) {
+    .mysite-card-details {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mysite-empty-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .mysite-cta-banner {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .mysite-top-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.5rem;
+    }
+
+    .mysite-card-body {
+        padding: 1.25rem;
+    }
+
+    .mysite-card-inner {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .mysite-card-plan {
+        align-self: flex-start;
+    }
+
+    .mysite-card-actions {
+        margin-left: 0;
+        padding-left: 0;
+        justify-content: space-between;
+    }
+
+    .mysite-card-details {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .mysite-create-card {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* ==================== 플랜 업그레이드 페이지 ==================== */
+.upgrade-plan-btn {
+    position: relative;
+    flex: 1 1 0;
+    padding: 0.5rem 0.25rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.5rem;
+    background: white;
+    color: var(--gray-700);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 0;
+    text-align: center;
+}
+
+.upgrade-plan-btn:hover:not(.disabled):not(.active) {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.upgrade-plan-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.upgrade-plan-btn.disabled {
+    background: var(--gray-100);
+    border-color: var(--gray-200);
+    color: var(--gray-400);
+    cursor: not-allowed;
+}
+
+.upgrade-plan-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 2rem;
+    white-space: nowrap;
+}
+
+.upgrade-plan-btn.active .upgrade-plan-badge {
+    background: white;
+    color: var(--primary-color);
+}
+
+.upgrade-selection-area {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 0 -0.5rem;
+}
+
+.upgrade-price-summary {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.upgrade-benefits {
+    border: 1.5px solid #a7f3d0;
+    background: #f0fdf4;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+}
+
+.upgrade-benefit-card {
+    background: white;
+    border-radius: 0.625rem;
+    padding: 1rem;
+}
+
+.upgrade-benefit-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .upgrade-plan-btn {
+        padding: 0.4rem 0.125rem;
+        min-width: 0;
+        font-size: 0.75rem;
+    }
+}
+
+/* ==================== 문의하기 ==================== */
+.inquiry-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2.5rem;
+}
+
+.inquiry-subtype-box {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+}
+
+.inquiry-guide-box {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--primary-color);
+}
+
+.inquiry-editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-bottom: none;
+    border-radius: 0.375rem 0.375rem 0 0;
+    background: white;
+    flex-wrap: wrap;
+}
+
+.inquiry-toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 0.25rem;
+    color: var(--gray-600);
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0;
+}
+
+.inquiry-toolbar-btn:hover {
+    background: var(--gray-100);
+}
+
+.inquiry-toolbar-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--gray-200);
+    margin: 0 0.25rem;
+}
+
+.inquiry-editor-content {
+    border-radius: 0 0 0.375rem 0.375rem !important;
+    border-top: 1px solid var(--gray-200) !important;
+    resize: vertical;
+    min-height: 280px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.inquiry-success-icon {
+    display: inline-block;
+}
+
+.inquiry-summary {
+    max-width: 520px;
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .inquiry-card {
+        padding: 1.5rem;
+    }
+
+    .inquiry-editor-toolbar {
+        padding: 0.375rem 0.5rem;
+    }
+
+    .inquiry-toolbar-btn {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* ==================== 데모 페이지 ==================== */
+.demo-category-btn {
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 2rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.demo-category-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.demo-category-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.demo-thumbnail {
+    height: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.demo-thumbnail-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.85;
+}
+
+.demo-thumbnail-icon {
+    position: relative;
+    z-index: 1;
+    font-size: 2.75rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.demo-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.625rem;
+    border-radius: 2rem;
+    z-index: 2;
+}
+
+.demo-play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 20, 40, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 2;
+}
+
+.feature-card:hover .demo-play-overlay {
+    opacity: 1;
+}
+
+.demo-play-button {
+    width: 52px;
+    height: 52px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.demo-category-label {
+    display: inline-block;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.625rem;
+    border-radius: 0.25rem;
+}
+
+.demo-feature-tag {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.625rem;
+    border-radius: 0.25rem;
+}
+
+.demo-btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: 1px solid var(--primary-color);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.demo-btn-primary:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: white;
+}
+
+.demo-btn-outline {
+    background: white;
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.demo-btn-outline:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .demo-category-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .demo-thumbnail {
+        height: 160px;
+    }
+}
+
+/* ==================== 결제 내역 페이지 ==================== */
+
+/* 결제 요약 카드 */
+.payment-summary-card {
+    background: var(--gray-100);
+    border-radius: 1rem;
+    padding: 2.5rem;
+}
+
+.payment-summary-item {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem 1rem;
+}
+
+/* 필터 */
+.payment-filter-select {
+    width: auto;
+    min-width: 130px;
+    font-size: 0.875rem;
+    border-color: var(--gray-300);
+}
+
+.payment-search-input {
+    width: 220px;
+}
+
+.payment-search-input .form-control {
+    font-size: 0.875rem;
+}
+
+/* 테이블 */
+.payment-table-wrap {
+    overflow-x: auto;
+}
+
+.payment-table {
+    width: 100%;
+    font-size: 0.9rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.payment-table thead th {
+    background: var(--gray-50);
+    color: var(--gray-500);
+    font-weight: 600;
+    font-size: 0.825rem;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    white-space: nowrap;
+    text-align: center;
+}
+
+.payment-table tbody td {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    vertical-align: middle;
+    text-align: center;
+}
+
+.payment-badge-completed {
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.payment-badge-cancelled {
+    background: var(--gray-500);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.payment-receipt-link {
+    color: var(--gray-900);
+    font-weight: 600;
+    text-decoration: underline;
+    font-size: 0.85rem;
+}
+
+.payment-receipt-link:hover {
+    color: var(--primary-color);
+}
+
+/* 결제 내역 반응형 */
+@media (max-width: 768px) {
+    .payment-summary-card {
+        padding: 1.5rem;
+    }
+
+    .payment-summary-item {
+        padding: 1rem 0.75rem;
+    }
+
+    .payment-summary-item .fw-bold {
+        font-size: 1.1rem !important;
+    }
+
+    .payment-filter-select {
+        min-width: 100px;
+        font-size: 0.8rem;
+    }
+
+    .payment-search-input {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .payment-table {
+        font-size: 0.8rem;
+    }
+
+    .payment-table thead th,
+    .payment-table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+}
+
+/* ==================== 문의 내역 페이지 ==================== */
+
+/* 빈 상태 */
+.inquiry-history-empty {
+    background: white;
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+}
+
+/* 상태 요약 카드 */
+.inquiry-status-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-200);
+}
+
+.inquiry-status-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.inquiry-status-icon-waiting {
+    background: #fef2f2;
+    color: var(--danger-color);
+}
+
+.inquiry-status-icon-progress {
+    background: #f0fdf4;
+    color: #22c55e;
+}
+
+.inquiry-status-icon-completed {
+    background: #eef2ff;
+    color: var(--primary-color);
+}
+
+/* 문의 리스트 */
+.inquiry-history-list {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.inquiry-history-item {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--gray-200);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.inquiry-history-item:last-child {
+    border-bottom: none;
+}
+
+.inquiry-history-item:hover {
+    background: var(--gray-50);
+}
+
+/* 상태 뱃지 */
+.inquiry-badge-waiting {
+    background: var(--danger-color);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.inquiry-badge-progress {
+    background: #22c55e;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+.inquiry-badge-completed {
+    background: var(--gray-500);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.25rem;
+}
+
+/* 상세 페이지 */
+.inquiry-detail-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.inquiry-detail-content {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    min-height: 240px;
+    color: var(--gray-900);
+    font-size: 0.925rem;
+    line-height: 1.8;
+}
+
+/* 댓글 */
+.inquiry-comment-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-500);
+    font-size: 1rem;
+}
+
+.inquiry-comment-avatar-admin {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.inquiry-reply {
+    padding-left: 0;
+}
+
+/* 삭제 메뉴 레이어 */
+.inquiry-menu-layer {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.25rem;
+    min-width: 80px;
+    margin-top: 0.25rem;
+}
+
+.inquiry-menu-edit-btn,
+.inquiry-menu-delete-btn {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: white;
+    border: none;
+    border-radius: 0.375rem;
+    text-align: center;
+}
+
+.inquiry-menu-edit-btn {
+    color: var(--gray-700);
+}
+
+.inquiry-menu-delete-btn {
+    color: #38bdf8;
+}
+
+.inquiry-menu-edit-btn:hover,
+.inquiry-menu-delete-btn:hover {
+    background: var(--gray-50);
+}
+
+.inquiry-menu-delete-btn:disabled {
+    color: var(--gray-300);
+    cursor: not-allowed;
+    background: white;
+}
+
+.inquiry-new-comment {
+    border-top: 1px solid var(--gray-200);
+    padding-top: 1.5rem;
+}
+
+/* 문의 내역 반응형 */
+@media (max-width: 768px) {
+    .inquiry-status-card {
+        padding: 1rem;
+    }
+
+    .inquiry-status-card .fw-bold {
+        font-size: 1.25rem !important;
+    }
+
+    .inquiry-status-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .inquiry-history-item {
+        padding: 1.25rem 1rem;
+    }
+
+    .inquiry-detail-card {
+        padding: 1.25rem;
+    }
+
+    .inquiry-detail-content {
+        padding: 2rem 1rem;
+        min-height: 180px;
+    }
+}
+
+/* ==================== 계정관리 페이지 ==================== */
+
+.account-section {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem 2.5rem;
+}
+
+.account-email-display {
+    background: var(--gray-900);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.875rem 1.25rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.account-name-input {
+    width: 120px;
+    font-weight: 500;
+    font-size: 1.05rem;
+    background: var(--gray-50);
+    border-color: var(--gray-200);
+}
+
+.account-toggle-group {
+    display: inline-flex;
+    width: 200px;
+    background: var(--gray-100);
+    border-radius: 2rem;
+    padding: 3px;
+    flex-shrink: 0;
+    gap: 2px;
+}
+
+.account-toggle-btn {
+    border: none;
+    background: transparent;
+    flex: 1;
+    padding: 0.45rem 1.15rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-400);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border-radius: 2rem;
+    line-height: 1.3;
+}
+
+.account-toggle-btn:hover:not(.active) {
+    color: var(--gray-600);
+    background: var(--gray-200);
+}
+
+.account-toggle-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.account-section-gray {
+    background: var(--gray-100);
+    border-radius: 1rem;
+    padding: 2rem 2.5rem;
+}
+
+.account-card-item {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--gray-200);
+}
+
+.account-card-visual {
+    width: 140px;
+    height: 88px;
+    border-radius: 0.625rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+    color: white;
+    position: relative;
+}
+
+.account-card-master {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.account-card-visa {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2d3561 50%, #1a1a2e 100%);
+}
+
+.account-card-brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.account-mc-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.account-mc-red {
+    background: #eb001b;
+    margin-right: -6px;
+}
+
+.account-mc-orange {
+    background: #f79e1b;
+    opacity: 0.85;
+}
+
+.account-visa-text {
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.05em;
+}
+
+.account-card-number {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+}
+
+/* 계정관리 컨펌 모달 */
+.account-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.account-modal {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem 2rem 1.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.account-modal-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    color: var(--gray-600);
+    font-size: 1.5rem;
+}
+
+/* 계정관리 탈퇴 모달 */
+.account-delete-modal-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--danger-color);
+    color: white;
+    font-size: 1.5rem;
+}
+
+.account-delete-warning {
+    background: var(--gray-50);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+}
+
+/* 계정관리 반응형 */
+@media (max-width: 768px) {
+    .account-section,
+    .account-section-gray {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .account-card-visual {
+        width: 100px;
+        height: 64px;
+    }
+
+    .account-card-number {
+        font-size: 0.55rem;
+    }
+
+    .account-card-item .d-flex {
+        flex-wrap: wrap;
+    }
+}
+

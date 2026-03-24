@@ -1,0 +1,26 @@
+<div class="landing-layout">
+    <!-- GNB Header (Logo only) -->
+    <header class="landing-gnb" :class="{ 'gnb-scrolled': isScrolled }">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <!-- Logo -->
+                <a href="#/home" class="landing-logo text-decoration-none">
+                    <div class="logo-animated">
+                        <div class="logo-frame logo-frame-first">
+                            <div class="logo-kr-title">쏠쏠</div>
+                            <div class="logo-kr-sub">크리에이터 플랫폼</div>
+                        </div>
+                        <div class="logo-frame logo-frame-second">
+                            <img src="/images/logo.svg" alt="SOLSOL" class="logo-en-img">
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {{ content }}
+    </main>
+</div>

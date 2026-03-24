@@ -1,0 +1,41 @@
+<div class="container py-5" style="max-width: 1140px;">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2" style="font-size: 1.75rem;">결제 내역</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.95rem;">내가 결제한 모든 내역을 확인하실 수 있습니다.</p>
+    </div>
+
+    <!-- 빈 상태 카드 -->
+    <div class="mysite-empty-card text-center">
+        <div class="mb-4 pt-3">
+            <svg width="160" height="130" viewBox="0 0 160 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M35 10 C35 4, 44 0, 55 0 L115 0 C126 0, 135 4, 135 10 L135 60 C135 66, 126 72, 115 72 L80 72 L65 88 L65 72 L55 72 C44 72, 35 66, 35 60 Z" fill="white" stroke="#2d2d2d" stroke-width="2.5"/>
+                <text x="85" y="48" text-anchor="middle" font-size="32" font-weight="800" fill="#2d2d2d" font-family="'Noto Sans KR', sans-serif">헉!!</text>
+                <ellipse cx="42" cy="95" rx="22" ry="28" fill="white" stroke="#2d2d2d" stroke-width="2.5"/>
+                <path d="M20 105 Q26 120 32 110 Q38 120 44 110 Q50 120 56 110 Q62 120 64 105" fill="white" stroke="#2d2d2d" stroke-width="2.5"/>
+                <circle cx="34" cy="90" r="2.5" fill="#2d2d2d"/>
+                <circle cx="50" cy="90" r="2.5" fill="#2d2d2d"/>
+                <path d="M38 98 Q42 102 46 98" stroke="#2d2d2d" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M125 15 L127 20 L132 22 L127 24 L125 29 L123 24 L118 22 L123 20 Z" fill="#e5e7eb"/>
+                <path d="M140 40 L141 43 L144 44 L141 45 L140 48 L139 45 L136 44 L139 43 Z" fill="#e5e7eb"/>
+            </svg>
+        </div>
+        <h4 class="fw-bold mb-3" style="font-size: 1.25rem;">아직 결제 내역이 없네요! &#129335;</h4>
+        <p class="text-secondary mb-1" style="font-size: 0.925rem;">텅... 비어있어요...</p>
+        <p class="text-secondary mb-1" style="font-size: 0.925rem;">플랜을 구독하시면 여기에 결제 내역이 차곡차곡 쌓인답니다!</p>
+        <p class="text-secondary mb-0 pb-2" style="font-size: 0.925rem;">첫 결제를 시작해보시는 건 어떨까요? &#128522;</p>
+    </div>
+
+    <!-- 플랜 둘러보기 CTA -->
+    <div class="mysite-cta-banner text-center mt-4">
+        <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+            <span style="font-size: 2rem;">&#128640;</span>
+            <h3 class="fw-bold text-white mb-0" style="font-size: 1.75rem;">플랜 둘러보기</h3>
+        </div>
+        <p class="mb-4" style="color: rgba(255,255,255,0.65); font-size: 0.95rem;">다양한 플랜을 확인하고 나에게 맞는 플랜을 선택해보세요.</p>
+        <button class="btn mysite-cta-btn" @click="goToPricing">
+            <span class="mysite-cta-btn-icon me-2">i</span>
+            플랜 둘러보러 가기
+        </button>
+    </div>
+</div>

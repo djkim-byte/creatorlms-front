@@ -1,0 +1,62 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-7">
+            <div class="checkout-card text-center py-5">
+                <!-- Extend Icon -->
+                <div class="extend-icon mx-auto mb-3">
+                    <i class="bi bi-arrow-repeat"></i>
+                </div>
+
+                <h3 class="fw-bold mb-3">사용 연장하기</h3>
+                <p class="text-secondary mb-5">플랜을 연장하고 서비스를 계속 이용하실 수 있어요!</p>
+
+                <!-- Selected Plan -->
+                <h5 class="fw-bold mb-4">선택된 플랜</h5>
+
+                <div style="max-width: 480px; margin: 0 auto; text-align: left;">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-baseline gap-3">
+                            <h4 class="fw-bold mb-0">{{ site.plan }}</h4>
+                            <h4 class="fw-bold mb-0">{{ site.name }}</h4>
+                        </div>
+                        <span class="text-danger fw-semibold">플랫폼 수수료 <span class="fs-5">{{ planData.feeRate }}</span></span>
+                    </div>
+                    <p class="text-secondary small mb-0">{{ planData.description }}</p>
+
+                    <hr class="my-3">
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-secondary small mb-1">구독 주기</p>
+                            <p class="fw-semibold mb-0">{{ cycleLabel }} 자동결제</p>
+                        </div>
+                        <div class="text-end">
+                            <p class="text-secondary small mb-1">만료 예정일</p>
+                            <p class="fw-semibold mb-0">{{ site.subscriptionEnd || site.nextPaymentDate || '-' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Info Box -->
+                    <div class="extend-info-box mt-4">
+                        <ul class="mb-0 ps-3">
+                            <li class="mb-1">모든 콘텐츠 및 학습자 데이터 유지</li>
+                            <li>기존 플랜과 동일한 기능 제공</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mt-5" style="max-width: 420px; margin-left: auto; margin-right: auto;">
+                    <button class="btn welcome-outline-btn flex-fill" @click="goBack">
+                        취소
+                    </button>
+                    <button class="btn welcome-primary-btn flex-fill" @click="handleExtend">
+                        결제하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

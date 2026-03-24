@@ -1,0 +1,147 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+    <div class="container py-5" style="max-width: 1140px;">
+
+                <!-- Form -->
+                <div v-if="!isSubmitted" class="inquiry-card">
+                    <form @submit.prevent="handleSubmit">
+
+                        <!-- 문의 유형 -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">문의 유형 <span class="text-danger">*</span></h5>
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                <div class="form-check" v-for="type in inquiryTypes" :key="type.value">
+                                    <input class="form-check-input" type="radio" :id="'type-' + type.value"
+                                           :value="type.value" v-model="form.inquiryType">
+                                    <label class="form-check-label" :for="'type-' + type.value">{{ type.label }}</label>
+                                </div>
+                            </div>
+
+                            <!-- 상품 하위 유형 -->
+                            <div v-if="form.inquiryType === 'product'" class="inquiry-subtype-box">
+                                <p class="text-secondary small mb-2">상품 유형을 선택해 주세요</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="button" v-for="sub in productSubTypes" :key="sub.value"
+                                            class="btn btn-sm rounded-pill"
+                                            :class="form.productSubType === sub.value ? 'btn-dark' : 'btn-outline-secondary'"
+                                            @click="form.productSubType = sub.value">
+                                        {{ sub.label }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 가이드 설명 -->
+                        <div v-if="currentGuide" class="inquiry-guide-box mb-4">
+                            <p class="fw-semibold mb-1">{{ currentGuideTitle }}</p>
+                            <p class="text-secondary small mb-0">{{ currentGuide.description }}</p>
+                            <p v-if="currentGuide.subtitle" class="text-secondary small mb-0">{{ currentGuide.subtitle }}</p>
+                        </div>
+
+                        <!-- 제목 -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">제목 <span class="text-danger">*</span></h5>
+                            <input type="text" class="form-control" v-model="form.title"
+                                   placeholder="문의 제목을 입력해 주세요" required>
+                        </div>
+
+                        <!-- 내용 -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-3">내용 <span class="text-danger">*</span></h5>
+                            <!-- 에디터 툴바 -->
+                            <div class="inquiry-editor-toolbar">
+                                <button type="button" class="inquiry-toolbar-btn" title="굵게"><b>B</b></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="기울임"><i>i</i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="밑줄"><u>U</u></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="글자 크기"><span>A<small>:</small></span></button>
+                                <span class="inquiry-toolbar-divider"></span>
+                                <button type="button" class="inquiry-toolbar-btn" title="왼쪽 정렬"><i class="bi bi-text-left"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="가운데 정렬"><i class="bi bi-text-center"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="오른쪽 정렬"><i class="bi bi-text-right"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="번호 목록"><i class="bi bi-list-ol"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="글머리 목록"><i class="bi bi-list-ul"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="인용"><i class="bi bi-blockquote-left"></i></button>
+                                <span class="inquiry-toolbar-divider"></span>
+                                <button type="button" class="inquiry-toolbar-btn" title="링크"><i class="bi bi-link-45deg"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="이미지"><i class="bi bi-image"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="동영상"><i class="bi bi-camera-video"></i></button>
+                                <button type="button" class="inquiry-toolbar-btn" title="더보기"><i class="bi bi-plus-lg"></i></button>
+                            </div>
+                            <textarea class="form-control inquiry-editor-content" v-model="form.content"
+                                      rows="12" required></textarea>
+                        </div>
+
+                        <!-- 첨부파일 -->
+                        <div class="mb-5">
+                            <h5 class="fw-bold mb-3">첨부파일 (선택)</h5>
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <label class="btn btn-sm btn-dark rounded-pill px-3 mb-0" for="fileInput">파일선택</label>
+                                <input type="file" id="fileInput" class="d-none" multiple
+                                       accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.zip,.rar"
+                                       @change="handleFileSelect">
+                                <span class="text-secondary small">최대 5개, 파일당 10MB 이하 (이미지, PDF, 문서, 압축파일)</span>
+                            </div>
+                            <div v-if="form.files.length > 0" class="d-flex flex-wrap gap-2 mt-2">
+                                <span v-for="(file, idx) in form.files" :key="idx"
+                                      class="badge bg-light text-dark border d-flex align-items-center gap-1 py-2 px-3">
+                                    <i class="bi bi-paperclip"></i>
+                                    {{ file.name }}
+                                    <button type="button" class="btn-close btn-close-sm ms-1" style="font-size: 0.6rem;"
+                                            @click="removeFile(idx)"></button>
+                                </span>
+                            </div>
+                            <p v-if="fileError" class="text-danger small mt-2 mb-0">{{ fileError }}</p>
+                        </div>
+
+                        <!-- 제출 -->
+                        <div class="text-center">
+                            <button type="submit" class="btn signup-submit-btn w-100" style="max-width: 480px;"
+                                    :disabled="isSubmitting || !isFormValid">
+                                <i class="bi bi-info-circle me-2"></i>
+                                {{ isSubmitting ? '접수 중...' : '문의하기' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 접수 완료 -->
+                <div v-else class="inquiry-card text-center">
+                    <div class="py-4">
+                        <!-- 체크 아이콘 -->
+                        <div class="inquiry-success-icon mb-4">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                                <circle cx="40" cy="40" r="38" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+                                <path d="M24 40 L35 51 L56 30" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </svg>
+                        </div>
+
+                        <h3 class="fw-bold mb-3">문의가 정상적으로 접수되었습니다</h3>
+                        <p class="text-secondary mb-4">빠르게 문의 내용 확인 후 답변드리겠습니다!</p>
+
+                        <hr class="mx-auto mb-4" style="max-width: 400px;">
+
+                        <!-- 문의 내용 요약 -->
+                        <div class="inquiry-summary mx-auto">
+                            <h6 class="fw-bold text-start mb-3">문의 내용</h6>
+                            <hr>
+                            <div class="d-flex gap-4 mb-2 text-start">
+                                <span class="text-secondary" style="min-width: 80px;">문의유형</span>
+                                <span>{{ submittedTypeName }}</span>
+                            </div>
+                            <div class="text-start mt-3">
+                                <p class="fw-semibold mb-2">{{ submittedData.title }}</p>
+                                <p class="text-secondary small mb-0" style="white-space: pre-wrap;">{{ submittedData.content }}</p>
+                            </div>
+                        </div>
+
+                        <p class="text-secondary small mt-4 mb-3">답변은 <a href="#/inquiryhistory/inquiry-history" class="fw-bold text-danger text-decoration-none">문의내역</a>에서 확인하실 수 있습니다.</p>
+
+                        <button class="btn signup-submit-btn" style="max-width: 480px; width: 100%;"
+                                @click="navigateTo('/home')">
+                            <i class="bi bi-info-circle me-2"></i>
+                            홈으로 바로가기
+                        </button>
+                    </div>
+                </div>
+
+    </div>
+</div>

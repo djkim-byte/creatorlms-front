@@ -1,0 +1,139 @@
+<div class="container py-5" style="max-width: 1140px;" @click="closeMenu">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2" style="font-size: 1.75rem;">내 사이트 관리하기</h2>
+        <p v-if="fromFree" class="text-secondary mb-0" style="font-size: 0.95rem;">이미 무료 서비스를 사용하고 있으시네요</p>
+        <p v-else class="text-secondary mb-0" style="font-size: 0.95rem;">내 사이트를 만들고 손쉽게 관리할 수 있어요</p>
+    </div>
+
+    <!-- 로딩 -->
+    <div v-if="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div v-else>
+        <!-- 사이트 만들기 배너 -->
+        <div class="mysite-card mysite-card-empty mb-3">
+            <div class="mysite-card-body">
+                <div class="mysite-card-inner">
+                    <div class="mysite-card-plan">
+                        <div class="mysite-badge">
+                            <span class="mysite-badge-name">Basic</span>
+                            <span class="mysite-badge-cycle">월간 자동결제</span>
+                        </div>
+                    </div>
+                    <div class="mysite-card-content d-flex align-items-center">
+                        <div class="mysite-card-name">
+                            <strong>아직 사이트를 만들지 않으셨네요</strong>
+                            <span class="d-block text-secondary" style="font-size: 0.8rem;">내 사이트를 개설하실 수 있습니다!</span>
+                        </div>
+                    </div>
+                    <div class="mysite-card-actions">
+                        <button class="btn mysite-top-banner-btn" @click="goToCreate">+ 내 사이트 만들기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 사이트 카드 목록 -->
+        <div v-for="site in sites" :key="site.id" class="mysite-card mb-3">
+            <!-- 경고 배너 -->
+            <div v-if="getWarningMessages(site).length" class="mysite-card-warning">
+                <span v-for="(msg, idx) in getWarningMessages(site)" :key="idx" class="d-block">&#9888; {{ msg }}</span>
+            </div>
+
+            <!-- 카드 본문 -->
+            <div class="mysite-card-body">
+                <div class="mysite-card-inner">
+                    <!-- 좌측: 플랜 배지 -->
+                    <div class="mysite-card-plan">
+                        <div class="mysite-badge" :class="{'mysite-badge-free': site.plan === 'Free'}">
+                            <span class="mysite-badge-name">{{ site.plan }}</span>
+                            <span v-if="getBillingCycleLabel(site)" class="mysite-badge-cycle">{{ getBillingCycleLabel(site) }}</span>
+                        </div>
+                    </div>
+
+                    <!-- 중앙: 사이트 정보 + 상세 -->
+                    <div class="mysite-card-content">
+                        <!-- 상단: 사이트명/주소 + 쉐브론 -->
+                        <a :href="site.adminUrl" target="_blank" class="mysite-card-header text-decoration-none">
+                            <div class="mysite-card-name">
+                                <strong>{{ site.name }}</strong>
+                                <span class="d-block text-secondary" style="font-size: 0.8rem;">{{ site.domain }}</span>
+                            </div>
+                            <span class="mysite-card-chevron">&#8250;</span>
+                        </a>
+
+                        <!-- 구분선 -->
+                        <div class="mysite-card-divider"></div>
+
+                        <!-- 하단: 상세 정보 -->
+                        <div class="mysite-card-details">
+                            <div class="mysite-card-col">
+                                <span class="mysite-col-label">요금</span>
+                                <span class="mysite-col-value">
+                                    {{ getPriceDisplay(site).price }}
+                                    <span v-if="getPriceDisplay(site).discount" class="d-block text-danger" style="font-size: 0.72rem; font-weight: 600;">{{ getPriceDisplay(site).discount }}</span>
+                                </span>
+                            </div>
+                            <div class="mysite-card-col">
+                                <span class="mysite-col-label">다음 결제일</span>
+                                <span class="mysite-col-value">{{ site.nextPaymentDate || '-' }}</span>
+                            </div>
+                            <div class="mysite-card-col">
+                                <span class="mysite-col-label">구독기간</span>
+                                <span class="mysite-col-value">{{ getSubscriptionPeriod(site) }}</span>
+                            </div>
+                            <div class="mysite-card-col">
+                                <span class="mysite-col-label">영상용량</span>
+                                <span class="mysite-col-value" :class="{'mysite-text-danger': isStorageWarning(site)}">{{ formatStorage(site) }}</span>
+                            </div>
+                            <div class="mysite-card-col" v-if="site.enrollmentUsed !== null">
+                                <span class="mysite-col-label">수강 신청 제한</span>
+                                <span class="mysite-col-value" :class="{'mysite-text-danger': isEnrollmentWarning(site)}">{{ formatEnrollment(site) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 우측: 상태 + 더보기 -->
+                    <div class="mysite-card-actions">
+                        <span class="mysite-status" :class="getStatusClass(site)">{{ getStatusLabel(site) }}</span>
+                        <div class="mysite-card-more" :class="{'invisible': !getActionButtons(site).length}">
+                            <button class="btn btn-link text-secondary p-0" style="line-height: 1;" @click.stop="toggleMenu(site.id)">
+                                <svg width="5" height="20" viewBox="0 0 5 20" fill="currentColor">
+                                    <circle cx="2.5" cy="2.5" r="2.5"/>
+                                    <circle cx="2.5" cy="10" r="2.5"/>
+                                    <circle cx="2.5" cy="17.5" r="2.5"/>
+                                </svg>
+                            </button>
+                            <div v-if="openMenuId === site.id" class="mysite-menu-layer">
+                                <button
+                                    v-for="btn in getActionButtons(site)"
+                                    :key="btn.action"
+                                    class="mysite-menu-item"
+                                    :class="'mysite-menu-item-' + btn.type"
+                                    @click.stop="handleSiteAction(btn.action, site)"
+                                >{{ btn.label }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 다른 플랜 둘러보기 CTA -->
+        <div class="mysite-cta-banner text-center mt-5">
+            <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+                <span style="font-size: 2rem;">&#128640;</span>
+                <h3 class="fw-bold text-white mb-0" style="font-size: 1.75rem;">다른 플랜 둘러보기</h3>
+            </div>
+            <p class="mb-4" style="color: rgba(255,255,255,0.65); font-size: 0.95rem;">더 많은 기능이 필요하신가요? 다른 플랜을 확인해보세요.</p>
+            <button class="btn mysite-cta-btn" @click="goToPricing">
+                <span class="mysite-cta-btn-icon me-2">i</span>
+                플랜 둘러보러 가기
+            </button>
+        </div>
+    </div>
+</div>

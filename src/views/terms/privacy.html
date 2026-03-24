@@ -1,0 +1,39 @@
+<div class="container legal-page py-5">
+    <h2 class="fw-bold mb-2">{{ privacyData.title }}</h2>
+    <p v-if="privacyData.effectiveDate" class="text-secondary small mb-4">시행일: {{ privacyData.effectiveDate }}</p>
+    <hr class="mb-4">
+    <p v-if="privacyData.intro" class="legal-content mb-4">{{ privacyData.intro }}</p>
+
+    <!-- 목차 -->
+    <div v-if="privacyData.toc && privacyData.toc.length" class="mb-4 p-3 bg-light rounded">
+        <p class="fw-semibold mb-2">목차</p>
+        <ol class="small mb-0">
+            <li v-for="(item, idx) in privacyData.toc" :key="idx">{{ item }}</li>
+        </ol>
+    </div>
+
+    <!-- 본문 -->
+    <div v-for="(section, idx) in privacyData.sections" :key="idx" class="legal-section">
+        <h6 class="fw-bold">{{ section.heading }}</h6>
+        <p class="legal-content">{{ section.content }}</p>
+        <template v-if="section.tables">
+            <div v-for="(table, tIdx) in section.tables" :key="tIdx" class="legal-table-wrap mb-3">
+                <p class="fw-semibold small mb-2">{{ table.caption }}</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm small">
+                        <thead class="table-light">
+                            <tr>
+                                <th v-for="(header, hIdx) in table.headers" :key="hIdx">{{ header }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(row, rIdx) in table.rows" :key="rIdx">
+                                <td v-for="(cell, cIdx) in row" :key="cIdx">{{ cell }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+    </div>
+</div>

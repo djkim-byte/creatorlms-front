@@ -1,0 +1,116 @@
+<div class="container py-5">
+    <!-- 페이지 타이틀 -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-2">내 사이트 만들기</h2>
+        <p class="text-secondary mb-0">나만의 학습 플랫폼을 만들어 보세요</p>
+    </div>
+
+    <!-- 폼 카드 -->
+    <div class="mysite-create-card mx-auto">
+        <form @submit.prevent="handleSubmit">
+            <!-- 사이트 이름 -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    사이트 이름 <span class="text-danger">*</span>
+                </label>
+                <p class="text-secondary mb-2" style="font-size: 0.85rem;">사이트의 이름을 입력해주세요. (예: 김쌤의 영어 교실)</p>
+                <input
+                    v-model="form.siteName"
+                    type="text"
+                    class="form-control"
+                    :class="{ 'is-invalid': errors.siteName }"
+                    placeholder="2~20자 이내로 입력해 주세요"
+                    maxlength="20"
+                    @input="errors.siteName = ''"
+                >
+                <div v-if="errors.siteName" class="text-danger mt-1" style="font-size: 0.8rem;">{{ errors.siteName }}</div>
+            </div>
+
+            <!-- 사이트 도메인 -->
+            <div class="mb-5">
+                <label class="form-label fw-semibold">
+                    사이트 도메인 <span class="text-danger">*</span>
+                </label>
+                <p class="text-secondary mb-2" style="font-size: 0.85rem;">사이트의 고유 주소를 설정해주세요. (영문, 숫자, 하이폰만 사용 가능)</p>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-secondary fw-medium">https://</span>
+                    <input
+                        v-model="form.domain"
+                        type="text"
+                        class="form-control mysite-domain-input"
+                        :class="{ 'is-invalid': errors.domain }"
+                        placeholder="3~30자 이내로 입력해 주세요"
+                        maxlength="30"
+                        @input="onDomainInput"
+                    >
+                    <span class="text-secondary fw-medium">.solsol.com</span>
+                    <button
+                        type="button"
+                        class="btn mysite-domain-check-btn"
+                        :disabled="!form.domain || form.domain.length < 3 || isCheckingDomain"
+                        @click="checkDomain"
+                    >
+                        {{ isCheckingDomain ? '확인 중...' : '도메인 중복 체크' }}
+                    </button>
+                </div>
+                <div v-if="errors.domain" class="text-danger mt-1" style="font-size: 0.8rem;">{{ errors.domain }}</div>
+            </div>
+
+            <!-- 무료 플랜 시 유의 사항 -->
+            <template v-if="isFreePlan">
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">무료 플랜 시 유의 사항</h5>
+
+                    <div class="checkout-notice-box mb-3" v-if="freeNotice">
+                        <h6 class="fw-bold small mb-2">{{ freeNotice.title }}</h6>
+                        <ul class="small text-secondary mb-0 ps-3">
+                            <li v-for="(item, idx) in freeNotice.items" :key="idx" class="mb-1" v-html="item.replace(/\n/g, '<br>')"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 약관 동의 -->
+                <div class="d-flex align-items-start gap-2 mb-4">
+                    <input type="checkbox" class="form-check-input mt-1" id="agreeFree" v-model="agreeTerms">
+                    <label class="form-check-label small" for="agreeFree">
+                        쏠쏠 <a href="#" class="fw-bold text-primary text-decoration-underline" data-bs-toggle="modal" data-bs-target="#freeTermsModal" @click.prevent>무료약정상품 구매 약관</a>에 동의합니다.
+                    </label>
+                </div>
+            </template>
+
+            <!-- 생성 버튼 -->
+            <div class="text-center">
+                <button
+                    type="submit"
+                    class="btn mysite-submit-btn"
+                    :disabled="isLoading || (isFreePlan && !agreeTerms)"
+                >
+                    {{ isLoading ? '생성 중...' : '+ 생성하기' }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<!-- Free Terms Modal -->
+<div class="modal fade" id="freeTermsModal" tabindex="-1" aria-labelledby="freeTermsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="freeTermsModalLabel">{{ freeTerms.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body legal-text">
+                <p v-if="freeTerms.effectiveDate" class="text-secondary small mb-4">시행일: {{ freeTerms.effectiveDate }}</p>
+                <div v-for="(section, idx) in freeTerms.sections" :key="'ft'+idx" class="legal-section">
+                    <h6 class="fw-bold">{{ section.heading }}</h6>
+                    <p class="legal-content">{{ section.content }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>

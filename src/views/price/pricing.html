@@ -1,0 +1,172 @@
+<div>
+    <!-- 히어로 섹션 -->
+    <section class="pricing-hero text-center">
+        <div class="container py-5">
+            <h1 class="fw-bold mb-3">크리에이터에게 딱 맞는 플랜을 선택하세요</h1>
+            <p class="fs-5 mb-0" style="color: rgba(255,255,255,0.8);">소규모 시작부터 대규모 운영까지, 모든 단계에 최적화된 가격</p>
+        </div>
+    </section>
+
+    <!-- 플랜 카드 섹션 -->
+    <section class="py-5">
+        <div class="container">
+            <!-- 월간/연간 토글 -->
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-5">
+                <button class="pricing-toggle-btn"
+                        :class="{ active: billingCycle === 'monthly' }"
+                        @click="billingCycle = 'monthly'">
+                    월간 구독
+                </button>
+                <button class="pricing-toggle-btn"
+                        :class="{ active: billingCycle === 'annual' }"
+                        @click="billingCycle = 'annual'">
+                    연간 구독
+                </button>
+                <span class="pricing-discount-badge ms-2">연간 30% 할인</span>
+            </div>
+
+            <!-- 플랜 카드 4개 -->
+            <div class="row g-4 justify-content-center">
+                <div v-for="plan in displayPlans" :key="plan.id" class="col-12 col-md-6 col-xl-3">
+                    <div class="pricing-card h-100 d-flex flex-column"
+                         :class="{ 'pricing-card-recommended': plan.recommended }">
+                        <!-- 추천 배지 -->
+                        <div v-if="plan.badge" class="pricing-badge">{{ plan.badge }}</div>
+
+                        <!-- 플랜 이름 -->
+                        <h4 class="fw-bold mb-3">{{ plan.name }}</h4>
+
+                        <!-- 가격 -->
+                        <div class="mb-1">
+                            <span class="text-secondary small">&#8361;</span>
+                            <span class="pricing-price">{{ formatPrice(plan.displayPrice) }}</span>
+                            <span class="text-secondary small" v-if="plan.isFree">/ {{ plan.priceLabel }}</span>
+                            <span class="text-secondary small" v-else>/ 월</span>
+                        </div>
+                        <p class="small mb-4" style="color: var(--primary-color);" v-if="!plan.isFree">
+                            플랫폼 수수료 <strong>{{ plan.feeRate }}</strong>
+                        </p>
+                        <p class="small text-secondary mb-4" v-else>
+                            플랫폼 수수료 {{ plan.feeRate }}
+                        </p>
+
+                        <hr class="my-0 mb-3">
+
+                        <!-- 기본 기능 목록 -->
+                        <ul class="list-unstyled pricing-feature-list mb-3">
+                            <li v-for="feat in plan.features" :key="feat.label"
+                                class="d-flex align-items-center gap-2">
+                                <i class="bi bi-check-circle-fill pricing-check flex-shrink-0"></i>
+                                <span class="small text-secondary">{{ feat.label }}</span>
+                                <span class="small fw-semibold ms-auto text-nowrap">{{ feat.value }}</span>
+                            </li>
+                        </ul>
+
+                        <!-- AI 기능 목록 -->
+                        <ul class="list-unstyled pricing-feature-list mb-4">
+                            <li v-for="feat in plan.aiFeatures" :key="feat.label"
+                                class="d-flex align-items-center gap-2">
+                                <i class="bi bi-stars flex-shrink-0" style="color: var(--primary-color);"></i>
+                                <span class="small text-secondary">{{ feat.label }}</span>
+                                <span class="small fw-semibold ms-auto text-nowrap">{{ feat.value }}</span>
+                            </li>
+                        </ul>
+
+                        <!-- CTA 버튼 -->
+                        <div class="mt-auto">
+                            <button class="btn w-100 rounded-pill"
+                                    :class="plan.ctaStyle === 'outline' ? 'pricing-cta-outline' : 'pricing-cta-solid'"
+                                    @click="handleCtaClick(plan)">
+                                {{ plan.ctaText }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise 배너 -->
+            <div class="pricing-enterprise mt-4">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+                        <h3 class="fw-bold text-white mb-2">{{ enterprise.title }}</h3>
+                        <p class="small mb-3" style="color: rgba(255,255,255,0.6);">
+                            대규모 조직과 기업을 위한 맞춤형 솔루션입니다.<br>
+                            무제한 확장성과 전담 지원으로 여러분의 비즈니스를 성장시키세요.
+                        </p>
+                        <button class="btn btn-outline-light rounded-pill px-4"
+                                @click="handleEnterpriseCta">
+                            문의하기
+                        </button>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                        <div class="row g-3">
+                            <div v-for="hl in enterprise.highlights" :key="hl.title" class="col-6 col-md-3">
+                                <div class="text-center">
+                                    <div class="pricing-enterprise-icon mb-2">
+                                        <i :class="'bi ' + hl.icon"></i>
+                                    </div>
+                                    <h6 class="fw-semibold text-white mb-1 small">{{ hl.title }}</h6>
+                                    <p class="mb-0" style="color: rgba(255,255,255,0.5); font-size: 0.75rem;">{{ hl.desc }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 요금제 비교 섹션 -->
+    <section class="py-5" style="background: var(--gray-50);">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-2">요금제 비교</h2>
+                <p class="text-secondary fs-5">각 플랜의 기능을 비교해 보세요</p>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table pricing-comparison-table mb-0">
+                    <thead>
+                        <tr class="pricing-table-header">
+                            <th class="text-start">기능 분류</th>
+                            <th class="text-center">Free</th>
+                            <th class="text-center">Basic</th>
+                            <th class="text-center">Growth</th>
+                            <th class="text-center">Advanced</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="category in featureCategories" :key="category.name">
+                            <!-- 카테고리 헤더 -->
+                            <tr class="pricing-category-row">
+                                <td colspan="5">
+                                    <i :class="'bi ' + category.icon" class="me-2"></i>
+                                    {{ category.name }}
+                                </td>
+                            </tr>
+                            <!-- 기능 행 -->
+                            <tr v-for="feature in category.features" :key="feature.name">
+                                <td class="fw-medium">{{ feature.name }}</td>
+                                <td class="text-center" v-html="renderValue(feature.free)"></td>
+                                <td class="text-center" v-html="renderValue(feature.basic)"></td>
+                                <td class="text-center" v-html="renderValue(feature.growth)"></td>
+                                <td class="text-center" v-html="renderValue(feature.advanced)"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA 섹션 -->
+    <section class="cta-section py-5">
+        <div class="container text-center py-5">
+            <h2 class="fw-bold text-white mb-3">지금 바로 시작하세요</h2>
+            <p class="fs-5 mb-4" style="color: rgba(255,255,255,0.7);">무료로 시작하고, 성장에 따라 확장하세요</p>
+            <a :href="isLoggedIn ? '#/mysite' : '#/login/login'" class="btn btn-light btn-lg rounded-pill px-5 fw-semibold">
+                무료로 시작하기 <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </section>
+</div>

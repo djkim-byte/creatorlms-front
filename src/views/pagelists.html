@@ -1,0 +1,71 @@
+<div class="container-fluid py-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">쏠쏠 브랜드 사이트 - 페이지 목록</h3>
+            <p class="text-secondary mb-0">총 {{ totalPages }}개 페이지</p>
+        </div>
+        <span class="badge bg-primary rounded-pill fs-6">{{ totalPages }}</span>
+    </div>
+
+    <div v-for="group in groupedPages" :key="group.category" class="mb-4">
+        <h6 class="fw-bold text-primary mb-2">
+            <i class="bi bi-folder2-open me-1"></i>{{ group.category }}
+            <span class="badge bg-secondary rounded-pill ms-1">{{ group.pages.length }}</span>
+            <small v-if="group.category === '주요 기능'" class="text-secondary fw-normal ms-2" style="font-size: 0.75rem;">주요기능 페이지는 향후 추가되거나 변경될 수 있습니다.</small>
+        </h6>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 10%;">구분</th>
+                        <th style="width: 10%;">제목</th>
+                        <th style="width: 25%;">URL</th>
+                        <th style="width: 18%;">설명</th>
+                        <th style="width: 7%;" class="text-center">디자인</th>
+                        <th style="width: 22%;">퍼블리싱</th>
+                        <th style="width: 8%;" class="text-center">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(page, idx) in group.pages" :key="page.title + idx">
+                        <td class="text-secondary small">{{ page.category }}</td>
+                        <td class="fw-medium">{{ page.title }}</td>
+                        <td>
+                            <a v-if="page.url" :href="getFullUrl(page.url)" target="_blank" class="text-decoration-none small">
+                                {{ getFullUrl(page.url) }}
+                                <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <span v-else class="text-secondary small">추후 생성</span>
+                        </td>
+                        <td class="text-secondary small">{{ page.description }}</td>
+                        <td class="text-center">
+                            <input type="checkbox" class="form-check-input mt-0"
+                                   v-model="getStatus(page).design"
+                                   :disabled="getStatus(page).saved">
+                        </td>
+                        <td>
+                            <a v-if="getStatus(page).saved && getStatus(page).publishing"
+                               :href="getStatus(page).publishing" target="_blank"
+                               class="text-decoration-none small text-truncate d-block" style="min-width: 80px;">
+                                {{ getStatus(page).publishing }}
+                                <i class="bi bi-box-arrow-up-right ms-1" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <input v-else type="text" class="form-control form-control-sm" style="min-width: 80px;"
+                                   v-model="getStatus(page).publishing"
+                                   :disabled="getStatus(page).saved"
+                                   placeholder="퍼블리싱 URL">
+                        </td>
+                        <td class="text-center">
+                            <button v-if="!getStatus(page).saved"
+                                    class="btn btn-sm btn-primary text-nowrap"
+                                    @click="saveStatus(page)">저장</button>
+                            <button v-else
+                                    class="btn btn-sm btn-outline-secondary text-nowrap"
+                                    @click="editStatus(page)">수정</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

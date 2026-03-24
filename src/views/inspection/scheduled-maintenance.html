@@ -1,0 +1,91 @@
+<div class="error-page">
+    <div class="container">
+        <div class="error-page-content text-center">
+            <!-- Logo -->
+            <div class="mb-4">
+                <a href="#/home" class="text-decoration-none d-inline-flex align-items-center gap-2">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#06b6d4"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M6 18 C10 10, 14 26, 18 18 C22 10, 26 26, 30 18" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <path d="M6 13 C10 5, 14 21, 18 13 C22 5, 26 21, 30 13" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                        <path d="M6 23 C10 15, 14 31, 18 23 C22 15, 26 31, 30 23" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                    </svg>
+                    <div>
+                        <div class="fw-bold text-dark lh-1" style="font-size: 1.25rem;">쏠쏠</div>
+                        <div class="text-secondary" style="font-size: 0.55rem; letter-spacing: 0.1em;">CREATOR PLATFORM</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Illustration -->
+            <div class="error-page-illustration mx-auto mb-5">
+                <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background circle -->
+                    <circle cx="100" cy="80" r="45" fill="#c4b5fd" opacity="0.3"/>
+
+                    <!-- Server rack -->
+                    <rect x="65" y="40" width="70" height="85" rx="6" fill="white" stroke="#a78bfa" stroke-width="2"/>
+
+                    <!-- Server unit 1 -->
+                    <rect x="73" y="50" width="54" height="18" rx="3" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
+                    <circle cx="82" cy="59" r="3" fill="#86efac"/>
+                    <rect x="90" y="56" width="20" height="2" rx="1" fill="#ddd6fe"/>
+                    <rect x="90" y="60" width="14" height="2" rx="1" fill="#ede9fe"/>
+                    <rect x="117" y="56" width="4" height="6" rx="1" fill="#ddd6fe"/>
+
+                    <!-- Server unit 2 -->
+                    <rect x="73" y="74" width="54" height="18" rx="3" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
+                    <circle cx="82" cy="83" r="3" fill="#fbbf24"/>
+                    <rect x="90" y="80" width="20" height="2" rx="1" fill="#ddd6fe"/>
+                    <rect x="90" y="84" width="14" height="2" rx="1" fill="#ede9fe"/>
+                    <rect x="117" y="80" width="4" height="6" rx="1" fill="#ddd6fe"/>
+
+                    <!-- Server unit 3 -->
+                    <rect x="73" y="98" width="54" height="18" rx="3" fill="#f5f3ff" stroke="#ddd6fe" stroke-width="1"/>
+                    <circle cx="82" cy="107" r="3" fill="#fca5a5"/>
+                    <rect x="90" y="104" width="20" height="2" rx="1" fill="#ddd6fe"/>
+                    <rect x="90" y="108" width="14" height="2" rx="1" fill="#ede9fe"/>
+                    <rect x="117" y="104" width="4" height="6" rx="1" fill="#ddd6fe"/>
+
+                    <!-- Wrench icon -->
+                    <circle cx="145" cy="55" r="14" fill="#fbbf24"/>
+                    <path d="M140 50 L143 53 L141 55 L138 52 C137 54 137.5 56.5 139.5 58 C141.5 59.5 144 59.5 145.5 58.5 L150 63 L152 61 L147 56.5 C148 55 148 52.5 146 50.5 C144 48.5 141.5 48.5 140 50Z" fill="white"/>
+
+                    <!-- Decorations -->
+                    <circle cx="45" cy="60" r="5" fill="#ddd6fe"/>
+                    <circle cx="160" cy="100" r="4" fill="#ede9fe"/>
+                    <circle cx="50" cy="115" r="3" fill="#ede9fe"/>
+                </svg>
+            </div>
+
+            <h1 class="error-page-title-lg" style="white-space: nowrap;">서비스 안정화를 위한 시스템 정기점검 안내</h1>
+            <p class="error-page-subtitle">원활한 서비스를 위해 시스템 점검 중이에요.</p>
+            <p class="error-page-desc">
+                점검시간 동안 서비스 이용이 제한돼요.<br>
+                더욱 나은 서비스로 찾아 뵐게요!
+            </p>
+
+            <!-- 점검 예정시간 -->
+            <div class="error-page-schedule">
+                <p class="d-flex align-items-center justify-content-center gap-2 mb-3" style="font-size: 0.9375rem; font-weight: 600; color: var(--gray-700);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    서비스 점검 예정시간
+                </p>
+                <ul class="list-unstyled mb-0">
+                    <li v-for="schedule in schedules" :key="schedule" style="font-size: 0.875rem; color: var(--gray-500);">
+                        {{ schedule }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

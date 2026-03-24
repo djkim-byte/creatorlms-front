@@ -1,0 +1,115 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+    <div class="container py-5" style="max-width: 1140px;">
+        <!-- 페이지 타이틀 -->
+        <div class="text-center mb-5">
+            <h2 class="fw-bold mb-2" style="font-size: 1.75rem;">문의 내역</h2>
+            <p class="text-secondary mb-0" style="font-size: 0.95rem;">내 문의내역에 대한 답변을 확인하실 수 있습니다</p>
+        </div>
+
+        <!-- 상태 요약 카드 -->
+            <div class="row g-3 mb-4">
+                <div class="col-4">
+                    <div class="inquiry-status-card">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="text-center">
+                                <span class="d-block text-secondary mb-1" style="font-size: 0.85rem;">답변대기</span>
+                                <span class="fw-bold" style="font-size: 1.75rem; color: var(--danger-color);">{{ statusCounts.waiting }}</span>
+                            </div>
+                            <div class="inquiry-status-icon inquiry-status-icon-waiting">
+                                <i class="bi bi-flag-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="inquiry-status-card">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="text-center">
+                                <span class="d-block text-secondary mb-1" style="font-size: 0.85rem;">답변중</span>
+                                <span class="fw-bold" style="font-size: 1.75rem; color: #22c55e;">{{ statusCounts.inProgress }}</span>
+                            </div>
+                            <div class="inquiry-status-icon inquiry-status-icon-progress">
+                                <i class="bi bi-flag-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="inquiry-status-card">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="text-center">
+                                <span class="d-block text-secondary mb-1" style="font-size: 0.85rem;">답변완료</span>
+                                <span class="fw-bold" style="font-size: 1.75rem; color: var(--primary-color);">{{ statusCounts.completed }}</span>
+                            </div>
+                            <div class="inquiry-status-icon inquiry-status-icon-completed">
+                                <i class="bi bi-check2-all"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 검색 -->
+            <div class="d-flex justify-content-end mb-4">
+                <div class="input-group" style="max-width: 280px;">
+                    <input type="text" class="form-control" placeholder="제목 및 내용 검색" v-model="searchQuery">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 문의 리스트 -->
+            <div class="inquiry-history-list">
+                <div v-for="item in filteredInquiries" :key="item.id"
+                     class="inquiry-history-item" @click="goToDetail(item.id)">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div class="flex-grow-1">
+                            <!-- 상태 뱃지 -->
+                            <span class="badge inquiry-badge-waiting mb-2" v-if="item.status === 'waiting'">답변대기</span>
+                            <span class="badge inquiry-badge-progress mb-2" v-else-if="item.status === 'inProgress'">답변중</span>
+                            <span class="badge inquiry-badge-completed mb-2" v-else-if="item.status === 'completed'">답변완료</span>
+
+                            <!-- 카테고리 + 제목 -->
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="fw-bold" style="color: var(--primary-color); font-size: 0.9rem;">{{ item.planLabel }}</span>
+                                <h6 class="fw-bold mb-0" style="font-size: 1rem;">{{ item.title }}</h6>
+                            </div>
+
+                            <!-- 내용 미리보기 -->
+                            <p class="text-secondary mb-3" style="font-size: 0.875rem; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ item.content }}</p>
+
+                            <!-- 시간 + 댓글 -->
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="text-secondary d-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                    <i class="bi bi-clock"></i> {{ item.timeAgo }}
+                                </span>
+                                <span class="text-secondary d-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                                    <i class="bi bi-chat-square"></i> {{ item.commentCount }}
+                                </span>
+                            </div>
+                        </div>
+                        <!-- 더보기 버튼 -->
+                        <div v-if="item.status === 'waiting'" class="position-relative">
+                            <button class="btn btn-link text-secondary p-0" @click.stop="toggleMenu(item.id)">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <div v-if="openMenuId === item.id" class="inquiry-menu-layer">
+                                <button class="btn inquiry-menu-delete-btn" @click.stop="deleteInquiry(item.id)">삭제</button>
+                            </div>
+                        </div>
+                        <button v-else class="btn btn-link text-secondary p-0" disabled>
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        <!-- 더보기 -->
+        <div v-if="hasMore" class="text-center mt-3">
+            <button class="btn btn-outline-secondary w-100 py-2" @click="loadMore">
+                더보기 <i class="bi bi-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+</div>

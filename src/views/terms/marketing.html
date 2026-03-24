@@ -1,0 +1,8 @@
+<div class="container legal-page py-5">
+    <h2 class="fw-bold mb-2">{{ marketingData.title }}</h2>
+    <hr class="mb-4">
+    <div v-for="(section, idx) in marketingData.sections" :key="idx" class="legal-section">
+        <h6 class="fw-bold">{{ section.heading }}</h6>
+        <p class="legal-content">{{ section.content }}</p>
+    </div>
+</div>

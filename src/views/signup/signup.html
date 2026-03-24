@@ -1,0 +1,233 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-4 py-lg-5">
+    <div class="row g-4 justify-content-center">
+        <!-- Signup Form -->
+        <div class="col-12 col-lg-5">
+            <div class="signup-card">
+                <h3 class="text-center fw-bold mb-2">회원가입</h3>
+                <p class="text-center text-secondary mb-4">Creator LMS에 오신 것을 환영합니다</p>
+
+                <form @submit.prevent="handleSignup">
+                    <!-- Name -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <label class="form-label small fw-medium">성 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" :class="{ 'is-invalid': errors.lastName }"
+                                   v-model="form.lastName" placeholder="성을 입력해 주세요">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-medium">이름 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" :class="{ 'is-invalid': errors.firstName }"
+                                   v-model="form.firstName" placeholder="이름을 입력해 주세요">
+                        </div>
+                        <div class="col-12" v-if="errors.name">
+                            <small class="text-danger">{{ errors.name }}</small>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">이메일 주소 <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-2">
+                            <input type="email" class="form-control flex-grow-1" :class="{ 'is-invalid': errors.email }"
+                                   v-model="form.email" placeholder="이메일을 입력해 주세요">
+                            <button type="button" class="btn btn-primary text-nowrap px-3" @click="sendVerificationCode">
+                                {{ isCodeSent ? '인증코드 재발송' : '인증코드 발송' }}
+                            </button>
+                        </div>
+                        <small v-if="errors.email" class="text-danger">{{ errors.email }}</small>
+                    </div>
+
+                    <!-- Verification Code -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">인증코드 <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="d-flex gap-2 flex-grow-1 code-inputs-wrapper">
+                                <input v-for="(_, idx) in 6" :key="idx"
+                                       type="text" maxlength="1" inputmode="numeric"
+                                       class="form-control code-input text-center"
+                                       :class="{ 'is-invalid': errors.code }"
+                                       :value="form.verificationCode[idx]"
+                                       @input="onCodeInput(idx, $event)"
+                                       @keydown="onCodeKeydown(idx, $event)"
+                                       @paste.prevent="onCodePaste($event)">
+                            </div>
+                            <button type="button" class="btn btn-outline-secondary text-nowrap px-3" @click="verifyCode">확인</button>
+                        </div>
+                        <small v-if="isCodeSent && codeTimer > 0 && !isCodeVerified" class="text-secondary">
+                            이메일로 보내 드린 인증코드를 입력해 주세요 ({{ formattedTimer }})
+                        </small>
+                        <small v-if="errors.code" class="text-danger d-block">{{ errors.code }}</small>
+                        <small v-if="isCodeVerified" class="text-success d-block">
+                            <i class="bi bi-check-circle me-1"></i>인증이 완료되었습니다.
+                        </small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-medium">비밀번호 <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" :class="{ 'is-invalid': errors.password }"
+                               v-model="form.password" placeholder="최소 8자 이상 특수문자 기호를 포함해 주세요.">
+                        <small v-if="errors.password" class="text-danger">{{ errors.password }}</small>
+                    </div>
+
+                    <!-- Password Confirm -->
+                    <div class="mb-4">
+                        <label class="form-label small fw-medium">비밀번호 확인 <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" :class="{ 'is-invalid': errors.passwordConfirm }"
+                               v-model="form.passwordConfirm" placeholder="비밀번호를 다시 입력해 주세요.">
+                        <small v-if="errors.passwordConfirm" class="text-danger">{{ errors.passwordConfirm }}</small>
+                    </div>
+
+                    <!-- Agreements -->
+                    <div class="agreement-box mb-4" :class="{ 'agreement-error': errors.agreements }">
+                        <!-- Select All -->
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <input type="checkbox" class="form-check-input" id="agreeAll"
+                                   v-model="agreements.all" @change="toggleAll">
+                            <label class="form-check-label fw-semibold" for="agreeAll">전체 동의</label>
+                        </div>
+
+                        <!-- Individual -->
+                        <div class="d-flex flex-column gap-2 ps-1">
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms"
+                                       v-model="agreements.terms" @change="checkAll">
+                                <span class="agreement-badge required">필수</span>
+                                <a href="#" class="form-check-label flex-grow-1 small text-decoration-none text-dark" data-bs-toggle="modal" data-bs-target="#termsModal" @click.prevent>서비스 이용약관 동의</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" @click.prevent><i class="bi bi-chevron-right text-secondary small"></i></a>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="checkbox" class="form-check-input" id="agreePrivacy"
+                                       v-model="agreements.privacy" @change="checkAll">
+                                <span class="agreement-badge required">필수</span>
+                                <a href="#" class="form-check-label flex-grow-1 small text-decoration-none text-dark" data-bs-toggle="modal" data-bs-target="#privacyModal" @click.prevent>개인정보 처리방침 동의</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal" @click.prevent><i class="bi bi-chevron-right text-secondary small"></i></a>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="checkbox" class="form-check-input" id="agreeAge"
+                                       v-model="agreements.age" @change="checkAll">
+                                <span class="agreement-badge required">필수</span>
+                                <label class="form-check-label flex-grow-1 small" for="agreeAge">만 14세 이상입니다</label>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="checkbox" class="form-check-input" id="agreeMarketing"
+                                       v-model="agreements.marketing" @change="checkAll">
+                                <span class="agreement-badge optional">선택</span>
+                                <a href="#" class="form-check-label flex-grow-1 small text-decoration-none text-dark" data-bs-toggle="modal" data-bs-target="#marketingModal" @click.prevent>마케팅 정보 수신 동의</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#marketingModal" @click.prevent><i class="bi bi-chevron-right text-secondary small"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <small v-if="errors.agreements" class="text-danger d-block mb-3" style="margin-top: -0.75rem;">{{ errors.agreements }}</small>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn signup-submit-btn w-100" :disabled="isSubmitting">
+                        <i class="bi bi-info-circle me-2"></i>
+                        {{ isSubmitting ? '처리 중...' : '회원 가입하기' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Terms of Service Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="termsModalLabel">{{ legalTerms.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body legal-text">
+                <p v-if="legalTerms.effectiveDate" class="text-secondary small mb-4">시행일: {{ legalTerms.effectiveDate }}</p>
+                <div v-for="(section, idx) in legalTerms.sections" :key="'t'+idx" class="legal-section">
+                    <h6 class="fw-bold">{{ section.heading }}</h6>
+                    <p class="legal-content">{{ section.content }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="privacyModalLabel">{{ legalPrivacy.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body legal-text">
+                <p v-if="legalPrivacy.effectiveDate" class="text-secondary small mb-3">시행일: {{ legalPrivacy.effectiveDate }}</p>
+                <p v-if="legalPrivacy.intro" class="legal-content mb-4">{{ legalPrivacy.intro }}</p>
+                <div v-for="(section, idx) in legalPrivacy.sections" :key="'p'+idx" class="legal-section">
+                    <h6 class="fw-bold">{{ section.heading }}</h6>
+                    <p class="legal-content">{{ section.content }}</p>
+                    <template v-if="section.tables">
+                        <div v-for="(table, tIdx) in section.tables" :key="tIdx" class="legal-table-wrap mb-3">
+                            <p class="fw-semibold small mb-2">{{ table.caption }}</p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm small">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th v-for="(header, hIdx) in table.headers" :key="hIdx">{{ header }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(row, rIdx) in table.rows" :key="rIdx">
+                                            <td v-for="(cell, cIdx) in row" :key="cIdx">{{ cell }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Marketing Consent Modal -->
+<div class="modal fade" id="marketingModal" tabindex="-1" aria-labelledby="marketingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="marketingModalLabel">{{ legalMarketing.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body legal-text">
+                <div v-for="(section, idx) in legalMarketing.sections" :key="'m'+idx" class="legal-section">
+                    <h6 class="fw-bold">{{ section.heading }}</h6>
+                    <p class="legal-content">{{ section.content }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Verification Code Sent Modal -->
+<div class="signup-modal-overlay" v-if="showCodeModal" @click.self="showCodeModal = false">
+    <div class="signup-modal">
+        <div class="text-center">
+            <div class="signup-modal-icon mb-3">
+                <i class="bi bi-envelope-check"></i>
+            </div>
+            <p class="fw-medium mb-1">이메일로 인증코드가 발송되었습니다.</p>
+            <p class="text-secondary small mb-0">3분내 인증코드를 등록해 주세요</p>
+            <button class="btn btn-primary w-100 mt-4" @click="openVerifyEmail">확인</button>
+        </div>
+    </div>
+</div>

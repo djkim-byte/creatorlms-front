@@ -1,0 +1,94 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8 col-xl-7">
+
+
+            <!-- Change Billing Email Card -->
+            <div class="account-section mb-5">
+                <div class="text-center mb-5">
+                    <h4 class="fw-bold mb-2">결제 이메일 변경</h4>
+                    <p class="text-secondary mb-0">다음 결제 이메일부터 변경된 이메일로 결제 이메일이 발송됩니다.</p>
+                </div>
+
+                <form @submit.prevent="handleSubmit" class="mx-auto" style="max-width: 480px;">
+                    <!-- Current Email -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">현재 이메일 주소 <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" :class="{ 'is-invalid': errors.currentEmail }"
+                               v-model="form.currentEmail" placeholder="이메일을 입력해 주세요">
+                        <small v-if="errors.currentEmail" class="text-danger">{{ errors.currentEmail }}</small>
+                    </div>
+
+                    <!-- New Email -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">변경할 이메일 주소 <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-2">
+                            <input type="email" class="form-control flex-grow-1" :class="{ 'is-invalid': errors.newEmail }"
+                                   v-model="form.newEmail" placeholder="이메일을 입력해 주세요">
+                            <button type="button" class="btn btn-primary text-nowrap px-3" @click="sendVerificationCode">
+                                {{ isCodeSent ? '인증코드 재발송' : '인증코드 발송' }}
+                            </button>
+                        </div>
+                        <small v-if="errors.newEmail" class="text-danger">{{ errors.newEmail }}</small>
+                    </div>
+
+                    <!-- Verification Code -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">인증코드 <span class="text-danger">*</span></label>
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="d-flex gap-2 flex-grow-1 code-inputs-wrapper">
+                                <input v-for="(_, idx) in 6" :key="idx"
+                                       type="text" maxlength="1" inputmode="numeric"
+                                       class="form-control code-input text-center"
+                                       :class="{ 'is-invalid': errors.code }"
+                                       :value="form.verificationCode[idx]"
+                                       @input="onCodeInput(idx, $event)"
+                                       @keydown="onCodeKeydown(idx, $event)"
+                                       @paste.prevent="onCodePaste($event)">
+                            </div>
+                            <button type="button" class="btn btn-outline-secondary text-nowrap px-3" @click="verifyCode">확인</button>
+                        </div>
+                        <small v-if="isCodeSent && codeTimer > 0 && !isCodeVerified" class="text-secondary">
+                            이메일로 보내 드린 인증코드를 입력해 주세요 ({{ formattedTimer }})
+                        </small>
+                        <small v-if="errors.code" class="text-danger d-block">{{ errors.code }}</small>
+                        <small v-if="isCodeVerified" class="text-success d-block">
+                            <i class="bi bi-check-circle me-1"></i>인증이 완료되었습니다.
+                        </small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-5">
+                        <label class="form-label fw-semibold">비밀번호 <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" :class="{ 'is-invalid': errors.password }"
+                               v-model="form.password" placeholder="로그인 비밀번호를 입력해 주세요.">
+                        <small v-if="errors.password" class="text-danger">{{ errors.password }}</small>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-semibold" :disabled="isSubmitting">
+                        <i class="bi bi-info-circle me-2"></i>
+                        {{ isSubmitting ? '처리 중...' : '결제 이메일 변경하기' }}
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Verification Code Sent Modal -->
+<div class="account-modal-overlay" v-if="showCodeModal" @click.self="showCodeModal = false">
+    <div class="account-modal">
+        <div class="text-center">
+            <div class="account-modal-icon mb-4">
+                <i class="bi bi-envelope-check"></i>
+            </div>
+            <p class="fw-medium mb-1">이메일로 인증코드가 발송되었습니다.</p>
+            <p class="text-secondary small mb-4">3분내 인증코드를 등록해 주세요</p>
+            <button type="button" class="btn btn-dark w-100 py-2" @click="openVerifyEmail">확인</button>
+        </div>
+    </div>
+</div>

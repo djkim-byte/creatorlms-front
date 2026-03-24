@@ -1,0 +1,120 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-4 py-lg-5">
+    <div class="row g-4 justify-content-center">
+        <!-- Selected Plan -->
+        <div class="col-12 col-lg-5">
+            <div class="checkout-card">
+                <h3 class="text-center fw-bold mb-4">선택된 플랜</h3>
+
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <h4 class="fw-bold mb-1">{{ currentPlan.name }}</h4>
+                        <p class="text-secondary small mb-0">{{ currentPlan.description }}</p>
+                    </div>
+                    <span class="text-danger fw-semibold">플랫폼 수수료 <span class="fs-5">{{ currentPlan.feeRate }}</span></span>
+                </div>
+
+                <hr class="my-3">
+
+                <!-- Subscription Info -->
+                <div class="checkout-subscription-info mb-3">
+                    <div class="checkout-subscription-item">
+                        <p class="text-secondary small mb-1">구독 주기</p>
+                        <p class="fw-semibold mb-0">{{ billingCycle === 'annual' ? '연간' : '월간' }} 자동결제</p>
+                    </div>
+                    <div class="checkout-subscription-item">
+                        <p class="text-secondary small mb-1">구독 기간</p>
+                        <p class="fw-semibold mb-0">{{ subscriptionStart }} - {{ subscriptionEnd }}</p>
+                    </div>
+                    <div class="checkout-subscription-item">
+                        <p class="text-secondary small mb-1">다음 결제일</p>
+                        <p class="fw-semibold mb-0">{{ nextPaymentDate }}</p>
+                    </div>
+                </div>
+
+                <p class="text-center text-secondary small mb-0">필요하실 때 언제든지 플랜 업그레이드가 가능합니다!</p>
+
+                <hr class="my-4">
+
+                <!-- Payment Amount -->
+                <h5 class="text-center fw-bold mb-4">결제 예정 금액</h5>
+                <p class="text-center mb-2">
+                    <span class="checkout-price">{{ formatPrice(totalPriceWithVat) }}</span>
+                    <span class="checkout-price-unit">원</span>
+                </p>
+                <p class="text-center fw-semibold text-secondary mb-0">VAT 포함</p>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="col-12 col-lg-5">
+            <div class="checkout-card">
+                <h3 class="text-center fw-bold mb-2">결제하기</h3>
+                <p class="text-center text-secondary mb-4">여러분의 서비스 성공을 기원합니다!!</p>
+
+                <!-- Payment Info -->
+                <h5 class="fw-bold mb-3">결제 정보 <span class="text-danger">*</span></h5>
+
+                <div class="checkout-card-box mb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-3">
+                            <i class="bi bi-credit-card-2-front text-secondary fs-4"></i>
+                            <span class="text-secondary" v-if="!hasCard">등록된 카드가 없습니다</span>
+                            <span class="fw-medium" v-else>카드 등록 완료</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill" @click="registerCard">
+                            카드 등록하기 <i class="bi bi-plus-circle ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Purchase Notes -->
+                <h5 class="fw-bold mb-3">유료 플랜 시 유의 사항</h5>
+
+                <div class="checkout-notice-box mb-3" v-if="paymentNotice">
+                    <h6 class="fw-bold small mb-2">{{ paymentNotice.title }}</h6>
+                    <ul class="small text-secondary mb-0 ps-3">
+                        <li v-for="(item, idx) in paymentNotice.items" :key="idx" class="mb-1" v-html="item.replace(/\n/g, '<br>')"></li>
+                    </ul>
+                </div>
+
+                <!-- Agreement -->
+                <div class="d-flex align-items-start gap-2 mb-4">
+                    <input type="checkbox" class="form-check-input mt-1" id="agreeCheckout" v-model="agreeTerms">
+                    <label class="form-check-label small" for="agreeCheckout">
+                        쏠쏠 <a href="#" class="fw-bold text-primary text-decoration-underline" data-bs-toggle="modal" data-bs-target="#paidTermsModal" @click.prevent>유료약정상품 구매 약관</a>에 동의합니다.
+                    </label>
+                </div>
+
+                <!-- Submit -->
+                <button class="btn signup-submit-btn w-100" :disabled="isSubmitting || !agreeTerms" @click="handleCheckout">
+                    <i class="bi bi-info-circle me-2"></i>
+                    {{ isSubmitting ? '결제 처리 중...' : '결제하기' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Paid Terms Modal -->
+<div class="modal fade" id="paidTermsModal" tabindex="-1" aria-labelledby="paidTermsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="paidTermsModalLabel">{{ paidTerms.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body legal-text">
+                <p v-if="paidTerms.effectiveDate" class="text-secondary small mb-4">시행일: {{ paidTerms.effectiveDate }}</p>
+                <div v-for="(section, idx) in paidTerms.sections" :key="'pt'+idx" class="legal-section">
+                    <h6 class="fw-bold">{{ section.heading }}</h6>
+                    <p class="legal-content">{{ section.content }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

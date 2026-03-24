@@ -1,0 +1,68 @@
+<div class="error-page">
+    <div class="container">
+        <div class="error-page-content text-center">
+            <!-- Logo -->
+            <div class="mb-4">
+                <a href="#/home" class="text-decoration-none d-inline-flex align-items-center gap-2">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#06b6d4"/>
+                                <stop offset="100%" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M6 18 C10 10, 14 26, 18 18 C22 10, 26 26, 30 18" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <path d="M6 13 C10 5, 14 21, 18 13 C22 5, 26 21, 30 13" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                        <path d="M6 23 C10 15, 14 31, 18 23 C22 15, 26 31, 30 23" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.4"/>
+                    </svg>
+                    <div>
+                        <div class="fw-bold text-dark lh-1" style="font-size: 1.25rem;">쏠쏠</div>
+                        <div class="text-secondary" style="font-size: 0.55rem; letter-spacing: 0.1em;">CREATOR PLATFORM</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Illustration -->
+            <div class="error-page-illustration mx-auto mb-5">
+                <svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background circle -->
+                    <circle cx="100" cy="80" r="45" fill="#c4b5fd" opacity="0.3"/>
+
+                    <!-- Cloud -->
+                    <ellipse cx="100" cy="55" rx="30" ry="18" fill="white" stroke="#a78bfa" stroke-width="1.5"/>
+                    <ellipse cx="80" cy="60" rx="18" ry="12" fill="white" stroke="#a78bfa" stroke-width="1.5"/>
+                    <ellipse cx="120" cy="60" rx="18" ry="12" fill="white" stroke="#a78bfa" stroke-width="1.5"/>
+                    <ellipse cx="100" cy="62" rx="28" ry="10" fill="white"/>
+
+                    <!-- Disconnected signal / X mark -->
+                    <line x1="92" y1="46" x2="108" y2="62" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="108" y1="46" x2="92" y2="62" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+
+                    <!-- Signal waves -->
+                    <path d="M60 95 Q65 85, 70 95" stroke="#ddd6fe" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <path d="M130 95 Q135 85, 140 95" stroke="#ddd6fe" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+                    <!-- Device -->
+                    <rect x="82" y="90" width="36" height="24" rx="4" fill="white" stroke="#a78bfa" stroke-width="1.5"/>
+                    <rect x="86" y="94" width="28" height="14" rx="2" fill="#f5f3ff"/>
+                    <rect x="96" y="114" width="8" height="4" fill="#a78bfa"/>
+                    <rect x="90" y="118" width="20" height="3" rx="1.5" fill="#a78bfa"/>
+
+                    <!-- Broken connection line -->
+                    <line x1="100" y1="72" x2="100" y2="82" stroke="#ddd6fe" stroke-width="2" stroke-dasharray="3 3"/>
+
+                    <!-- Decorations -->
+                    <circle cx="50" cy="55" r="5" fill="#ddd6fe"/>
+                    <circle cx="155" cy="50" r="4" fill="#ede9fe"/>
+                    <circle cx="45" cy="115" r="3" fill="#ede9fe"/>
+                </svg>
+            </div>
+
+            <h1 class="error-page-title">"네트워크에 접속할 수 없어요"</h1>
+            <p class="error-page-desc">
+                네트워크 연결 상태를 확인해주세요
+            </p>
+            <button type="button" class="btn error-page-btn" @click="retry">재시도하기</button>
+        </div>
+    </div>
+</div>

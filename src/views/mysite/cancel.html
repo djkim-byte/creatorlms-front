@@ -1,0 +1,56 @@
+<div style="background: var(--gray-50); min-height: 100%;">
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-7">
+            <div class="checkout-card text-center py-5">
+                <!-- Fail Icon -->
+                <div class="upgrade-fail-icon mx-auto mb-4">
+                    <i class="bi bi-x-lg"></i>
+                </div>
+
+                <h3 class="fw-bold mb-1">구독 취소가 아쉬워요!</h3>
+                <h3 class="fw-bold mb-4">기간 만료시까지 사용하실 수 있어요!</h3>
+
+                <!-- Cancel Info -->
+                <div class="cancel-info-box mx-auto mb-4">
+                    <ul class="text-start mb-0 ps-3">
+                        <li class="mb-2"><span class="fw-bold">서비스 이용:</span> 구독 기간 종료일까지 계속 이용 가능</li>
+                        <li class="mb-2"><span class="fw-bold">자동 갱신:</span> 비활성화 (다음 결제 없음)</li>
+                        <li class="mb-2"><span class="fw-bold">카드 정보:</span> 마지막 청구 완료 후 자동 삭제<br><span class="ps-5 ms-4 text-secondary" style="font-size: 0.85rem;">단, 다른 결제 사용 카드의 경우는 유지</span></li>
+                        <li><span class="fw-bold">재가입:</span> 언제든지 가능</li>
+                    </ul>
+                </div>
+
+                <p class="small mb-4">혹시 궁금하신 점이 있으시면 <a href="#" class="fw-bold text-danger text-decoration-underline" @click.prevent>문의하기</a>를 이용해 주세요</p>
+
+                <!-- Action Buttons -->
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center" style="max-width: 420px; margin: 0 auto;">
+                    <button class="btn welcome-outline-btn flex-fill" @click="goBack">
+                        취소
+                    </button>
+                    <button class="btn welcome-primary-btn flex-fill" @click="confirmCancel">
+                        구독 취소하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 구독 취소 완료 모달 -->
+<div class="cancel-modal-overlay" v-if="showConfirmModal" @click.self="showConfirmModal = false">
+    <div class="cancel-modal">
+        <button class="cancel-modal-close" @click="showConfirmModal = false">
+            <i class="bi bi-x-lg"></i>
+        </button>
+        <div class="text-center">
+            <div class="upgrade-fail-icon mx-auto mb-4">
+                <i class="bi bi-x-lg"></i>
+            </div>
+            <h3 class="fw-bold mb-3">구독 취소가 완료되었습니다</h3>
+            <p class="text-secondary mb-4">마이페이지 > 이용상품정보에서 확인하실 수 있습니다</p>
+            <button class="btn welcome-primary-btn w-100" @click="goToMysite">확인</button>
+        </div>
+    </div>
+</div>
+</div>
