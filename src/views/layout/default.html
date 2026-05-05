@@ -1,118 +1,65 @@
 <div class="landing-layout">
     <!-- GNB Header -->
-    <header class="landing-gnb" :class="{ 'gnb-scrolled': isScrolled }">
-        <div class="container">
-            <div class="d-flex align-items-center justify-content-between">
+    <header class="landing-gnb dcd-gnb" :class="{ 'gnb-scrolled': isScrolled }">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="d-flex align-items-center justify-content-between dcd-gnb-row">
                 <!-- Logo -->
-                <a href="#/home" class="gnb-logo text-decoration-none d-flex align-items-center gap-2">
-                    <div class="gnb-logo-icon">
-                        <span class="logo-icon-bar logo-icon-bar-1"></span>
-                        <span class="logo-icon-bar logo-icon-bar-2"></span>
-                        <span class="logo-icon-bar logo-icon-bar-3"></span>
-                    </div>
-                    <span class="gnb-logo-text">DJ테크트리</span>
+                <a href="#/home" class="dcd-brand text-decoration-none d-inline-flex align-items-center" aria-label="DcD 홈">
+                    <span class="dcd-brand-mark" aria-hidden="true">
+                        <span class="dcd-d">D</span><span class="dcd-c">c</span><span class="dcd-d">D</span>
+                    </span>
                 </a>
 
                 <!-- Center Nav (desktop) -->
-                <nav class="d-none d-lg-flex align-items-center gap-0 mx-auto">
-                    <a class="gnb-nav-link" href="#">회사소개</a>
-                    <a class="gnb-nav-link" :class="{ active: currentRoute === '/home' }" href="#/home">일반강의</a>
-                    <a class="gnb-nav-link" href="#">라이브강의</a>
-                    <a class="gnb-nav-link" href="#">화상강의</a>
-                    <a class="gnb-nav-link" href="#">패키지 상품</a>
-                    <a class="gnb-nav-link" href="#">디지털 상품</a>
-                    <a class="gnb-nav-link" href="#">프리미엄 콘텐츠</a>
-                    <a class="gnb-nav-link" href="#">멤버십 상품</a>
-                    <a class="gnb-nav-link" href="#">공지사항</a>
-                    <a class="gnb-nav-link" href="#/inquiry/inquiry">1:1문의</a>
+                <nav class="d-none d-lg-flex align-items-center gap-1 mx-auto" aria-label="주 메뉴">
+                    <a class="dcd-nav-link" :class="{ active: isActive('/drone') }" href="#/drone">DRONE</a>
+                    <a class="dcd-nav-link" :class="{ active: isActive('/c-drone') }" href="#/c-drone">C-DRONE</a>
+                    <a class="dcd-nav-link" :class="{ active: isActive('/tactics') }" href="#/tactics">TACTICS</a>
+                    <a class="dcd-nav-link" :class="{ active: isActive('/others') }" href="#/others">OTHERS</a>
                 </nav>
 
-                <!-- Right Actions -->
-                <div class="d-flex align-items-center gap-3">
-                    <!-- Notification Bell -->
-                    <div class="gnb-notification d-none d-lg-block position-relative cursor-pointer">
-                        <i class="bi bi-bell-fill" style="font-size: 1.25rem; color: var(--gray-500);"></i>
-                        <span v-if="notificationCount > 0" class="gnb-notification-badge">{{ notificationCount }}</span>
+                <!-- Right Actions (desktop) -->
+                <div class="d-none d-lg-flex align-items-center gap-3">
+                    <div class="dcd-lang" role="group" aria-label="Language">
+                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'ko' }" @click="setLang('ko')">한국어</button>
+                        <span class="dcd-lang-sep" aria-hidden="true">/</span>
+                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'en' }" @click="setLang('en')">English</button>
                     </div>
-
-                    <!-- Not logged in -->
-                    <a v-if="!isLoggedIn" href="#/login/login" class="gnb-user-icon-btn d-none d-lg-flex">
-                        <i class="bi bi-person-circle" style="font-size: 1.75rem; color: var(--gray-400);"></i>
-                    </a>
-
-                    <!-- Logged in user -->
-                    <div v-if="isLoggedIn" class="dropdown d-none d-lg-block">
-                        <a class="gnb-user-icon-btn d-flex align-items-center text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="gnb-avatar">
-                                <i class="bi bi-person-fill"></i>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end gnb-user-dropdown">
-                            <li class="gnb-user-dropdown-header">
-                                <a href="#/account/account" class="d-flex align-items-center justify-content-between text-decoration-none px-3 py-3">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="gnb-avatar-sm">
-                                            <span class="fw-bold" style="color: var(--primary-color);">G</span>
-                                        </div>
-                                        <span class="fw-semibold text-dark">{{ userName }}</span>
-                                    </div>
-                                    <i class="bi bi-chevron-right text-secondary" style="font-size: 0.75rem;"></i>
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider my-0"></li>
-                            <li>
-                                <a class="dropdown-item py-2 px-3" href="#">
-                                    <i class="bi bi-grid me-2 text-secondary"></i>관리자 페이지 바로가기
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item py-2 px-3" href="#" @click.prevent="goToMySite">
-                                    <i class="bi bi-bag me-2 text-secondary"></i>내 상품
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item py-2 px-3" href="#">
-                                    <i class="bi bi-ticket-perforated me-2 text-secondary"></i>쿠폰 관리
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider my-0"></li>
-                            <li>
-                                <a class="dropdown-item py-2 px-3" href="#" @click.prevent="handleLogout">
-                                    <i class="bi bi-box-arrow-right me-2 text-secondary"></i>로그아웃
-                                </a>
-                            </li>
-                        </ul>
+                    <span class="dcd-divider" aria-hidden="true"></span>
+                    <div class="dcd-auth">
+                        <a href="#/login" class="dcd-auth-link">로그인</a>
+                        <span class="dcd-auth-sep" aria-hidden="true">|</span>
+                        <a href="#/signup" class="dcd-auth-link dcd-auth-cta">회원가입</a>
                     </div>
-
-                    <!-- Mobile toggle -->
-                    <button class="btn btn-link text-dark p-1 d-lg-none" type="button" @click="toggleMobileMenu">
-                        <i class="bi" :class="mobileMenuOpen ? 'bi-x-lg' : 'bi-list'" style="font-size: 1.5rem;"></i>
-                    </button>
                 </div>
+
+                <!-- Mobile toggle -->
+                <button class="dcd-mobile-toggle d-lg-none" type="button" @click="toggleMobileMenu" :aria-expanded="mobileMenuOpen" aria-label="메뉴 열기">
+                    <i class="bi" :class="mobileMenuOpen ? 'bi-x-lg' : 'bi-list'"></i>
+                </button>
             </div>
         </div>
 
-        <!-- Mobile Nav -->
-        <div class="landing-mobile-nav" v-show="mobileMenuOpen">
-            <div class="container py-3">
-                <div class="d-flex flex-column gap-1">
-                    <a class="gnb-mobile-link" href="#">회사소개</a>
-                    <a class="gnb-mobile-link" href="#/home">일반강의</a>
-                    <a class="gnb-mobile-link" href="#">라이브강의</a>
-                    <a class="gnb-mobile-link" href="#">화상강의</a>
-                    <a class="gnb-mobile-link" href="#">패키지 상품</a>
-                    <a class="gnb-mobile-link" href="#">디지털 상품</a>
-                    <a class="gnb-mobile-link" href="#">프리미엄 콘텐츠</a>
-                    <a class="gnb-mobile-link" href="#">멤버십 상품</a>
-                    <a class="gnb-mobile-link" href="#">공지사항</a>
-                    <a class="gnb-mobile-link" href="#/inquiry/inquiry">1:1문의</a>
-                    <hr class="my-2">
-                    <a v-if="!isLoggedIn" href="#/login/login" class="gnb-mobile-link">로그인</a>
-                    <template v-if="isLoggedIn">
-                        <a class="gnb-mobile-link" href="#" @click.prevent="goToMySite">내 상품</a>
-                        <a class="gnb-mobile-link" href="#/account/account">계정관리</a>
-                        <a class="gnb-mobile-link" href="#" @click.prevent="handleLogout">로그아웃</a>
-                    </template>
+        <!-- Mobile Slide-down Nav -->
+        <div class="dcd-mobile-nav" v-show="mobileMenuOpen">
+            <div class="container-fluid px-3 py-3">
+                <nav class="d-flex flex-column" aria-label="모바일 메뉴">
+                    <a class="dcd-mobile-link" :class="{ active: isActive('/drone') }" href="#/drone" @click="closeMobileMenu">DRONE</a>
+                    <a class="dcd-mobile-link" :class="{ active: isActive('/c-drone') }" href="#/c-drone" @click="closeMobileMenu">C-DRONE</a>
+                    <a class="dcd-mobile-link" :class="{ active: isActive('/tactics') }" href="#/tactics" @click="closeMobileMenu">TACTICS</a>
+                    <a class="dcd-mobile-link" :class="{ active: isActive('/others') }" href="#/others" @click="closeMobileMenu">OTHERS</a>
+                </nav>
+                <div class="dcd-mobile-actions">
+                    <div class="dcd-lang">
+                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'ko' }" @click="setLang('ko')">한국어</button>
+                        <span class="dcd-lang-sep" aria-hidden="true">/</span>
+                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'en' }" @click="setLang('en')">English</button>
+                    </div>
+                    <div class="dcd-auth">
+                        <a href="#/login" class="dcd-auth-link" @click="closeMobileMenu">로그인</a>
+                        <span class="dcd-auth-sep" aria-hidden="true">|</span>
+                        <a href="#/signup" class="dcd-auth-link dcd-auth-cta" @click="closeMobileMenu">회원가입</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,144 +71,18 @@
     </main>
 
     <!-- Footer -->
-    <footer class="landing-footer">
-        <div class="container">
-            <!-- 상단: 로고 + 약관 + SNS -->
-            <div class="d-flex flex-wrap align-items-center justify-content-between py-4 border-bottom border-secondary border-opacity-25">
-                <div class="d-flex align-items-center gap-4">
-                    <a href="#/home" class="gnb-logo text-decoration-none d-flex align-items-center gap-2">
-                        <div class="gnb-logo-icon gnb-logo-icon-footer">
-                            <span class="logo-icon-bar logo-icon-bar-1"></span>
-                            <span class="logo-icon-bar logo-icon-bar-2"></span>
-                            <span class="logo-icon-bar logo-icon-bar-3"></span>
-                        </div>
-                        <span class="gnb-logo-text text-white">DJ테크트리</span>
-                    </a>
-                    <div class="d-flex gap-3">
-                        <a href="#/terms/terms" class="footer-policy-link">이용약관</a>
-                        <span class="text-secondary">|</span>
-                        <a href="#/terms/privacy" class="footer-policy-link fw-bold">개인정보처리방침</a>
-                    </div>
-                </div>
-                <div class="d-flex gap-3 mt-3 mt-md-0">
-                    <a href="#" class="footer-social-icon"><i class="bi bi-youtube"></i></a>
-                    <a href="#" class="footer-social-icon"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="footer-social-icon"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="footer-social-icon"><i class="bi bi-twitter-x"></i></a>
-                </div>
-            </div>
-
-            <!-- 중단: 사업자 정보 -->
-            <div class="py-4 border-bottom border-secondary border-opacity-25">
-                <div class="footer-company-info">
-                    <p class="mb-2">
-                        <strong>대표자</strong> 홍길동 &nbsp;&nbsp;&nbsp;
-                        <strong>사업자 등록번호</strong> 119-86-39050 <a href="#" class="footer-info-link">[사업자정보확인]</a> &nbsp;&nbsp;&nbsp;
-                        <strong>통신판매업 신고번호</strong> 동작 제02-680-078호
-                    </p>
-                    <p class="mb-2">
-                        <strong>주소</strong> 서울특별시 구로구 디지털로 288, 1701호 &nbsp;&nbsp;&nbsp;
-                        <strong>개인정보책임자</strong> 홍길동
-                    </p>
-                    <p class="mb-3">
-                        <strong>이메일</strong> malgn@malgnsoft.com &nbsp;&nbsp;&nbsp;
-                        <strong>전화번호</strong> 02-834-3847 &nbsp;&nbsp;&nbsp;
-                        <strong>팩스</strong> 070-3482-7216
-                    </p>
-                    <p class="mb-0 footer-notice">추가 문의사항은 1:1 문의를 이용하시거나 이메일로 보내주세요.</p>
-                </div>
-            </div>
-
-            <!-- 하단: 저작권 -->
-            <div class="py-4">
-                <p class="footer-copyright mb-1">Copyright &copy; 맑은소프트. All Rights Reserved. Hosting by MALGNSOFT Corp.</p>
-                <p class="footer-copyright mb-0">회원 정보의 관리 및 보호에 대한 책임은 (주)맑은소프트에 있으며, 상품의 내용·정보·거래에 관한 모든 책임은 해당 판매자에게 있습니다.</p>
+    <footer class="dcd-footer">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="dcd-footer-row">
+                <a href="#/home" class="dcd-brand text-decoration-none d-inline-flex align-items-center" aria-label="DcD 홈">
+                    <span class="dcd-brand-mark dcd-brand-mark-sm" aria-hidden="true">
+                        <span class="dcd-d">D</span><span class="dcd-c">c</span><span class="dcd-d">D</span>
+                    </span>
+                </a>
+                <p class="dcd-copyright mb-0">
+                    Copyright <span class="dcd-copyright-mark" aria-label="copyright">&copy;</span> Drone &amp; Counter-Drone, All Rights Reserved.
+                </p>
             </div>
         </div>
     </footer>
-
-    <!-- Terms of Service Modal -->
-    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="termsModalLabel">{{ legalTerms.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body legal-text">
-                    <p v-if="legalTerms.effectiveDate" class="text-secondary small mb-4">시행일: {{ legalTerms.effectiveDate }}</p>
-                    <div v-for="(section, idx) in legalTerms.sections" :key="idx" class="legal-section">
-                        <h6 class="fw-bold">{{ section.heading }}</h6>
-                        <p class="legal-content">{{ section.content }}</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Privacy Policy Modal -->
-    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="privacyModalLabel">{{ legalPrivacy.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body legal-text">
-                    <p v-if="legalPrivacy.effectiveDate" class="text-secondary small mb-3">시행일: {{ legalPrivacy.effectiveDate }}</p>
-                    <p v-if="legalPrivacy.intro" class="legal-content mb-4">{{ legalPrivacy.intro }}</p>
-                    <div v-for="(section, idx) in legalPrivacy.sections" :key="idx" class="legal-section">
-                        <h6 class="fw-bold">{{ section.heading }}</h6>
-                        <p class="legal-content">{{ section.content }}</p>
-                        <template v-if="section.tables">
-                            <div v-for="(table, tIdx) in section.tables" :key="tIdx" class="legal-table-wrap mb-3">
-                                <p class="fw-semibold small mb-2">{{ table.caption }}</p>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-sm small">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th v-for="(header, hIdx) in table.headers" :key="hIdx">{{ header }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(row, rIdx) in table.rows" :key="rIdx">
-                                                <td v-for="(cell, cIdx) in row" :key="cIdx">{{ cell }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Marketing Consent Modal -->
-    <div class="modal fade" id="marketingModal" tabindex="-1" aria-labelledby="marketingModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="marketingModalLabel">{{ legalMarketing.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body legal-text">
-                    <div v-for="(section, idx) in legalMarketing.sections" :key="idx" class="legal-section">
-                        <h6 class="fw-bold">{{ section.heading }}</h6>
-                        <p class="legal-content">{{ section.content }}</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">확인</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
