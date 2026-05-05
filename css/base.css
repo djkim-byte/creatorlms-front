@@ -386,6 +386,33 @@ body {
     color: #1d4ed8;
 }
 
+/* 이미지 로고 */
+.dcd-brand-img {
+    display: block;
+    height: 44px;
+    width: auto;
+    max-width: 100%;
+    transition: opacity 0.2s;
+}
+
+.dcd-brand:hover .dcd-brand-img {
+    opacity: 0.85;
+}
+
+.dcd-brand-img-sm {
+    height: 36px;
+}
+
+@media (max-width: 768px) {
+    .dcd-brand-img {
+        height: 32px;
+    }
+
+    .dcd-brand-img-sm {
+        height: 28px;
+    }
+}
+
 /* Desktop nav */
 .dcd-nav-link {
     display: inline-flex;
