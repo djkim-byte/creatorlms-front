@@ -386,30 +386,43 @@ body {
     color: #1d4ed8;
 }
 
-/* 이미지 로고 */
-.dcd-brand-img {
-    display: block;
-    height: 44px;
-    width: auto;
-    max-width: 100%;
-    transition: opacity 0.2s;
+/* 스크립트 텍스트 로고 (Drone & C-drone) */
+.dcd-brand-script {
+    font-family: "Pacifico", "Sacramento", "Kaushan Script", cursive;
+    font-size: 1.85rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--dcd-ink);
+    letter-spacing: 0.005em;
+    white-space: nowrap;
+    transition: color 0.2s;
 }
 
-.dcd-brand:hover .dcd-brand-img {
-    opacity: 0.85;
+.dcd-brand-amp {
+    color: var(--dcd-blue);
+    margin: 0 0.05em;
+    transition: color 0.2s;
 }
 
-.dcd-brand-img-sm {
-    height: 36px;
+.dcd-brand:hover .dcd-brand-script {
+    color: #1e293b;
+}
+
+.dcd-brand:hover .dcd-brand-amp {
+    color: #1d4ed8;
+}
+
+.dcd-brand-script-sm {
+    font-size: 1.55rem;
 }
 
 @media (max-width: 768px) {
-    .dcd-brand-img {
-        height: 32px;
+    .dcd-brand-script {
+        font-size: 1.45rem;
     }
 
-    .dcd-brand-img-sm {
-        height: 28px;
+    .dcd-brand-script-sm {
+        font-size: 1.3rem;
     }
 }
 
@@ -581,6 +594,22 @@ body {
 
 .dcd-brand-mark-sm .dcd-c {
     font-size: 1.1rem;
+}
+
+.dcd-footer .dcd-brand-script {
+    color: #ffffff;
+}
+
+.dcd-footer .dcd-brand-amp {
+    color: #60a5fa;
+}
+
+.dcd-footer .dcd-brand:hover .dcd-brand-script {
+    color: #e2e8f0;
+}
+
+.dcd-footer .dcd-brand:hover .dcd-brand-amp {
+    color: #93c5fd;
 }
 
 .dcd-copyright {
