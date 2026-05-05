@@ -13,7 +13,7 @@
                             <span class="dcd-meta-sep">·</span>
                             <span>{{ hero.read }}</span>
                         </div>
-                        <a :href="hero.href" class="dcd-hero-cta">
+                        <a :href="hero.href" class="dcd-hero-cta" @click="guardNav($event)">
                             자세히 보기 <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
@@ -39,13 +39,13 @@
             <div class="row g-4 dcd-card-grid">
                 <div v-for="item in sortedPosts" :key="item.id" class="col-12 col-md-6 col-lg-4">
                     <article class="dcd-card">
-                        <a :href="item.href" class="dcd-card-thumb-link" :aria-label="item.title">
+                        <a :href="item.href" class="dcd-card-thumb-link" :aria-label="item.title" @click="guardNav($event)">
                             <div class="dcd-card-thumb" :style="{ backgroundImage: `url(${item.image})` }"></div>
                         </a>
                         <div class="dcd-card-body">
                             <span class="dcd-card-tag">{{ item.category }}</span>
                             <h3 class="dcd-card-title">
-                                <a :href="item.href">{{ item.title }}</a>
+                                <a :href="item.href" @click="guardNav($event)">{{ item.title }}</a>
                             </h3>
                             <p class="dcd-card-desc">{{ item.desc }}</p>
                             <div class="dcd-card-meta">

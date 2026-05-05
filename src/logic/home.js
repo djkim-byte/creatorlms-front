@@ -4,6 +4,7 @@ export default {
 
     data() {
         return {
+            isLoggedIn: false,
             hero: {
                 tag: 'DRONE',
                 title: 'Skyrider X9: 차세대 전술 정찰 드론의 표준',
@@ -141,6 +142,18 @@ export default {
     computed: {
         sortedPosts() {
             return [...this.posts].sort((a, b) => b.date.localeCompare(a.date));
+        }
+    },
+
+    mounted() {
+        this.isLoggedIn = !!localStorage.getItem('auth_token');
+    },
+
+    methods: {
+        guardNav(event) {
+            if (this.isLoggedIn) return;
+            event.preventDefault();
+            this.navigateTo('/login/login');
         }
     }
 };

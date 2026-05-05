@@ -438,6 +438,21 @@ body {
     font-size: 0.875rem;
 }
 
+.dcd-auth-user {
+    color: var(--dcd-ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.dcd-auth-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: inherit;
+}
+
 /* Mobile toggle */
 .dcd-mobile-toggle {
     background: none;

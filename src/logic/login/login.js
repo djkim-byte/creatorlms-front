@@ -11,18 +11,7 @@ export default {
             showPassword: false,
             rememberEmail: false,
             errors: {},
-            isSubmitting: false,
-
-            // 임시 테스트 계정
-            testAccount: {
-                email: 'test@solsol.so',
-                password: 'test1234!',
-                user: {
-                    id: 1,
-                    name: '테스트 사용자',
-                    email: 'test@solsol.so'
-                }
-            }
+            isSubmitting: false
         };
     },
 
@@ -56,36 +45,23 @@ export default {
             this.isSubmitting = true;
 
             try {
-                // 이메일 기억하기
                 if (this.rememberEmail) {
                     localStorage.setItem('remembered_email', this.form.email);
                 } else {
                     localStorage.removeItem('remembered_email');
                 }
 
-                // TODO: 실제 API 호출로 교체
-                // const response = await this.$api.post('/api/auth/login', {
-                //     email: this.form.email,
-                //     password: this.form.password
-                // });
-                // const { token, user } = response;
+                await new Promise(resolve => setTimeout(resolve, 300));
 
-                // 임시: 테스트 계정 검증
-                await new Promise(resolve => setTimeout(resolve, 500));
-
-                if (this.form.email !== this.testAccount.email || this.form.password !== this.testAccount.password) {
-                    this.errors.password = '이메일 또는 비밀번호가 올바르지 않습니다.';
-                    return;
-                }
-
-                const token = 'dev_token_' + Date.now();
+                const token = 'demo_token_' + Date.now();
                 localStorage.setItem('auth_token', token);
                 localStorage.setItem('user', JSON.stringify({
-                    ...this.testAccount.user,
+                    id: 1,
+                    email: this.form.email,
+                    name: this.form.email.split('@')[0],
                     loginAt: new Date().toISOString()
                 }));
 
-                // returnUrl이 있으면 해당 경로로, 없으면 홈으로 이동
                 const returnUrl = this.getParam('returnUrl');
                 if (returnUrl === '/payment/checkout') {
                     const plan = this.getParam('returnPlan');
@@ -94,17 +70,9 @@ export default {
                 } else {
                     this.navigateTo(returnUrl || '/home');
                 }
-            } catch (error) {
-                this.errors.password = '로그인에 실패했습니다. 다시 시도해 주세요.';
             } finally {
                 this.isSubmitting = false;
             }
-        },
-
-        quickLogin() {
-            this.form.email = this.testAccount.email;
-            this.form.password = this.testAccount.password;
-            this.handleLogin();
         },
 
         handleResetPassword() {

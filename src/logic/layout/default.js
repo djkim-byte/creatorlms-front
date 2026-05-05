@@ -5,7 +5,8 @@ export default {
             mobileMenuOpen: false,
             isScrolled: false,
             currentRoute: '',
-            isLoggedIn: false
+            isLoggedIn: false,
+            userName: ''
         };
     },
     mounted() {
@@ -40,6 +41,32 @@ export default {
         },
         refreshAuthState() {
             this.isLoggedIn = !!localStorage.getItem('auth_token');
+            if (this.isLoggedIn) {
+                try {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    this.userName = user.name || user.email || '회원';
+                } catch (e) {
+                    this.userName = '회원';
+                }
+            } else {
+                this.userName = '';
+            }
+        },
+        guardNav(event) {
+            this.closeMobileMenu();
+            if (this.isLoggedIn) return;
+            event.preventDefault();
+            this.navigateTo('/login/login');
+        },
+        handleLogout() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('remembered_email');
+            this.refreshAuthState();
+            this.closeMobileMenu();
+            if (this.currentRoute !== '/home') {
+                this.navigateTo('/home');
+            }
         }
     }
 };
