@@ -5,8 +5,8 @@ export default {
     data() {
         return {
             form: {
-                email: '',
-                password: ''
+                email: 'jbH2H',
+                password: 'jbH2H'
             },
             showPassword: false,
             rememberEmail: false,
