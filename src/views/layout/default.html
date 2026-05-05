@@ -11,7 +11,7 @@
                 </a>
 
                 <!-- Center Nav (desktop) -->
-                <nav class="d-none d-lg-flex align-items-center gap-1 mx-auto" aria-label="주 메뉴">
+                <nav v-if="isLoggedIn" class="d-none d-lg-flex align-items-center gap-1 mx-auto" aria-label="주 메뉴">
                     <a class="dcd-nav-link" :class="{ active: isActive('/drone') }" href="#/drone">DRONE</a>
                     <a class="dcd-nav-link" :class="{ active: isActive('/c-drone') }" href="#/c-drone">C-DRONE</a>
                     <a class="dcd-nav-link" :class="{ active: isActive('/tactics') }" href="#/tactics">TACTICS</a>
@@ -37,7 +37,7 @@
         <!-- Mobile Slide-down Nav -->
         <div class="dcd-mobile-nav" v-show="mobileMenuOpen">
             <div class="container-fluid px-3 py-3">
-                <nav class="d-flex flex-column" aria-label="모바일 메뉴">
+                <nav v-if="isLoggedIn" class="d-flex flex-column" aria-label="모바일 메뉴">
                     <a class="dcd-mobile-link" :class="{ active: isActive('/drone') }" href="#/drone" @click="closeMobileMenu">DRONE</a>
                     <a class="dcd-mobile-link" :class="{ active: isActive('/c-drone') }" href="#/c-drone" @click="closeMobileMenu">C-DRONE</a>
                     <a class="dcd-mobile-link" :class="{ active: isActive('/tactics') }" href="#/tactics" @click="closeMobileMenu">TACTICS</a>
