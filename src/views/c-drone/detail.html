@@ -1,0 +1,87 @@
+<div class="drone-intel-page">
+    <div class="container py-5" style="max-width: 960px;">
+        <div class="drone-intel-eyebrow">// COUNTER-DRONE INTELLIGENCE</div>
+
+        <a href="#/c-drone" class="drone-intel-back" @click.prevent="goList">
+            <i class="bi bi-arrow-left"></i>
+            <span>목록으로</span>
+        </a>
+
+        <div v-if="article" class="drone-intel-detail">
+            <div class="drone-intel-detail-head">
+                <span class="drone-intel-badge">CDRONE</span>
+                <div class="drone-intel-meta">
+                    <span class="drone-intel-source">{{ article.source }}</span>
+                    <span class="drone-intel-date">{{ article.date }}</span>
+                </div>
+            </div>
+
+            <ul
+                v-if="article.attachments && article.attachments.length"
+                class="drone-intel-attachments drone-intel-detail-attachments"
+            >
+                <li
+                    v-for="file in article.attachments"
+                    :key="file.url"
+                    class="drone-intel-attachment"
+                >
+                    <a
+                        :href="file.url"
+                        :download="file.name"
+                        :title="file.name"
+                        class="drone-intel-attachment-link"
+                        @click.prevent="downloadFile(file, $event)"
+                    >
+                        <span class="drone-intel-attachment-format">{{ fileFormat(file.name) }}</span>
+                        <span class="drone-intel-attachment-info">
+                            <span v-if="file.size" class="drone-intel-attachment-size">{{ file.size }}</span>
+                            <i class="bi bi-download drone-intel-attachment-download"></i>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+
+            <h1 class="drone-intel-detail-title">{{ article.title }}</h1>
+
+            <figure v-if="article.media" class="drone-intel-detail-media">
+                <img
+                    v-if="article.media.type === 'image'"
+                    :src="article.media.src"
+                    :alt="article.media.caption || article.title"
+                    class="drone-intel-detail-image"
+                >
+                <video
+                    v-else-if="article.media.type === 'video'"
+                    :src="article.media.src"
+                    :poster="article.media.poster"
+                    class="drone-intel-detail-video"
+                    controls
+                    playsinline
+                ></video>
+                <div
+                    v-else-if="article.media.type === 'youtube'"
+                    class="drone-intel-detail-embed"
+                >
+                    <iframe
+                        :src="article.media.src"
+                        title="video"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+                <figcaption v-if="article.media.caption" class="drone-intel-detail-caption">
+                    {{ article.media.caption }}
+                </figcaption>
+            </figure>
+
+            <div class="drone-intel-detail-body">
+                <p v-for="(p, i) in article.body" :key="i">{{ p }}</p>
+            </div>
+        </div>
+
+        <div v-else class="drone-intel-empty">
+            요청하신 글을 찾을 수 없습니다.
+        </div>
+    </div>
+</div>

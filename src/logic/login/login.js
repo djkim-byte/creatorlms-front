@@ -1,6 +1,6 @@
 export default {
     name: 'Login',
-    layout: 'logo-only',
+    layout: 'default',
 
     data() {
         return {
@@ -27,12 +27,6 @@ export default {
     },
 
     mounted() {
-        // 이미 로그인된 경우 홈으로 이동
-        if (localStorage.getItem('auth_token')) {
-            this.navigateTo('/home');
-            return;
-        }
-
         // 저장된 이메일 복원
         const savedEmail = localStorage.getItem('remembered_email');
         if (savedEmail) {
@@ -46,7 +40,7 @@ export default {
             this.errors = {};
 
             if (!this.form.email) {
-                this.errors.email = '이메일을 입력해 주세요';
+                this.errors.email = '아이디를 입력해 주세요';
             }
 
             if (!this.form.password) {

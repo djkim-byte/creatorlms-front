@@ -1,0 +1,53 @@
+<div class="drone-intel-page">
+    <div class="container py-5">
+        <div class="drone-intel-eyebrow">// TACTICAL ANALYSIS</div>
+        <h1 class="drone-intel-title">전술 분석</h1>
+
+        <ul class="drone-intel-list">
+            <li
+                v-for="item in items"
+                :key="item.id"
+                class="drone-intel-item"
+                @click="goDetail(item)"
+            >
+                <div class="drone-intel-head">
+                    <span class="drone-intel-badge">TACTICS</span>
+                    <h2 class="drone-intel-item-title">{{ item.title }}</h2>
+                    <div class="drone-intel-meta">
+                        <span class="drone-intel-source">{{ item.source }}</span>
+                        <span class="drone-intel-date">{{ item.date }}</span>
+                        <i class="bi bi-chevron-up drone-intel-chevron"></i>
+                    </div>
+                </div>
+
+                <p class="drone-intel-summary">{{ item.summary }}</p>
+
+                <ul
+                    v-if="item.attachments && item.attachments.length"
+                    class="drone-intel-attachments"
+                    @click.stop
+                >
+                    <li
+                        v-for="file in item.attachments"
+                        :key="file.url"
+                        class="drone-intel-attachment"
+                    >
+                        <a
+                            :href="file.url"
+                            :download="file.name"
+                            :title="file.name"
+                            class="drone-intel-attachment-link"
+                            @click.prevent="downloadFile(file, $event)"
+                        >
+                            <span class="drone-intel-attachment-format">{{ fileFormat(file.name) }}</span>
+                            <span class="drone-intel-attachment-info">
+                                <span v-if="file.size" class="drone-intel-attachment-size">{{ file.size }}</span>
+                                <i class="bi bi-download drone-intel-attachment-download"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

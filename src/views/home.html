@@ -1,167 +1,62 @@
-<div>
-    <!-- 상단 배너 -->
-    <div class="course-top-banner">
-        <div class="course-top-banner-overlay"></div>
-    </div>
-
-    <!-- 콘텐츠 영역 -->
-    <div class="container py-5">
-        <!-- 페이지 제목 -->
-        <h2 class="fw-bold mb-4" style="font-size: 1.75rem;">일반강의</h2>
-
-        <!-- 필터 영역 -->
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-            <div class="d-flex flex-wrap align-items-center gap-2">
-                <!-- 카테고리 필터 -->
-                <div class="dropdown">
-                    <button class="btn course-filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        {{ selectedCategory || '전체 카테고리' }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedCategory = ''">전체 카테고리</a></li>
-                        <li v-for="cat in categories" :key="cat">
-                            <a class="dropdown-item" href="#" @click.prevent="selectedCategory = cat">{{ cat }}</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- 구매상태 필터 -->
-                <div class="dropdown">
-                    <button class="btn course-filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        {{ selectedStatus || '전체 구매상태' }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedStatus = ''">전체 구매상태</a></li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedStatus = '구매완료'">구매완료</a></li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedStatus = '미구매'">미구매</a></li>
-                    </ul>
-                </div>
-
-                <!-- 정렬 -->
-                <div class="dropdown">
-                    <button class="btn course-filter-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        {{ selectedSort }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedSort = '최신 등록순'">최신 등록순</a></li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedSort = '인기순'">인기순</a></li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedSort = '가격 낮은순'">가격 낮은순</a></li>
-                        <li><a class="dropdown-item" href="#" @click.prevent="selectedSort = '가격 높은순'">가격 높은순</a></li>
-                    </ul>
-                </div>
-
-                <!-- 리셋 버튼 -->
-                <button class="btn course-filter-btn d-flex align-items-center gap-1" @click="resetFilters">
-                    <i class="bi bi-arrow-clockwise"></i> Reset
-                </button>
-            </div>
-
-            <!-- 검색 -->
-            <div class="course-search-wrap">
-                <input type="text" class="form-control course-search-input" placeholder="상품명 입력" v-model="searchKeyword" @keyup.enter="searchCourses">
-                <button class="course-search-btn" @click="searchCourses">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- 강의 카드 그리드 -->
-        <div class="row g-4">
-            <div v-for="course in filteredCourses" :key="course.id" class="col-12 col-md-6 col-lg-4">
-                <div class="course-card">
-                    <!-- 썸네일 -->
-                    <div class="course-card-thumb">
-                        <img :src="course.thumbnail" :alt="course.title" class="course-card-img">
-                        <!-- 상태 뱃지 -->
-                        <span v-if="course.status === 'live'" class="course-badge course-badge-live">
-                            <span class="course-badge-dot"></span> LIVE
-                        </span>
-                        <span v-else-if="course.status === 'closed'" class="course-badge course-badge-closed">마감</span>
-                        <span v-else-if="course.status === 'upcoming'" class="course-badge course-badge-upcoming">예정</span>
-                        <!-- 찜 버튼 -->
-                        <button class="course-wish-btn" :class="{ active: course.wished }" @click.stop="toggleWish(course)">
-                            <i :class="course.wished ? 'bi-heart-fill' : 'bi-heart'" class="bi"></i>
-                        </button>
-                    </div>
-
-                    <!-- 카드 본문 -->
-                    <div class="course-card-body">
-                        <!-- 카테고리 태그 -->
-                        <div class="d-flex flex-wrap gap-1 mb-2">
-                            <span v-for="tag in course.tags" :key="tag" class="course-tag" :class="{ 'course-tag-platform': tag === 'Googlemeet' }">{{ tag }}</span>
+<div class="dcd-home">
+    <!-- Hero -->
+    <section class="dcd-hero">
+        <div class="container">
+            <div class="row g-0 dcd-hero-row align-items-stretch">
+                <div class="col-lg-6 order-2 order-lg-1 dcd-hero-text-col">
+                    <div class="dcd-hero-text">
+                        <span class="dcd-eyebrow dcd-eyebrow-light">FEATURED · {{ hero.tag }}</span>
+                        <h1 class="dcd-hero-title">{{ hero.title }}</h1>
+                        <p class="dcd-hero-desc">{{ hero.desc }}</p>
+                        <div class="dcd-hero-meta">
+                            <span>{{ hero.date }}</span>
+                            <span class="dcd-meta-sep">·</span>
+                            <span>{{ hero.read }}</span>
                         </div>
-
-                        <!-- 제목 -->
-                        <h6 class="course-card-title">{{ course.title }}</h6>
-
-                        <!-- 메타 정보 -->
-                        <div class="course-card-meta">
-                            <span v-if="course.date">
-                                <i class="bi bi-calendar3"></i> {{ course.date }}
-                            </span>
-                            <span v-if="course.instructor">
-                                <i class="bi bi-person"></i> {{ course.instructor }}
-                            </span>
-                            <span v-if="course.lectureInfo">
-                                <i class="bi bi-collection-play"></i> {{ course.lectureInfo }}
-                            </span>
-                            <span v-if="course.capacity">
-                                <i class="bi bi-people"></i> {{ course.capacity }}
-                            </span>
-                        </div>
-
-                        <!-- 평점 -->
-                        <div class="course-card-rating" v-if="course.rating">
-                            <i class="bi bi-star-fill"></i>
-                            <span>{{ course.rating }}</span>
-                            <span class="text-secondary">({{ course.reviewCount }})</span>
-                        </div>
-
-                        <!-- 가격 -->
-                        <div class="course-card-price">
-                            <template v-if="course.price === 0">
-                                <span class="course-price-free">무료</span>
-                            </template>
-                            <template v-else-if="course.installment">
-                                <div class="d-flex flex-column align-items-end">
-                                    <span class="course-price-original" v-if="course.originalPrice">{{ formatPrice(course.originalPrice) }}원</span>
-                                    <div class="d-flex align-items-baseline gap-1">
-                                        <span class="course-price-discount" v-if="course.discountRate">{{ course.discountRate }}%</span>
-                                        <span class="course-installment-info">{{ course.installment }}</span>
-                                        <span class="course-price-highlight">월 {{ formatPrice(course.price) }}원</span>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else-if="course.bundleDiscount">
-                                <div class="d-flex flex-column align-items-end">
-                                    <span class="course-price-original" v-if="course.originalPrice">{{ formatPrice(course.originalPrice) }}원</span>
-                                    <div class="d-flex align-items-center gap-1 flex-wrap justify-content-end">
-                                        <span class="course-bundle-label">개별 구매 대비</span>
-                                        <span class="course-bundle-discount">{{ course.bundleDiscount }}%</span>
-                                        <span class="course-bundle-label">할인</span>
-                                        <span class="course-installment-info">{{ course.installment2 }}</span>
-                                        <span class="course-price-highlight">월 {{ formatPrice(course.price) }}원</span>
-                                    </div>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <div class="d-flex align-items-baseline gap-2 justify-content-end">
-                                    <span class="course-price-original" v-if="course.originalPrice && course.originalPrice !== course.price">{{ formatPrice(course.originalPrice) }}원</span>
-                                    <span class="course-price-discount" v-if="course.discountRate">{{ course.discountRate }}%</span>
-                                    <span class="course-price-current">{{ formatPrice(course.price) }}원</span>
-                                </div>
-                            </template>
-                        </div>
+                        <a :href="hero.href" class="dcd-hero-cta">
+                            자세히 보기 <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
                     </div>
                 </div>
+                <div class="col-lg-6 order-1 order-lg-2 dcd-hero-image-col">
+                    <div class="dcd-hero-image" :style="{ backgroundImage: `url(${hero.image})` }" role="img" :aria-label="hero.title"></div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- 더보기 버튼 -->
-        <div class="mt-5" v-if="hasMore">
-            <button class="btn course-load-more-btn w-100" @click="loadMore">
-                더보기 <i class="bi bi-chevron-down ms-1"></i>
-            </button>
+    <!-- Latest posts -->
+    <section class="dcd-section">
+        <div class="container">
+            <header class="dcd-section-head">
+                <div>
+                    <span class="dcd-eyebrow">LATEST</span>
+                    <h2 class="dcd-section-title">최신 콘텐츠</h2>
+                    <p class="dcd-section-sub">DRONE · C-DRONE · TACTICS · OTHERS — 최근 업데이트 순</p>
+                </div>
+            </header>
+
+            <div class="row g-4 dcd-card-grid">
+                <div v-for="item in sortedPosts" :key="item.id" class="col-12 col-md-6 col-lg-4">
+                    <article class="dcd-card">
+                        <a :href="item.href" class="dcd-card-thumb-link" :aria-label="item.title">
+                            <div class="dcd-card-thumb" :style="{ backgroundImage: `url(${item.image})` }"></div>
+                        </a>
+                        <div class="dcd-card-body">
+                            <span class="dcd-card-tag">{{ item.category }}</span>
+                            <h3 class="dcd-card-title">
+                                <a :href="item.href">{{ item.title }}</a>
+                            </h3>
+                            <p class="dcd-card-desc">{{ item.desc }}</p>
+                            <div class="dcd-card-meta">
+                                <span>{{ item.date }}</span>
+                                <span class="dcd-meta-sep">·</span>
+                                <span>{{ item.read }}</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 </div>

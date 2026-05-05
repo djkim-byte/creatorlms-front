@@ -1,72 +1,62 @@
-<div style="background: var(--gray-50); min-height: 100%;">
-<div class="container py-4 py-lg-5">
-    <div class="d-flex justify-content-center">
-        <div class="login-card">
-            <!-- Title -->
-            <h3 class="text-center fw-bold mb-4">로그인</h3>
+<div class="login-page">
+    <div class="container pt-3 pt-lg-4 pb-4 pb-lg-5">
+        <div class="d-flex justify-content-center">
+            <div class="login-card">
+                <!-- Title -->
+                <h3 class="text-center fw-bold mb-4">로그인</h3>
 
-            <!-- Login Form -->
-            <form @submit.prevent="handleLogin">
-                <!-- 이메일 -->
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">이메일</label>
-                    <input type="email" class="form-control form-control-lg"
-                           :class="{ 'is-invalid': errors.email }"
-                           v-model="form.email"
-                           placeholder="이메일을 입력해 주세요">
-                    <small v-if="errors.email" class="text-danger">{{ errors.email }}</small>
-                </div>
-
-                <!-- 비밀번호 -->
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">비밀번호</label>
-                    <div class="position-relative">
-                        <input :type="showPassword ? 'text' : 'password'"
-                               class="form-control form-control-lg pe-5"
-                               :class="{ 'is-invalid': errors.password }"
-                               v-model="form.password"
-                               placeholder="비밀번호(영문, 숫자, 특수문자 조합으로 8자 이상) 를 입력해 주세요">
-                        <button type="button" class="login-password-toggle" @click="showPassword = !showPassword">
-                            <i :class="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                        </button>
+                <!-- Login Form -->
+                <form @submit.prevent="handleLogin" novalidate>
+                    <!-- 아이디 -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="loginEmail">아이디</label>
+                        <input id="loginEmail" type="email" class="form-control form-control-lg"
+                               :class="{ 'is-invalid': errors.email }"
+                               v-model="form.email"
+                               placeholder="이메일을 입력해 주세요"
+                               autocomplete="username">
+                        <small v-if="errors.email" class="text-danger d-block mt-1">{{ errors.email }}</small>
                     </div>
-                    <small v-if="errors.password" class="text-danger">{{ errors.password }}</small>
+
+                    <!-- 비밀번호 -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="loginPassword">비밀번호</label>
+                        <div class="position-relative">
+                            <input id="loginPassword" :type="showPassword ? 'text' : 'password'"
+                                   class="form-control form-control-lg pe-5"
+                                   :class="{ 'is-invalid': errors.password }"
+                                   v-model="form.password"
+                                   placeholder="비밀번호(영문, 숫자, 특수문자 조합으로 8자 이상) 를 입력해 주세요"
+                                   autocomplete="current-password">
+                            <button type="button" class="login-password-toggle" @click="showPassword = !showPassword"
+                                    :aria-label="showPassword ? '비밀번호 숨기기' : '비밀번호 표시'">
+                                <i :class="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                            </button>
+                        </div>
+                        <small v-if="errors.password" class="text-danger d-block mt-1">{{ errors.password }}</small>
+                    </div>
+
+                    <!-- 아이디 기억하기 -->
+                    <div class="form-check mb-4">
+                        <input type="checkbox" class="form-check-input" id="rememberEmail" v-model="rememberEmail">
+                        <label class="form-check-label fw-semibold" for="rememberEmail">아이디 기억하기</label>
+                    </div>
+
+                    <!-- 로그인 버튼 -->
+                    <button type="submit" class="btn login-submit-btn w-100 mb-3" :disabled="isSubmitting">
+                        <span class="login-btn-icon" aria-hidden="true">
+                            <i class="bi bi-info-circle"></i>
+                        </span>
+                        <span>{{ isSubmitting ? '로그인 중...' : '로그인 하기' }}</span>
+                    </button>
+                </form>
+
+                <!-- 비밀번호 재설정 -->
+                <div class="text-center">
+                    <span class="text-secondary small">비밀번호가 생각나지 않으신다면</span>
+                    <a href="#" class="fw-semibold small text-dark text-decoration-underline ms-2" @click.prevent="handleResetPassword">비밀번호 재설정</a>
                 </div>
-
-                <!-- 이메일 기억하기 -->
-                <div class="form-check mb-4">
-                    <input type="checkbox" class="form-check-input" id="rememberEmail" v-model="rememberEmail">
-                    <label class="form-check-label" for="rememberEmail">이메일 기억하기</label>
-                </div>
-
-                <!-- 로그인 버튼 -->
-                <button type="submit" class="btn login-submit-btn w-100 mb-3" :disabled="isSubmitting">
-                    <i class="bi bi-info-circle me-2"></i>
-                    {{ isSubmitting ? '로그인 중...' : '로그인 하기' }}
-                </button>
-            </form>
-
-            <!-- 비밀번호 재설정 -->
-            <div class="text-center mb-4">
-                <span class="text-secondary small">비밀번호가 생각나지 않으신다면</span>
-                <a href="#" class="fw-semibold small text-dark text-decoration-underline ms-2" @click.prevent="handleResetPassword">비밀번호 재설정</a>
             </div>
-
-            <!-- 임시 테스트 계정 안내 -->
-            <div class="alert alert-light border small mb-4 text-center cursor-pointer" @click="quickLogin">
-                <div class="fw-semibold mb-1"><i class="bi bi-lightning-fill text-warning me-1"></i>임시 테스트 계정</div>
-                <div class="text-secondary">test@solsol.so / test1234!</div>
-            </div>
-
-            <!-- 회원가입 버튼 -->
-            <button type="button" class="btn login-signup-btn w-100" @click="navigateTo('/signup/signup')">
-                <i class="bi bi-info-circle me-2 text-secondary"></i>
-                <span class="d-flex flex-column align-items-center">
-                    <small class="text-secondary" style="font-size: 0.75rem;">아직 회원가입을 하지 않으셨다면</small>
-                    <span class="fw-bold" style="color: var(--primary-color);">회원가입하기</span>
-                </span>
-            </button>
         </div>
     </div>
-</div>
 </div>

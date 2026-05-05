@@ -4,170 +4,143 @@ export default {
 
     data() {
         return {
-            searchKeyword: '',
-            selectedCategory: '',
-            selectedStatus: '',
-            selectedSort: '최신 등록순',
-            categories: ['카테고리명'],
-            hasMore: true,
-            courses: [
+            hero: {
+                tag: 'DRONE',
+                title: 'Skyrider X9: 차세대 전술 정찰 드론의 표준',
+                desc: '고고도 장기 체공과 AI 기반 표적 식별을 결합해 현대 전장의 ISR 요구를 충족시키는 차세대 무인기 플랫폼을 소개합니다.',
+                date: '2026.05.01',
+                read: '8분 읽기',
+                image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=1400&h=900&q=80',
+                href: '#/drone/detail?id=1'
+            },
+            posts: [
                 {
-                    id: 1,
-                    thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&h=400&q=80',
-                    status: 'live',
-                    wished: false,
-                    tags: ['카테고리명'],
-                    title: 'AI 이미지 생성의 대세, 나노바나나로 초격차 디자인/기획 마스터하기',
-                    date: '2000.00.00 오후 00:00',
-                    instructor: '홍길동 강사 외 3명',
-                    lectureInfo: null,
-                    capacity: null,
-                    rating: 5.0,
-                    reviewCount: 465,
-                    originalPrice: 110000,
-                    discountRate: 10,
-                    price: 100000,
-                    installment: null,
-                    installment2: null,
-                    bundleDiscount: null
+                    id: 'd1',
+                    category: 'DRONE',
+                    title: 'Skyrider X9 전술 정찰 쿼드콥터',
+                    desc: 'AI 기반 자동 표적 추적과 35km 데이터링크를 갖춘 분대급 ISR 자산.',
+                    date: '2026.05.01',
+                    read: '6분 읽기',
+                    image: 'https://images.unsplash.com/photo-1508444845599-5c89863b1c44?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/drone/detail?id=1'
                 },
                 {
-                    id: 2,
-                    thumbnail: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&h=400&q=80',
-                    status: 'closed',
-                    wished: true,
-                    tags: ['카테고리명'],
-                    title: '대세는 구글 제미나이 완전 정복 - 입문자도 전문가처럼 쓰는 멀티모달 올인원',
-                    date: '2000.00.00 ~ 2000.00.00',
-                    instructor: '홍길동 강사',
-                    lectureInfo: '총 10강 · 5시간',
-                    capacity: null,
-                    rating: 5.0,
-                    reviewCount: 465,
-                    originalPrice: null,
-                    discountRate: null,
-                    price: 100000,
-                    installment: null,
-                    installment2: null,
-                    bundleDiscount: null
+                    id: 'c1',
+                    category: 'C-DRONE',
+                    title: 'Aegis RF 재밍 시스템',
+                    desc: '광대역 RF 재밍과 GNSS 기만을 동시에 수행하는 통합 대드론 솔루션.',
+                    date: '2026.04.28',
+                    read: '5분 읽기',
+                    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/c-drone/detail?id=1'
                 },
                 {
-                    id: 3,
-                    thumbnail: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=600&h=400&q=80',
-                    status: 'upcoming',
-                    wished: false,
-                    tags: ['Googlemeet', '카테고리명'],
-                    title: '대세는 구글 제미나이 완전 정복 - 입문자도 전문가처럼 쓰는 멀티모달 올인원',
-                    date: '2000.00.00 오후 00:00',
-                    instructor: '홍길동 강사 외 3명',
-                    lectureInfo: null,
-                    capacity: '모집인원 10명',
-                    rating: 5.0,
-                    reviewCount: 465,
-                    originalPrice: 200000,
-                    discountRate: 10,
-                    price: 63000,
-                    installment: '3개월 할부',
-                    installment2: null,
-                    bundleDiscount: null
+                    id: 'o1',
+                    category: 'OTHERS',
+                    title: '파일럿 트레이닝 시뮬레이터',
+                    desc: '실기 훈련 시간을 절감하는 고충실도 가상현실 기반 조종사 양성 시스템.',
+                    date: '2026.04.25',
+                    read: '5분 읽기',
+                    image: 'https://images.unsplash.com/photo-1535378620166-273708d44e4c?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/others/detail?id=1'
                 },
                 {
-                    id: 4,
-                    thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=600&h=400&q=80',
-                    status: null,
-                    wished: false,
-                    tags: ['카테고리명'],
-                    title: '대세는 구글 제미나이 완전 정복 - 입문자도 전문가처럼 쓰는 멀티모달 올인원',
-                    date: null,
-                    instructor: '홍길동 강사 외 3명',
-                    lectureInfo: '총 10강 · 5시간',
-                    capacity: null,
-                    rating: 5.0,
-                    reviewCount: 465,
-                    originalPrice: null,
-                    discountRate: null,
-                    price: 0,
-                    installment: null,
-                    installment2: null,
-                    bundleDiscount: null
+                    id: 'd2',
+                    category: 'DRONE',
+                    title: 'Maritime Surveillance UAV Mk.IV',
+                    desc: '해양 광역 감시를 위한 장기 체공 고정익 무인기 플랫폼 분석.',
+                    date: '2026.04.22',
+                    read: '9분 읽기',
+                    image: 'https://images.unsplash.com/photo-1521405924368-64c5b84bec60?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/drone/detail?id=2'
                 },
                 {
-                    id: 5,
-                    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&h=400&q=80',
-                    status: 'closed',
-                    wished: true,
-                    tags: ['카테고리명'],
-                    title: '대세는 구글 제미나이 완전 정복 - 입문자도 전문가처럼 쓰는 멀티모달 올인원',
-                    date: null,
-                    instructor: null,
-                    lectureInfo: null,
-                    capacity: null,
-                    rating: 5.0,
-                    reviewCount: 465,
-                    originalPrice: null,
-                    discountRate: null,
-                    price: 100000,
-                    installment: null,
-                    installment2: null,
-                    bundleDiscount: null
+                    id: 't1',
+                    category: 'TACTICS',
+                    title: '도시 작전 드론 군집 교리',
+                    desc: '시가지 환경에서의 다중 드론 협동 운용과 지휘통제 절차.',
+                    date: '2026.04.20',
+                    read: '10분 읽기',
+                    image: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/tactics/detail?id=1'
                 },
                 {
-                    id: 6,
-                    thumbnail: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?auto=format&fit=crop&w=600&h=400&q=80',
-                    status: null,
-                    wished: false,
-                    tags: ['카테고리명'],
-                    title: '대세는 구글 제미나이 완전 정복 - 입문자도 전문가처럼 쓰는 멀티모달 올인원',
-                    date: null,
-                    instructor: null,
-                    lectureInfo: '5개 상품 묶음',
-                    capacity: null,
-                    rating: 5.0,
-                    reviewCount: 465,
-                    originalPrice: 200000,
-                    discountRate: null,
-                    price: 63000,
-                    installment: null,
-                    installment2: '3개월 할부',
-                    bundleDiscount: 35
+                    id: 'c2',
+                    category: 'C-DRONE',
+                    title: 'Falcon Net 포획형 인터셉터',
+                    desc: '저고도 침입 드론을 그물탄으로 포획·회수하는 비파괴 대응 수단.',
+                    date: '2026.04.15',
+                    read: '4분 읽기',
+                    image: 'https://images.unsplash.com/photo-1534224039826-c7a0eda0e6b3?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/c-drone/detail?id=2'
+                },
+                {
+                    id: 'o2',
+                    category: 'OTHERS',
+                    title: '배터리 군수 관리 플랫폼',
+                    desc: '드론 배터리 수명·온도·충전 사이클을 통합 관리하는 군수 백엔드.',
+                    date: '2026.04.12',
+                    read: '6분 읽기',
+                    image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/others/detail?id=1'
+                },
+                {
+                    id: 'd3',
+                    category: 'DRONE',
+                    title: 'Stealth Wing 저피탐 전술기',
+                    desc: '저피탐 형상과 전기추진을 결합한 침투형 정찰기의 운용 개념.',
+                    date: '2026.04.10',
+                    read: '7분 읽기',
+                    image: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/drone/detail?id=3'
+                },
+                {
+                    id: 't2',
+                    category: 'TACTICS',
+                    title: '대드론 야전 매뉴얼 v3',
+                    desc: '대대급 부대를 위한 대드론 위협 식별·대응 표준 절차서 개정판.',
+                    date: '2026.04.05',
+                    read: '12분 읽기',
+                    image: 'https://images.unsplash.com/photo-1530870110042-98b2cb110834?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/tactics/detail?id=2'
+                },
+                {
+                    id: 'c3',
+                    category: 'C-DRONE',
+                    title: 'RadarShield 탐지 스위트',
+                    desc: '소형 드론 RCS에 최적화된 X-band AESA 레이다와 EO/IR 센서 융합.',
+                    date: '2026.03.30',
+                    read: '8분 읽기',
+                    image: 'https://images.unsplash.com/photo-1517976547714-720226b864c1?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/c-drone/detail?id=3'
+                },
+                {
+                    id: 'o3',
+                    category: 'OTHERS',
+                    title: '오픈 드론 텔레메트리 표준',
+                    desc: '이종 기체 간 상호 운용성을 보장하는 오픈소스 텔레메트리 프로토콜.',
+                    date: '2026.03.28',
+                    read: '4분 읽기',
+                    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/others/detail?id=1'
+                },
+                {
+                    id: 't3',
+                    category: 'TACTICS',
+                    title: '합동 방공 플레이북',
+                    desc: '저고도 무인기 위협에 대응하기 위한 합동 방공 통합 절차.',
+                    date: '2026.03.18',
+                    read: '7분 읽기',
+                    image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&h=520&q=80',
+                    href: '#/tactics/detail?id=1'
                 }
             ]
         };
     },
 
     computed: {
-        filteredCourses() {
-            let result = [...this.courses];
-            if (this.selectedCategory) {
-                result = result.filter(c => c.tags.includes(this.selectedCategory));
-            }
-            if (this.searchKeyword) {
-                const kw = this.searchKeyword.toLowerCase();
-                result = result.filter(c => c.title.toLowerCase().includes(kw));
-            }
-            return result;
-        }
-    },
-
-    methods: {
-        formatPrice(price) {
-            return price.toLocaleString('ko-KR');
-        },
-        toggleWish(course) {
-            course.wished = !course.wished;
-        },
-        resetFilters() {
-            this.selectedCategory = '';
-            this.selectedStatus = '';
-            this.selectedSort = '최신 등록순';
-            this.searchKeyword = '';
-        },
-        searchCourses() {
-            // 검색 실행 (filteredCourses computed가 자동 반영)
-        },
-        loadMore() {
-            // 더보기 로직
-            this.hasMore = false;
+        sortedPosts() {
+            return [...this.posts].sort((a, b) => b.date.localeCompare(a.date));
         }
     }
 };

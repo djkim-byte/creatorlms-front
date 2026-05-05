@@ -4,13 +4,11 @@ export default {
         return {
             mobileMenuOpen: false,
             isScrolled: false,
-            currentRoute: '',
-            lang: 'ko'
+            currentRoute: ''
         };
     },
     mounted() {
         this.currentRoute = this.getCurrentRoute();
-        this.lang = localStorage.getItem('lang') || 'ko';
         window.addEventListener('scroll', this.handleScroll);
         window.addEventListener('hashchange', this.handleRouteChange);
     },
@@ -24,13 +22,6 @@ export default {
         },
         closeMobileMenu() {
             this.mobileMenuOpen = false;
-        },
-        setLang(lang) {
-            this.lang = lang;
-            localStorage.setItem('lang', lang);
-            if (this.$i18n && typeof this.$i18n.setLanguage === 'function') {
-                this.$i18n.setLanguage(lang);
-            }
         },
         isActive(path) {
             return this.currentRoute === path || this.currentRoute.startsWith(path + '/');

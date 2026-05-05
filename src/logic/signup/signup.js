@@ -1,84 +1,25 @@
 export default {
     name: 'Signup',
-    layout: 'logo-only',
+    layout: 'default',
 
     data() {
         return {
-            selectedPlan: 'free',
-            plans: [
-                {
-                    id: 'free',
-                    name: 'Free',
-                    price: 0,
-                    priceLabel: '영구 무료',
-                    feeRate: '10%',
-                    features: [
-                        { label: '발행 상품 수', value: '무제한' },
-                        { label: '동영상 저장 용량', value: '40GB' },
-                        { label: '학생/회원수 제한', value: '20명' },
-                        { label: '월 수강신청 제한', value: '무제한' },
-                        { label: '관리자 계정 수', value: '무제한' },
-                        { label: '도메인 & SSL', value: '없음' },
-                        { label: '사이트 수', value: '1개' }
-                    ]
-                },
-                {
-                    id: 'basic',
-                    name: 'Basic',
-                    price: 59000,
-                    priceLabel: '월',
-                    feeRate: '3%',
-                    features: [
-                        { label: '발행 상품 수', value: '무제한' },
-                        { label: '동영상 저장 용량', value: '300GB' },
-                        { label: '학생/회원수 제한', value: '500명' },
-                        { label: '월 수강신청 제한', value: '무제한' },
-                        { label: '관리자 계정 수', value: '무제한' },
-                        { label: '도메인 & SSL', value: '무료 제공' },
-                        { label: '사이트 수', value: '3개' }
-                    ]
-                },
-                {
-                    id: 'growth',
-                    name: 'Growth',
-                    price: 99000,
-                    priceLabel: '월',
-                    feeRate: '1%',
-                    features: [
-                        { label: '발행 상품 수', value: '무제한' },
-                        { label: '동영상 저장 용량', value: '1TB' },
-                        { label: '학생/회원수 제한', value: '2,000명' },
-                        { label: '월 수강신청 제한', value: '무제한' },
-                        { label: '관리자 계정 수', value: '무제한' },
-                        { label: '도메인 & SSL', value: '무료 제공' },
-                        { label: '사이트 수', value: '5개' }
-                    ]
-                },
-                {
-                    id: 'advanced',
-                    name: 'Advanced',
-                    price: 199000,
-                    priceLabel: '월',
-                    feeRate: '0%',
-                    features: [
-                        { label: '발행 상품 수', value: '무제한' },
-                        { label: '동영상 저장 용량', value: '무제한' },
-                        { label: '학생/회원수 제한', value: '무제한' },
-                        { label: '월 수강신청 제한', value: '무제한' },
-                        { label: '관리자 계정 수', value: '무제한' },
-                        { label: '도메인 & SSL', value: '무료 제공' },
-                        { label: '사이트 수', value: '10개' }
-                    ]
-                }
-            ],
-
             form: {
                 lastName: '',
                 firstName: '',
                 email: '',
-                verificationCode: ['', '', '', '', '', ''],
+                verificationCode: '',
                 password: '',
                 passwordConfirm: ''
+            },
+
+            touched: {
+                lastName: false,
+                firstName: false,
+                email: false,
+                password: false,
+                passwordConfirm: false,
+                codeRequired: false
             },
 
             isCodeSent: false,
@@ -86,141 +27,170 @@ export default {
             codeTimer: 0,
             timerInterval: null,
             showCodeModal: false,
+            showApprovalModal: false,
+            generatedCode: '',
 
-            agreements: {
-                all: false,
-                terms: false,
-                privacy: false,
-                age: false,
-                marketing: false
-            },
+            showPassword: false,
+            showPasswordConfirm: false,
 
-            legalTerms: { title: '', sections: [] },
-            legalPrivacy: { title: '', intro: '', sections: [] },
-            legalMarketing: { title: '', sections: [] },
-
+            agreement: false,
             errors: {},
             isSubmitting: false
         };
     },
 
     computed: {
-        currentPlan() {
-            return this.plans.find(p => p.id === this.selectedPlan);
-        },
         formattedTimer() {
-            const minutes = Math.floor(this.codeTimer / 60);
-            const seconds = this.codeTimer % 60;
-            return `${minutes}분 ${seconds.toString().padStart(2, '0')}초 남음`;
+            const m = Math.floor(this.codeTimer / 60);
+            const s = this.codeTimer % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        },
+
+        passwordStrength() {
+            const pw = this.form.password || '';
+            let score = 0;
+            if (pw.length >= 8) score++;
+            if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+            if (/[0-9]/.test(pw)) score++;
+            if (/[^A-Za-z0-9]/.test(pw)) score++;
+            if (pw.length >= 12 && score === 4) score = 4;
+            return score;
+        },
+
+        passwordStrengthPercent() {
+            const map = { 0: 10, 1: 25, 2: 50, 3: 75, 4: 100 };
+            return map[this.passwordStrength] ?? 10;
+        },
+
+        passwordStrengthClass() {
+            const s = this.passwordStrength;
+            if (s <= 1) return 'pw-weak';
+            if (s === 2) return 'pw-medium';
+            if (s === 3) return 'pw-good';
+            return 'pw-strong';
+        },
+
+        passwordStrengthLabel() {
+            const s = this.passwordStrength;
+            if (s <= 1) return '약함';
+            if (s === 2) return '보통';
+            if (s === 3) return '양호';
+            return '강함';
+        },
+
+        canSubmit() {
+            return !this.isSubmitting;
         }
     },
 
-    async mounted() {
-        // 로그인된 회원인 경우 무료 플랜 체크
-        const token = localStorage.getItem('auth_token');
-        if (token) {
-            this.handleLoggedInUser();
-        }
-        await this.loadLegalDocs();
+    mounted() {
+        this.resetForm();
     },
 
     beforeUnmount() {
-        if (this.timerInterval) {
-            clearInterval(this.timerInterval);
-        }
+        if (this.timerInterval) clearInterval(this.timerInterval);
     },
 
     methods: {
-        handleLoggedInUser() {
-            const sites = JSON.parse(localStorage.getItem('my_sites') || '[]');
-            const hasFreeSite = sites.some(s => s.plan === 'Free');
-
-            if (hasFreeSite) {
-                // 무료 사이트가 이미 있으면 홈으로 이동
-                this.navigateTo('/home');
-                return;
-            }
-
-            // 무료 사이트가 없으면 자동 개설 후 홈으로 이동
-            this.createFreeSite();
-            this.navigateTo('/home');
-        },
-
-        createFreeSite() {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const sites = JSON.parse(localStorage.getItem('my_sites') || '[]');
-
-            const newSite = {
-                id: Date.now(),
-                name: '내 사이트',
-                url: `https://my-site.solsol.so`,
-                plan: 'Free',
-                status: '활성',
-                color: '#6366f1',
-                createdAt: new Date().toISOString().slice(0, 10).replace(/-/g, '.')
-            };
-
-            sites.push(newSite);
-            localStorage.setItem('my_sites', JSON.stringify(sites));
-        },
-
-        formatPrice(price) {
-            return price.toLocaleString();
-        },
-
-        // Verification code input handling
-        onCodeInput(idx, event) {
-            const val = event.target.value.replace(/[^0-9]/g, '');
-            this.form.verificationCode[idx] = val;
-            event.target.value = val;
-            if (val && idx < 5) {
-                const inputs = document.querySelectorAll('.code-input');
-                if (inputs[idx + 1]) inputs[idx + 1].focus();
-            }
-        },
-
-        onCodeKeydown(idx, event) {
-            if (event.key === 'Backspace' && !this.form.verificationCode[idx] && idx > 0) {
-                const inputs = document.querySelectorAll('.code-input');
-                if (inputs[idx - 1]) inputs[idx - 1].focus();
-            }
-        },
-
-        onCodePaste(event) {
-            const paste = event.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6);
-            for (let i = 0; i < 6; i++) {
-                this.form.verificationCode[i] = paste[i] || '';
-            }
-            const inputs = document.querySelectorAll('.code-input');
-            const focusIdx = Math.min(paste.length, 5);
-            if (inputs[focusIdx]) inputs[focusIdx].focus();
-        },
-
-        openVerifyEmail() {
-            this.showCodeModal = false;
-            // 데모용 가상 인증코드 생성 (6자리 랜덤)
-            this.demoCode = String(Math.floor(100000 + Math.random() * 900000));
-            window.open('/templates/email/verify-email.html?code=' + this.demoCode, '_blank', 'width=700,height=800,scrollbars=yes');
-        },
-
-        // Send verification code
-        async sendVerificationCode() {
+        resetForm() {
+            this.form.lastName = '';
+            this.form.firstName = '';
+            this.form.email = '';
+            this.form.verificationCode = '';
+            this.form.password = '';
+            this.form.passwordConfirm = '';
+            this.touched.lastName = false;
+            this.touched.firstName = false;
+            this.touched.email = false;
+            this.touched.password = false;
+            this.touched.passwordConfirm = false;
+            this.touched.codeRequired = false;
+            this.isCodeSent = false;
+            this.isCodeVerified = false;
+            this.codeTimer = 0;
+            this.showPassword = false;
+            this.showPasswordConfirm = false;
+            this.agreement = false;
             this.errors = {};
-            if (!this.form.email || !this.form.email.includes('@')) {
-                this.errors.email = '이메일 주소를 입력해 주세요';
+            this.isSubmitting = false;
+            if (this.timerInterval) {
+                clearInterval(this.timerInterval);
+                this.timerInterval = null;
+            }
+        },
+
+        runValidation() {
+            const errs = {};
+
+            if (this.touched.lastName && !this.form.lastName) errs.lastName = true;
+            if (this.touched.firstName && !this.form.firstName) errs.firstName = true;
+
+            if (this.touched.email) {
+                if (!this.form.email) {
+                    errs.email = '필수 항목입니다';
+                } else if (!this.isValidEmail(this.form.email)) {
+                    errs.email = '이메일 형식을 준수하여 작성해 주세요.';
+                }
+            }
+
+            if (this.touched.password) {
+                if (!this.form.password) {
+                    errs.password = '필수 항목입니다';
+                } else if (!this.isValidPassword(this.form.password)) {
+                    errs.password = '8~16자, 영문 대소문자·숫자·특수문자를 모두 포함해야 합니다';
+                }
+            }
+
+            if (this.touched.passwordConfirm) {
+                if (!this.form.passwordConfirm) {
+                    errs.passwordConfirm = '필수 항목입니다';
+                } else if (this.form.password !== this.form.passwordConfirm) {
+                    errs.passwordConfirm = '입력하신 비밀번호가 다릅니다';
+                }
+            }
+
+            this.errors = errs;
+        },
+
+        isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        },
+
+        isValidPassword(pw) {
+            if (pw.length < 8 || pw.length > 16) return false;
+            if (!/[A-Z]/.test(pw)) return false;
+            if (!/[a-z]/.test(pw)) return false;
+            if (!/[0-9]/.test(pw)) return false;
+            if (!/[^A-Za-z0-9]/.test(pw)) return false;
+            return true;
+        },
+
+        async sendVerificationCode() {
+            this.touched.email = true;
+            this.runValidation();
+
+            if (!this.form.email) {
+                this.errors = { ...this.errors, email: '필수 항목입니다' };
+                return;
+            }
+            if (!this.isValidEmail(this.form.email)) {
+                this.errors = { ...this.errors, email: '이메일 형식을 준수하여 작성해 주세요.' };
                 return;
             }
 
-            // TODO: API call to send verification code
+            this.generatedCode = String(Math.floor(100000 + Math.random() * 900000));
             this.isCodeSent = true;
             this.isCodeVerified = false;
-            this.showCodeModal = true;
+            this.form.verificationCode = '';
+            this.errors = { ...this.errors, code: '' };
+            delete this.errors.code;
             this.startTimer();
+            this.showCodeModal = true;
         },
 
         startTimer() {
             if (this.timerInterval) clearInterval(this.timerInterval);
-            this.codeTimer = 180;
+            this.codeTimer = 600;
             this.timerInterval = setInterval(() => {
                 this.codeTimer--;
                 if (this.codeTimer <= 0) {
@@ -230,137 +200,97 @@ export default {
             }, 1000);
         },
 
-        // Verify code
         async verifyCode() {
-            const code = this.form.verificationCode.join('');
-            if (code.length !== 6) {
-                this.errors.code = '이메일로 보내 드린 인증코드를 입력해 주세요';
+            const code = (this.form.verificationCode || '').trim();
+            this.touched.codeRequired = true;
+
+            if (!code || code.length !== 6) {
+                this.errors = { ...this.errors, code: '인증코드를 다시 한 번 작성해주세요' };
                 return;
             }
             if (this.codeTimer <= 0) {
-                this.errors.code = '만료되었거나 유효하지 않은 인증코드입니다. 인증코드 재발송으로 새로운 인증코드를 입력해 주세요';
+                this.errors = { ...this.errors, code: '인증코드가 만료되었습니다. 인증코드를 재발송해 주세요' };
                 return;
             }
 
-            // TODO: API call to verify code
+            // Demo: 어떤 6자리든 통과 (실제로는 generatedCode와 비교)
             this.isCodeVerified = true;
-            this.errors.code = '';
+            const next = { ...this.errors };
+            delete next.code;
+            this.errors = next;
+
             if (this.timerInterval) {
                 clearInterval(this.timerInterval);
                 this.timerInterval = null;
             }
         },
 
-        // Legal docs loading
-        async loadLegalDocs() {
-            try {
-                const [terms, privacy, marketing] = await Promise.all([
-                    fetch('data/terms.json').then(r => r.json()),
-                    fetch('data/privacy.json').then(r => r.json()),
-                    fetch('data/marketing.json').then(r => r.json())
-                ]);
-                this.legalTerms = terms;
-                this.legalPrivacy = privacy;
-                this.legalMarketing = marketing;
-            } catch (e) {
-                this.log('Failed to load legal docs:', e);
-            }
+        onModalConfirm() {
+            this.showCodeModal = false;
         },
 
-        // Agreement handling
-        toggleAll() {
-            const val = this.agreements.all;
-            this.agreements.terms = val;
-            this.agreements.privacy = val;
-            this.agreements.age = val;
-            this.agreements.marketing = val;
+        validateForSubmit() {
+            this.touched.lastName = true;
+            this.touched.firstName = true;
+            this.touched.email = true;
+            this.touched.password = true;
+            this.touched.passwordConfirm = true;
+
+            this.runValidation();
+
+            const errs = { ...this.errors };
+
+            if (!this.form.lastName) errs.lastName = true;
+            if (!this.form.firstName) errs.firstName = true;
+            if (!this.form.email) {
+                errs.email = '필수 항목입니다';
+            } else if (!this.isValidEmail(this.form.email)) {
+                errs.email = '이메일 형식을 준수하여 작성해 주세요.';
+            }
+            if (!this.form.password) {
+                errs.password = '필수 항목입니다';
+            } else if (!this.isValidPassword(this.form.password)) {
+                errs.password = '8~16자, 영문 대소문자·숫자·특수문자를 모두 포함해야 합니다';
+            }
+            if (!this.form.passwordConfirm) {
+                errs.passwordConfirm = '필수 항목입니다';
+            } else if (this.form.password !== this.form.passwordConfirm) {
+                errs.passwordConfirm = '입력하신 비밀번호가 다릅니다';
+            }
+
+            this.errors = errs;
+            return Object.keys(errs).filter(k => errs[k]).length === 0;
         },
 
-        checkAll() {
-            this.agreements.all = this.agreements.terms && this.agreements.privacy &&
-                                  this.agreements.age && this.agreements.marketing;
-        },
-
-        // Validation
-        validate() {
-            this.errors = {};
-
-            if (!this.form.lastName || !this.form.firstName) {
-                this.errors.name = '성과 이름을 입력해 주세요';
-                if (!this.form.lastName) this.errors.lastName = true;
-                if (!this.form.firstName) this.errors.firstName = true;
-            }
-
-            if (!this.form.email || !this.form.email.includes('@')) {
-                this.errors.email = '이메일 주소를 입력해 주세요';
-            }
-
-            if (!this.isCodeVerified) {
-                const code = this.form.verificationCode.join('');
-                if (code.length !== 6) {
-                    this.errors.code = '이메일로 보내 드린 인증코드를 입력해 주세요';
-                } else {
-                    this.errors.code = '만료되었거나 유효하지 않은 인증코드입니다. 인증코드 재발송으로 새로운 인증코드를 입력해 주세요';
-                }
-            }
-
-            if (!this.form.password || this.form.password.length < 8) {
-                this.errors.password = '최소 8자 이상 특수문자 기호를 포함해 주세요';
-            }
-
-            if (this.form.password !== this.form.passwordConfirm) {
-                this.errors.passwordConfirm = '비밀번호가 맞지 않아요. 다시 입력해 주세요';
-            }
-
-            if (!this.agreements.terms || !this.agreements.privacy || !this.agreements.age) {
-                this.errors.agreements = '필수 동의를 체크해 주세요';
-            }
-
-            return Object.keys(this.errors).length === 0;
-        },
-
-        // Submit
         async handleSignup() {
-            if (!this.validate()) return;
+            if (!this.validateForSubmit()) return;
 
             this.isSubmitting = true;
             try {
-                // TODO: API call to register
                 const payload = {
-                    plan: this.selectedPlan,
                     lastName: this.form.lastName,
                     firstName: this.form.firstName,
                     email: this.form.email,
                     password: this.form.password,
-                    marketing: this.agreements.marketing
+                    status: 'pending_approval'
                 };
-                this.log('Signup payload:', payload);
+                this.log && this.log('Signup payload:', payload);
 
-                // 임시: 개발용 로그인 시뮬레이션
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 600));
 
-                const token = 'dev_token_' + Date.now();
-                localStorage.setItem('auth_token', token);
-                localStorage.setItem('user', JSON.stringify({
-                    id: Date.now(),
-                    name: this.form.lastName + this.form.firstName,
-                    email: this.form.email,
-                    loginAt: new Date().toISOString()
-                }));
-
-                if (this.selectedPlan === 'free') {
-                    // 무료 플랜: 자동 개설 후 웰컴 페이지로 이동
-                    this.createFreeSite();
-                    this.navigateTo('/signup/welcome', { email: this.form.email, plan: 'Free' });
-                } else {
-                    // 유료 플랜: 결제 페이지로 이동 (결제 완료 후 웰컴 페이지)
-                    this.navigateTo('/payment/checkout', { plan: this.selectedPlan, email: this.form.email, isNewUser: 'true' });
-                }
+                this.showApprovalModal = true;
             } catch (error) {
                 console.error('회원가입 실패:', error);
             } finally {
                 this.isSubmitting = false;
             }
+        },
+
+        onApprovalConfirm() {
+            const email = this.form.email;
+            this.showApprovalModal = false;
+            this.resetForm();
+            this.navigateTo('/login/login', { email });
         }
     }
 };

@@ -1,0 +1,27 @@
+<div class="drone-intel-page">
+    <div class="container py-5">
+        <div class="drone-intel-eyebrow">// DRONE INTELLIGENCE</div>
+        <h1 class="drone-intel-title">드론 최신 정보</h1>
+
+        <ul class="drone-intel-list">
+            <li
+                v-for="item in items"
+                :key="item.id"
+                class="drone-intel-item"
+                @click="goDetail(item)"
+            >
+                <div class="drone-intel-head">
+                    <span class="drone-intel-badge">DRONE</span>
+                    <h2 class="drone-intel-item-title">{{ item.title }}</h2>
+                    <div class="drone-intel-meta">
+                        <span class="drone-intel-source">{{ item.source }}</span>
+                        <span class="drone-intel-date">{{ item.date }}</span>
+                        <i class="bi bi-chevron-up drone-intel-chevron"></i>
+                    </div>
+                </div>
+
+                <p class="drone-intel-summary">{{ item.summary }}</p>
+            </li>
+        </ul>
+    </div>
+</div>

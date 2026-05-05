@@ -1,0 +1,30 @@
+<div class="drone-intel-page">
+    <div class="container py-5" style="max-width: 960px;">
+        <div class="drone-intel-eyebrow">// OTHER</div>
+
+        <a href="#/others" class="drone-intel-back" @click.prevent="goList">
+            <i class="bi bi-arrow-left"></i>
+            <span>목록으로</span>
+        </a>
+
+        <div v-if="article" class="drone-intel-detail">
+            <div class="drone-intel-detail-head">
+                <span class="drone-intel-badge">OTHER</span>
+                <div class="drone-intel-meta">
+                    <span class="drone-intel-source">{{ article.source }}</span>
+                    <span class="drone-intel-date">{{ article.date }}</span>
+                </div>
+            </div>
+
+            <h1 class="drone-intel-detail-title">{{ article.title }}</h1>
+
+            <div class="drone-intel-detail-body">
+                <p v-for="(p, i) in article.body" :key="i">{{ p }}</p>
+            </div>
+        </div>
+
+        <div v-else class="drone-intel-empty">
+            요청하신 글을 찾을 수 없습니다.
+        </div>
+    </div>
+</div>

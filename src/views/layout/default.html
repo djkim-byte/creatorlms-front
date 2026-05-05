@@ -19,17 +19,11 @@
                 </nav>
 
                 <!-- Right Actions (desktop) -->
-                <div class="d-none d-lg-flex align-items-center gap-3">
-                    <div class="dcd-lang" role="group" aria-label="Language">
-                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'ko' }" @click="setLang('ko')">한국어</button>
-                        <span class="dcd-lang-sep" aria-hidden="true">/</span>
-                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'en' }" @click="setLang('en')">English</button>
-                    </div>
-                    <span class="dcd-divider" aria-hidden="true"></span>
+                <div class="d-none d-lg-flex align-items-center">
                     <div class="dcd-auth">
-                        <a href="#/login" class="dcd-auth-link">로그인</a>
+                        <a href="#/login/login" class="dcd-auth-link">로그인</a>
                         <span class="dcd-auth-sep" aria-hidden="true">|</span>
-                        <a href="#/signup" class="dcd-auth-link dcd-auth-cta">회원가입</a>
+                        <a href="#/signup/signup" class="dcd-auth-link dcd-auth-cta">회원가입</a>
                     </div>
                 </div>
 
@@ -50,15 +44,10 @@
                     <a class="dcd-mobile-link" :class="{ active: isActive('/others') }" href="#/others" @click="closeMobileMenu">OTHERS</a>
                 </nav>
                 <div class="dcd-mobile-actions">
-                    <div class="dcd-lang">
-                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'ko' }" @click="setLang('ko')">한국어</button>
-                        <span class="dcd-lang-sep" aria-hidden="true">/</span>
-                        <button type="button" class="dcd-lang-btn" :class="{ active: lang === 'en' }" @click="setLang('en')">English</button>
-                    </div>
                     <div class="dcd-auth">
-                        <a href="#/login" class="dcd-auth-link" @click="closeMobileMenu">로그인</a>
+                        <a href="#/login/login" class="dcd-auth-link" @click="closeMobileMenu">로그인</a>
                         <span class="dcd-auth-sep" aria-hidden="true">|</span>
-                        <a href="#/signup" class="dcd-auth-link dcd-auth-cta" @click="closeMobileMenu">회원가입</a>
+                        <a href="#/signup/signup" class="dcd-auth-link dcd-auth-cta" @click="closeMobileMenu">회원가입</a>
                     </div>
                 </div>
             </div>
